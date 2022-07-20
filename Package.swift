@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SwiftyRedis",
     platforms: [
-        .iOS(.v12),
+        .iOS(.v13),
         .macOS(.v10_15),
         .macCatalyst(.v13),
         .tvOS(.v12),
