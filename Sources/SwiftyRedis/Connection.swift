@@ -15,11 +15,13 @@ import Network
 /// only be created from the ``RedisClient``.
 public class RedisConnection {
     var con: NWConnection
+    var command_to_process: Cmd?
     let parser: RedisResponseParser
     
     internal init(_ actual_connection: NWConnection) {
         con = actual_connection
         parser = RedisResponseParser()
+        command_to_process = nil
     }
     
     private func send_packed_command(_ cmd: Data) async throws {
@@ -61,5 +63,28 @@ public class RedisConnection {
     public func request_packed_cmd(_ cmd: Data) async throws -> RedisValue {
         try await send_packed_command(cmd)
         return try await receive_response()
+    }
+}
+
+extension RedisConnection: RedisCommands {
+    public func process_command(_ cmd: Cmd) -> Self {
+        self.command_to_process = cmd
+        return self
+    }
+    
+    /// Sends the command as query to the connection and converts the result to the target redis value.
+    /// This is the general way how you can retrieve data.
+    public func query<T: FromRedisValue>() async throws -> T {
+        if let cmd = self.command_to_process {
+            let value = try await self.request_packed_cmd(cmd.pack_command())
+            return try T.init(value)
+        }
+        return try T.init(.Nil)
+    }
+    
+    /// This is a shortcut to ``RedisConnection/query()`` that does not return a ``RedisValue`` and will throw if the query fails because of an error.
+    /// This is mainly useful in examples and for simple commands like setting keys.
+    public func exec() async throws {
+        let _: RedisValue = try await query()
     }
 }

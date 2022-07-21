@@ -37,7 +37,7 @@ public enum RedisError: Error, Equatable {
         }
     }
     
-    public static let InvalidResponseError = RedisError.WithDescription(.ResponseError, "Invalid response from server")
+    public static let InvalidResponse = RedisError.WithDescription(.ResponseError, "Invalid response from server")
     public static let InvalidUTF8 = RedisError.WithDescription(.TypeError, "Invalid UTF-8")
     
     public static func make_invalid_type_error(detail: String) -> RedisError {
