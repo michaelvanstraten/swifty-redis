@@ -59,6 +59,9 @@ extension Float32: FromRedisValue {
     }
 }
 
+@available(watchOS 7.0, *)
+@available(tvOS 14.0, *)
+@available(iOS 14.0, *)
 @available(macOS 11.0, *)
 extension Float16: FromRedisValue {
     public init(_ value: RedisValue) throws {

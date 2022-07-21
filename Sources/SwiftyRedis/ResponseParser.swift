@@ -16,7 +16,7 @@ class RedisResponseParser {
     
     func parse_response(_ toParseData: Data) throws -> RedisValue {
         response = toParseData
-        return try parse_value()
+        return try parse_values()
     }
     
     func parse_value() throws -> RedisValue {
@@ -33,10 +33,23 @@ class RedisResponseParser {
             case RedisRESP.Error:
                 throw try parse_error()
             default:
-                throw RedisError.InvalidResponseError
+                break
             }
+        }
+        throw RedisError.InvalidResponse
+    }
+    
+    func parse_values() throws -> RedisValue {
+        var values: Array<RedisValue> = []
+        while response.count > 0 {
+            values.append(try parse_value())
+        }
+        if values.count > 1 {
+            return .Array(values)
+        } else if values.count == 1 {
+            return values[0]
         } else {
-            throw RedisError.InvalidResponseError
+            throw RedisError.InvalidResponse
         }
     }
     
@@ -49,7 +62,7 @@ class RedisResponseParser {
                 throw RedisError.InvalidUTF8
             }
         } else {
-            throw RedisError.InvalidResponseError
+            throw RedisError.InvalidResponse
         }
     }
     
@@ -57,7 +70,7 @@ class RedisResponseParser {
         if let error = String(data: response, encoding: .utf8) {
             return RedisError(parse: error)
         } else {
-            throw RedisError.InvalidResponseError
+            throw RedisError.InvalidResponse
         }
     }
     

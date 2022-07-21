@@ -49,8 +49,8 @@ public class Cmd {
     
     /// This is a shortcut to ``Cmd/query(_:)`` that does not return a ``RedisValue`` and will throw if the query fails because of an error.
     /// This is mainly useful in examples and for simple commands like setting keys.
-    public func execute(_ con: RedisConnection) async throws {
-        let _: String = try await query(con)
+    public func exec(_ con: RedisConnection) async throws {
+        let _: RedisValue = try await query(con)
     }
     
     internal func pack_command() -> Data {
