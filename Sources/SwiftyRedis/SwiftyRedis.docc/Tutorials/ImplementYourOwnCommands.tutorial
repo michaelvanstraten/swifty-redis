@@ -1,15 +1,47 @@
 @Tutorial(time: 4) {
-    @Intro(title: "Connect to Redis") {
-        We will connect to a Redis server using the _RedisClient_ struct. - Let's get started
+    @Intro(title: "Implementing your own commands") {
+        Altho this package implements most of the redis provided commands, this mite not be the case for future versions of redis. 
+        I this case it is good to have the underlying api for creating and executing custom commands.
     }
     
-    @Section(title: "Configuring the client") {
+    @Section(title: "Building a redis command from scratch.") {
+        @ContentAndMedia {
+            For this tutorial we are going to implement the [SADD](https://redis.io/commands/sadd/) command.
+            
+            The commands adds the specified `members` to the set stored at `key`. 
+        }
+        
         @Steps {
             @Step {
-                We initialize the Client struct
+                Let's start of
                 
-                @Code(name: "ConnectToRedis.swift", file: connect-01.swift)
+                @Code(name: "sadd.swift", file: custom-command-00.swift)
+            }
+            @Step {
+                We start by importing ``SwiftyRedis``
+                
+                @Code(name: "sadd.swift", file: custom-command-01.swift)
+            }
+            
+            @Step {
+                Next up we will create a function which will return us the resulting command.
+                
+                Note that your don't have to do this in a function, this can be done inline just as well. The function makes it more reusable, thats it.
+                
+                @Code(name: "sadd.swift", file: custom-command-02.swift)
+            }
+            
+            @Step {
+                As mention above the command takes 2 or more arguments. 
+                For the first, the `key` i would suggest a String. 
+                The the following parameters to the command are the `members` which can be one or multiple. 
+                Swift offers of a way of passing zero or more values to a single type, it's called a [variadic](https://docs.swift.org/swift-book/LanguageGuide/Functions.html#ID171) parameter.
+                
+                
+                @Code(name: "sadd.swift", file: custom-command-03.swift)
             }
         }
+        
+        
     }
 }

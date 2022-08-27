@@ -1,12 +1,24 @@
 @Tutorial(time: 4) {
-    @Intro(title: "Connect to Redis") {
-        We will connect to a Redis server using the _RedisClient_ struct. - Let's get started
+    @Intro(title: "FromRedisValue for custom types") {
+        SwiftyRedis provides an implementation for the ``FromRedisValue`` protocol for most primitive types in Swift.
+        
+        Luckily the ``FromRedisValue`` protocol is quickly implemented for the types you desire, here we will show you how.
     }
     
     @Section(title: "Configuring the client") {
+        @ContentAndMedia {
+            We are going to implement ``FromRedisValue`` for the helper struct ``RedisStreamElement`` 
+            wich is define in the package to help with the process of reading form stream.
+        }
+        
         @Steps {
             @Step {
-                We initialize the Client struct
+                Let's start of
+                
+                @Code(name: "ConnectToRedis.swift", file: from-redis-value-00.swift)
+            }
+            @Step {
+                From 
                 
                 @Code(name: "ConnectToRedis.swift", file: connect-01.swift)
             }

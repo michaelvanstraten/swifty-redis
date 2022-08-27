@@ -1,14 +1,20 @@
 @Tutorial(time: 4) {
-    @Intro(title: "Connect to Redis") {
-        We will connect to a Redis server using the _RedisClient_ struct. - Let's get started
+    @Intro(title: "Using pipelines") {
+        Redis pipelining is a technique for improving performance by issuing multiple commands at once without waiting for the response to each individual command. [read more](https://redis.io/docs/manual/pipelining/)
     }
     
     @Section(title: "Configuring the client") {
+        @ContentAndMedia {
+            For this tutorial we are going to implement the [SADD](https://redis.io/commands/sadd/) command.
+            
+            The commands adds the specified `members` to the set stored at `key`. 
+        }
+        
         @Steps {
             @Step {
                 We initialize the Client struct
                 
-                @Code(name: "ConnectToRedis.swift", file: connect-01.swift)
+                @Code(name: "ConnectToRedis.swift", file: pipelines-01.swift)
             }
         }
     }

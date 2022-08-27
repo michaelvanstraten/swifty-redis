@@ -1,8 +1,10 @@
-//
-//  custom-command-00.swift
-//  
-//
-//  Created by Michael Van straten on 28.07.22.
-//
+/*
+ 
+See LICENSE folder for this sample’s licensing information.
+ 
+Abstract:
+Implement your own commands
+*/
 
 import Foundation
+

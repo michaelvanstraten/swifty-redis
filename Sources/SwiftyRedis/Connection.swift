@@ -8,11 +8,15 @@
 import Foundation
 import Network
 
-/// A connection is an object that represents a single redis connection.
-/// ## Overview
-/// It provides basic support for sending encoded commands into a redis connection
-/// and to read a response from it. It's bound to a single database and can
-/// only be created from the ``RedisClient``.
+/**
+ A connection is an object that represents a single redis connection.
+ 
+ ## Overview
+ It provides basic support for sending encoded commands into a redis connection
+ and to read a response from it. It's bound to a single database and can
+ only be created from the ``RedisClient``.
+ */
+
 public class RedisConnection {
     var con: NWConnection
     var command_to_process: Cmd?
@@ -57,19 +61,12 @@ public class RedisConnection {
         }
     }
     
-    /// Sends an already encoded (packed) command into the TCP socket and reads a response.
+    /// Sends an already encoded command into the TCP socket and reads a response.
     /// The command should conform to the [RESP protocol description](https://redis.io/docs/reference/protocol-spec/#resp-protocol-description).
     /// The appropriate constants for implementing the protocol can be found here in the ``RedisRESP`` struct.
     public func request_packed_cmd(_ cmd: Data) async throws -> RedisValue {
         try await send_packed_command(cmd)
         return try await receive_response()
-    }
-}
-
-extension RedisConnection: RedisCommands {
-    public func process_command(_ cmd: Cmd) -> Self {
-        self.command_to_process = cmd
-        return self
     }
     
     /// Sends the command as query to the connection and converts the result to the target redis value.
@@ -86,5 +83,12 @@ extension RedisConnection: RedisCommands {
     /// This is mainly useful in examples and for simple commands like setting keys.
     public func exec() async throws {
         let _: RedisValue = try await query()
+    }
+}
+
+extension RedisConnection: RedisCommands {
+    public func process_command(_ cmd: Cmd) -> Self {
+        self.command_to_process = cmd
+        return self
     }
 }

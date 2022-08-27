@@ -8,9 +8,13 @@
 import Foundation
 import Network
 
-/// Represents an error which could accrue when interacting with redis.
-/// ## Overview
-/// If the response parser encounters and error while parsing or it notices that the response is a redis error, this type gets thrown.
+/**
+ Represents an error which could accrue when interacting with redis.
+ 
+ ## Overview
+ If the response parser encounters and error while parsing or it notices that the response is a redis error, this type gets thrown.
+ */
+
 public enum RedisError: Error, Equatable {
     /// Encountering an error response which containers an error kind but no detail this case will be chosen.
     /// Incase the data returned from the socket cloud not be decode as UTF-8 or the first byte of the response is not a valid type indicator this case also gets chosen.
