@@ -1,9 +1,15 @@
 @Tutorial(time: 4) {
-    @Intro(title: "Connect to Redis") {
+    @Intro(title: "Use existing commands") {
         We will connect to a Redis server using the _RedisClient_ struct. - Let's get started
     }
     
     @Section(title: "Configuring the client") {
+        @ContentAndMedia {
+            For this tutorial we are going to implement the [SADD](https://redis.io/commands/sadd/) command.
+            
+            The commands adds the specified `members` to the set stored at `key`. 
+        }
+        
         @Steps {
             @Step {
                 We initialize the Client struct

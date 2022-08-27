@@ -1,9 +1,15 @@
 @Tutorial(time: 4) {
-    @Intro(title: "Connect to Redis") {
-        We will connect to a Redis server using the _RedisClient_ struct. - Let's get started
+    @Intro(title: "Transacting transactions") {
+        Redis Transactions allow the execution of a group of commands in a single step, they are centered around the commands [MULTI](https://redis.io/commands/multi/), [EXEC](https://redis.io/commands/exec/), [DISCARD](https://redis.io/commands/discard/) and [WATCH](https://redis.io/commands/watch/). Redis Transactions make certain guaranties. [read more](https://redis.io/docs/manual/transactions/)
     }
     
     @Section(title: "Configuring the client") {
+        @ContentAndMedia {
+            For this tutorial we are going to implement the [SADD](https://redis.io/commands/sadd/) command.
+            
+            The commands adds the specified `members` to the set stored at `key`. 
+        }
+        
         @Steps {
             @Step {
                 We initialize the Client struct

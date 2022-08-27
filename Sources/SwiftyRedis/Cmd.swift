@@ -12,15 +12,7 @@ A command acts as a builder interface to creating encoded redis
 requests.  This allows you to easily assemble a packed command
 by chaining arguments together.
 
-## Basic example:
-```swift
-var hset = Cmd("HSET")
-    .arg("myhash")
-    .arg("field1")
-    .arg("Hello"
-    .arg("field2"
-    .arg("1")
-```
+<doc:ImplementYourOwnCommands>
 */
 public class Cmd {
     private var args: Array<Data> = Array()

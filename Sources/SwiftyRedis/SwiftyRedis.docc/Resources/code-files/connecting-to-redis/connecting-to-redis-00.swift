@@ -1,8 +1,9 @@
-//
-//  connecting-to-redis-00.swift
-//  
-//
-//  Created by Michael Van straten on 28.07.22.
-//
+/*
+ 
+See LICENSE folder for this sample’s licensing information.
+ 
+Abstract:
+Connecting to redis
+*/
 
 import Foundation

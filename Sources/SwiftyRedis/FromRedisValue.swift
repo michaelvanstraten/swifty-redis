@@ -7,6 +7,21 @@
 
 import Foundation
 
+/**
+ This Protocol is used to convert a redis value into a more appropriate
+ type.
+
+ ## Overview
+
+ While a ``RedisValue`` can represent any response that comes
+ back from the redis server, usually you want to map this into something
+ that works better in swift. For instance you might want to convert the
+ return value into a `String` or an integer.
+ 
+ This Protocol is well supported throughout the package and you can
+ implement it for your own types if you want.
+ */
+
 public protocol FromRedisValue {
     /// Given a ``RedisValue`` this attempts to convert it into the given
     /// destination type. If that fails because it's not compatible an

@@ -7,8 +7,8 @@
 
 import Foundation
 
-public typealias RedisXReadResponse<T> = Array<RedisStream<T>> where T: FromRedisValue
-public typealias RedisXRangeResponse<T> = Array<RedisStreamElement<T>> where T: FromRedisValue
+public typealias XreadResponse<T> = Array<RedisStream<T>> where T: FromRedisValue
+public typealias XrangeResponse<T> = Array<RedisStreamElement<T>> where T: FromRedisValue
 
 public struct RedisStreamElement<T>: FromRedisValue where T: FromRedisValue {
     public let id: String

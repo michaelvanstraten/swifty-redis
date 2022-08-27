@@ -1,8 +1,13 @@
-//
-//  custom-command-01.swift
-//  
-//
-//  Created by Michael Van straten on 22.07.22.
-//
+/*
+ 
+See LICENSE folder for this sample’s licensing information.
+ 
+Abstract:
+Implement your own commands
+*/
 
 import Foundation
+import SwiftyRedis
+
+func sadd(_ key: String, members: String...) {
+}

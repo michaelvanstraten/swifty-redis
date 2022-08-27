@@ -7,8 +7,11 @@
 
 import Foundation
 
-/// The redis value enum parsed from a redis reply.
-/// Note that Error values are not returned, the corresponding function throws a ``RedisError`` in the case one is returned from redis.
+/**
+ The redis value enum parsed from a redis reply.
+ Note that Error values are not returned, the corresponding function throws a ``RedisError`` in the case one is returned from redis.
+ */
+
 public indirect enum RedisValue: Equatable {
     /// Simple Strings are used to transmit non binary-safe strings with minimal overhead. For example, many Redis commands reply with just "OK" on success.
     case SimpleString(String)

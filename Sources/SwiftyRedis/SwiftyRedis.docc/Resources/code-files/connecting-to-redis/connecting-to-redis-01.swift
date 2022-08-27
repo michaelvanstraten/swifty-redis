@@ -1,8 +1,12 @@
-//
-//  connecting-to-redis-01.swift
-//  
-//
-//  Created by Michael Van straten on 28.07.22.
-//
+/*
+ 
+See LICENSE folder for this sample’s licensing information.
+ 
+Abstract:
+Connecting to redis
+*/
 
 import Foundation
+import SwiftyRedis
+
+let client = RedisClient()

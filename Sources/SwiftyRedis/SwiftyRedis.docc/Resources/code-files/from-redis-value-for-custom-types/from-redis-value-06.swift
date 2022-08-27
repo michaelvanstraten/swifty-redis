@@ -1,8 +1,32 @@
-//
-//  from-redis-value-06.swift
-//  
-//
-//  Created by Michael Van straten on 27.07.22.
-//
+/*
+ 
+See LICENSE folder for this sample’s licensing information.
+ 
+Abstract:
+FromRedisValue for custom types
+*/
 
 import Foundation
+import SwiftyRedis
+
+public struct RedisStreamElement<T>: FromRedisValue where T: FromRedisValue {
+    public let id: String
+    public let data: T
+    
+    public init(_ value: RedisValue) throws {
+        if case .Array(var array) = value {
+            array = array.reversed()
+            switch array.popLast() {
+            case .BulkString(let id), .SimpleString(let id):
+                self.id = id
+                if let data = array.popLast() {
+                    self.data = try T.init(data)
+                    return
+                }
+            default:
+                break
+            }
+        }
+        throw RedisError.make_invalid_type_error(detail: "Response type not convertible to RedisStreamElement.")
+    }
+}

@@ -7,9 +7,21 @@
 
 import Network
 
+/**
+ The client acts as connector to the redis server. By itself it does not
+ do much other than providing a convenient way to fetch a connection from it.
+
+ ## Example
+
+ ```swift
+ let client = RedisClient(.init("localhost"))
+ let connection = try await client.get_connection()
+ ```
+ */
+
 public class RedisClient {
     /// As RedisClient initialized to connect to localhost:6379 without using TLS. This can be used for easier development.
-    public static let LOCALHOST = RedisClient(.init("localhost"))
+    public static let LOCAL = RedisClient(.init("localhost"))
     
     let host: NWEndpoint.Host
     let port: NWEndpoint.Port

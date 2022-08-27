@@ -1,19 +1,62 @@
 @Tutorial(time: 4) {
-    @Intro(title: "Connect to Redis") {
-        We will connect to a Redis server using the _RedisClient_ struct. - Let's get started
+    @Intro(title: "Connecting to Redis") {
+        We will connect to a Redis server using the ``SwiftyRedis/RedisClient`` struct.
     }
     
-    @Section(title: "Configuring the client") {
+    @Section(title: "Configuring the client and getting the connectiom") {
         @ContentAndMedia {
             For this tutorial we are going to implement the [SADD](https://redis.io/commands/sadd/) command.
             
             The commands adds the specified `members` to the set stored at `key`. 
         }
+        
         @Steps {
             @Step {
-                We initialize the Client struct
+                Let's start of
                 
-                @Code(name: "connectToRedis.swift", file: connect-to-redis-01.swift)
+                @Code(name: "connectingToRedis.swift", file: connecting-to-redis-00.swift)
+            }
+            @Step {
+                We import SwiftyRedis and initialize the client
+                
+                @Code(name: "connectingToRedis.swift", file: connecting-to-redis-01.swift)
+            }
+            @Step {
+                The first parameter to the ``SwiftyRedis/RedisClient/init(_:port:params:database:username:password:)`` function is the address of the redis server.
+                In this case we initialize it using a static string, but there are many more options on the  struct.
+                
+                @Code(name: "connectingToRedis.swift", file: connecting-to-redis-02.swift)
+            }
+            @Step {
+                Text
+                
+                @Code(name: "connectingToRedis.swift", file: connecting-to-redis-03.swift)
+            }
+            @Step {
+                Text
+                
+                @Code(name: "connectingToRedis.swift", file: connecting-to-redis-04.swift)
+            }
+            @Step {
+                Text
+                
+                @Code(name: "connectingToRedis.swift", file: connecting-to-redis-05.swift)
+            }
+            @Step {
+                Text
+                
+                @Code(name: "connectingToRedis.swift", file: connecting-to-redis-06.swift)
+            }
+            @Step {
+                Text
+                
+                @Code(name: "connectingToRedis.swift", file: connecting-to-redis-07.swift)
+            }
+            @Step {
+                Getting the connection is just as simple as calling the ``SwiftyRedis/RedisClient/get_connection()`` function,
+                just remember to `try await` the result.
+                
+                @Code(name: "connectingToRedis.swift", file: connecting-to-redis-08.swift)
             }
         }
     }

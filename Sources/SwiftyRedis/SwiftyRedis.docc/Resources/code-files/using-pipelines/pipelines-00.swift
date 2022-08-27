@@ -1,8 +1,10 @@
-//
-//  pipelines-00.swift
-//  
-//
-//  Created by Michael Van straten on 27.07.22.
-//
+/*
+ 
+See LICENSE folder for this sample’s licensing information.
+ 
+Abstract:
+Using pipelines
+*/
 
 import Foundation
+
