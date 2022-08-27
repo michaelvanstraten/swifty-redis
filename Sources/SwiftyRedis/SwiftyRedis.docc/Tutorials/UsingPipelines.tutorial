@@ -1,0 +1,15 @@
+@Tutorial(time: 4) {
+    @Intro(title: "Connect to Redis") {
+        We will connect to a Redis server using the _RedisClient_ struct. - Let's get started
+    }
+    
+    @Section(title: "Configuring the client") {
+        @Steps {
+            @Step {
+                We initialize the Client struct
+                
+                @Code(name: "ConnectToRedis.swift", file: connect-01.swift)
+            }
+        }
+    }
+}

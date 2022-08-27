@@ -10,7 +10,7 @@ import XCTest
 @testable import SwiftyRedis
 
 final class ConnectionTests: XCTestCase {
-    let client = RedisClient.LOCALHOST
+    let client = RedisClient.LOCAL
     
     func testSimple() async throws {
         let connection = try await client.get_connection()
