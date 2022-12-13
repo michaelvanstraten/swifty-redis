@@ -14,8 +14,8 @@ final class ConnectionTests: XCTestCase {
     
     func testSimple() async throws {
         let connection = try await client.get_connection()
-        try await connection.acl_setuser(username: "virginia", rule: "on", "+GET", "allkeys", "(+SET ~app2*)").exec()
-        let user_info: RedisValue = try await connection.acl_getuser(username: "virginia").query()
+        try await connection.acl_setuser("virginia", "on", "+GET", "allkeys", "(+SET ~app2*)").exec()
+        let user_info: RedisValue = try await connection.acl_getuser("virginia").query()
         print(user_info)
     }
     
@@ -28,7 +28,7 @@ final class ConnectionTests: XCTestCase {
     func test_pipeline() async throws {
         let connection = try await client.get_connection()
         try await RedisPipeline()
-            .hset(key: "hash", fieldValue: .init(field: "field1", value: "Hello"), .init(field: "field2", value: "world"))
+            .hset("hash", .init("field1", "Hello"), .init("field2", "world"))
             .exec(connection)
     }
     
