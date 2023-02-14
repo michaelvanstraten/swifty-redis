@@ -17,7 +17,7 @@ by chaining arguments together.
 public class Cmd {
     private var args: Array<Data> = Array()
     
-    init(_ name: String? = nil) {
+    public init(_ name: String? = nil) {
         if let name = name {
             self.arg(name)
         }
