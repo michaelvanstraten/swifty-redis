@@ -12,7 +12,7 @@ let value: String = try await connection.hget("myhash", "field1")
 
 ## Documentation
 
-The Documentation is available [here](https://michaelvanstraten.github.io/SwiftyRedis/documentation/swiftyredis/) or under the link in the about section on the right.
+The Documentation is available [here](https://michaelvanstraten.github.io/swifty-redis/documentation/swiftyredis/) or under the link in the about section on the right.
 
 ## Contribution
 
