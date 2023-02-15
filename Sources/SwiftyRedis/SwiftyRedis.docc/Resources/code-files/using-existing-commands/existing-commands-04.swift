@@ -19,4 +19,4 @@ con.geosearch(
             latitude: 37
         )
     )
-).query()
+)

@@ -26,4 +26,4 @@ con.geosearch(
             unit: .km
         )
     )
-).query()
+)
