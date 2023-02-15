@@ -28,4 +28,4 @@ let result: RedisValue = try await con.geosearch(
     ),
     order: .ASC,
     options: [.WITHCOORD, .WITHDIST]
-).query()
+)

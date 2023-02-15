@@ -28,4 +28,4 @@ con.geosearch(
     ),
     order: .ASC,
     options: [.WITHCOORD, .WITHDIST]
-).query()
+)

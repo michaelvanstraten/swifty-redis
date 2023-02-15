@@ -61,10 +61,10 @@ public class RedisClient {
         try await connect_to_redis(con: actual_connection)
         let redis_connection = RedisConnection(actual_connection)
         if self.database != 0 {
-            try await redis_connection.select(Int(self.database)).exec()
+            try await redis_connection.select(Int(self.database))
         }
         if let username = self.username, let password = self.password {
-            try await redis_connection.auth(username, password).exec()
+            try await redis_connection.auth(username, password)
         }
         return redis_connection
     }
