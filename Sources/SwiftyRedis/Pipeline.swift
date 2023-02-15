@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Pipeline.swift
 //  
 //
 //  Created by Michael Van straten on 21.07.22.
@@ -62,11 +62,5 @@ public class RedisPipeline {
     /// This is a shortcut to ``RedisPipeline/query(_:)`` that does not return a ``RedisValue`` and will throw if the query fails because of an error.
     public func exec(_ con: RedisConnection) async throws {
         let _: RedisValue = try await query(con)
-    }
-}
-
-extension RedisPipeline: RedisCommands {
-    public func process_command(_ cmd: Cmd) -> Self {
-        self.add_command(cmd)
     }
 }

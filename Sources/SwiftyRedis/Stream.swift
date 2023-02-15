@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Stream.swift
 //  
 //
 //  Created by Michael Van straten on 21.07.22.

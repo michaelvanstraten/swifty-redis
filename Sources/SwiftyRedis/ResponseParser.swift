@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ResponseParser.swift
 //  
 //
 //  Created by Michael Van straten on 12.07.22.

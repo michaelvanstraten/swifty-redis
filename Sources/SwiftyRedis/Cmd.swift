@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Cmd.swift
 //  
 //
 //  Created by Michael Van straten on 05.07.22.
@@ -62,12 +62,5 @@ public class Cmd {
         }
         
         return packed_cmd
-    }
-}
-
-extension Cmd: RedisCommands {
-    public func process_command(_ cmd: Cmd) -> Self {
-        self.args = cmd.args
-        return self
     }
 }

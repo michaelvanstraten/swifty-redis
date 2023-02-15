@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ProtocolSpec.swift
 //  
 //
 //  Created by Michael Van straten on 12.07.22.

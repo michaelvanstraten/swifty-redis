@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Connection.swift
 //  
 //
 //  Created by Michael Van straten on 05.07.22.

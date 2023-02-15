@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Transaction.swift
 //  
 //
 //  Created by Michael van Straten on 24.11.22.

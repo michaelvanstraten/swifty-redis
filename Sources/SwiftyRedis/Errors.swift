@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Errors.swift
 //  
 //
 //  Created by Michael Van straten on 05.07.22.
