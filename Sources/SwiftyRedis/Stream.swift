@@ -32,7 +32,7 @@ public struct RedisStreamElement<T>: FromRedisValue where T: FromRedisValue {
     }
 }
 
-public struct RedisStream<T> where T: FromRedisValue {
+public struct RedisStream<T>: FromRedisValue where T: FromRedisValue {
     public let name: String
     public let elements: Array<RedisStreamElement<T>>
     

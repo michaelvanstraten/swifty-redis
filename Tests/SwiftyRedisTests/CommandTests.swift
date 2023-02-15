@@ -32,11 +32,25 @@ final class ConnectionTests: XCTestCase {
             .exec(connection)
     }
     
-//    func test_georadius() async throws {
-//        let connection = try await client.get_connection()
-//        let count: Int = try await connection.geoadd("Sincily", .init(longitude: 13.361389, latitude: 38.115556, member: "Palermo"), .init(longitude: 15.087269, latitude: 37.502669, member: "Catania"))
-//        print(count)
-//        let search: RedisValue = try await connection.geosearch("Sicily", .FROMLONLAT(.init(longitude: 13, latitude: 38)), .BOX(.init(width: 1000, height: 1000, unit: .km)), .ASC, .init(count: 2, options: []), [.WITHCOORD])
-//        print(search)
-//    }
+    func test_xread() async throws {
+        let connection = try await client.get_connection()
+        
+        let value: XreadResponse<RedisValue> = try await Cmd("XREAD")
+            .arg("BLOCK")
+            .arg(0)
+            .arg("STREAMS")
+            .arg("teststream")
+            .arg("$")
+            .query(connection)
+        
+        print(value)
+    }
+    
+    func test_georadius() async throws {
+        let connection = try await client.get_connection()
+        let count: Int = try await connection.geoadd("Sincily", nil, .init(13.361389, 38.115556, "Palermo"), .init(15.087269,  37.502669, "Catania")).query()
+        print(count)
+        let search: RedisValue = try await connection.geosearch("Sicily", .FROMLONLAT(.init(13, 38)), .BOX(.init(1000, 1000, .km)), .ASC, .init(2, []), [.WITHCOORD]).query()
+        print(search)
+    }
 }
