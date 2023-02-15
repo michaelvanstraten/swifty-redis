@@ -35,13 +35,7 @@ final class ConnectionTests: XCTestCase {
     func test_xread() async throws {
         let connection = try await client.get_connection()
         
-        let value: XreadResponse<RedisValue> = try await Cmd("XREAD")
-            .arg("BLOCK")
-            .arg(0)
-            .arg("STREAMS")
-            .arg("teststream")
-            .arg("$")
-            .query(connection)
+        let value: XreadResponse<RedisValue> = try await connection.xread(nil, 0, .init("testStream", id: "$")).query()
         
         print(value)
     }
@@ -50,7 +44,7 @@ final class ConnectionTests: XCTestCase {
         let connection = try await client.get_connection()
         let count: Int = try await connection.geoadd("Sincily", nil, .init(13.361389, 38.115556, "Palermo"), .init(15.087269,  37.502669, "Catania")).query()
         print(count)
-        let search: RedisValue = try await connection.geosearch("Sicily", .FROMLONLAT(.init(13, 38)), .BOX(.init(1000, 1000, .km)), .ASC, .init(2, []), [.WITHCOORD]).query()
+        let search: RedisValue = try await connection.geosearch("Sincily", .FROMLONLAT(.init(13, 38)), .BOX(.init(1000, 1000, .km)), .ASC, .init(2, []), [.WITHCOORD]).query()
         print(search)
     }
 }
