@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "semaphore",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/groue/Semaphore",
+      "state" : {
+        "revision" : "1347b85c136eb8bf76c46ae0071495f8e675d369",
+        "version" : "0.0.7"
+      }
+    },
+    {
       "identity" : "swift-docc-plugin",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-docc-plugin",

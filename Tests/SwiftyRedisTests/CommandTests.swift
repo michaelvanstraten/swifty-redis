@@ -35,7 +35,7 @@ final class ConnectionTests: XCTestCase {
     func test_xread() async throws {
         let connection = try await client.get_connection()
         
-        let value: XreadResponse<RedisValue> = try await connection.xread(nil, 0, .init("testStream", id: "$"))
+        let value: XreadResponse<RedisValue> = try await connection.xread(nil, 0, .init("SYSLOG:10.0.0.140", id: "0"))
         
         print(value)
     }

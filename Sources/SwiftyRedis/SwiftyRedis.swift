@@ -1,6 +1,6 @@
 //
 //  SwiftyRedis.swift
-//  
+//
 //
 //  Created by Michael Van straten on 11.07.22.
 //
@@ -18,18 +18,17 @@ import Network
  let connection = try await client.get_connection()
  ```
  */
-
 public class RedisClient {
     /// As RedisClient initialized to connect to localhost:6379 without using TLS. This can be used for easier development.
     public static let LOCAL = RedisClient(.init("localhost"))
-    
+
     let host: NWEndpoint.Host
     let port: NWEndpoint.Port
     let params: NWParameters
     let database: UInt
     let username: String?
     let password: String?
-    
+
     /// Initialize the RedisClient struct without connecting to the underling endpoint. Use the ``RedisClient/get_connection()`` method to connect to the endpoint.
     /// - Parameters:
     ///   - host: A name or address that identifies the redis server endpoint.
@@ -53,22 +52,27 @@ public class RedisClient {
         self.username = username
         self.password = password
     }
-    
+
     /// Instructs the client to actually connect to redis and returns a connection object.
     /// The connection object can be used to send commands to the server.
     public func get_connection() async throws -> RedisConnection {
         let actual_connection = create_redis_connection()
         try await connect_to_redis(con: actual_connection)
         let redis_connection = RedisConnection(actual_connection)
-        if self.database != 0 {
-            try await redis_connection.select(Int(self.database))
+        if database != 0 {
+            try await redis_connection.select(Int(database))
         }
-        if let username = self.username, let password = self.password {
+        if let username = username, let password = password {
             try await redis_connection.auth(username, password)
         }
         return redis_connection
     }
-    
+
+    public func get_pub_sub_connection() async throws -> PubSubConnection {
+        let redis_connection = try await get_connection()
+        return PubSubConnection(con: redis_connection)
+    }
+
     private func create_redis_connection() -> NWConnection {
         return NWConnection(
             host: host,
@@ -76,12 +80,12 @@ public class RedisClient {
             using: params
         )
     }
-    
+
     private func connect_to_redis(con: NWConnection) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error> ) in
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             con.stateUpdateHandler = { newState in
                 switch newState {
-                case .waiting(let error), .failed(let error):
+                case let .waiting(error), let .failed(error):
                     con.stateUpdateHandler = nil
                     continuation.resume(throwing: RedisError.NWError(error))
                 case .ready:
