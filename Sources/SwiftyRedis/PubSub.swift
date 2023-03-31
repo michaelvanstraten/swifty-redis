@@ -7,11 +7,65 @@
 
 import Foundation
 
-public class PubSubConnection {
+public actor PubSubConnection {
+    public typealias MessageStream = AsyncStream<Result<PubSubMessage, RedisError>>
     let con: RedisConnection
+    var subscribers: [UUID: MessageStream.Continuation] = [:]
+    var message_handler: Task<Void, Never>?
 
     internal init(con: RedisConnection) {
         self.con = con
+    }
+
+    func start_message_handler() {
+        if message_handler != nil {
+            return
+        }
+
+        message_handler = Task { [weak self] in
+            guard let self = self else { return }
+
+            while !Task.isCancelled {
+                do {
+                    let value = try await self.con.receive_response()
+                    let pubsub_message = try PubSubMessage(value)
+                    await self.subscribers.values.forEach { subscriber in
+                        subscriber.yield(.success(pubsub_message))
+                    }
+                } catch let error as RedisError {
+                    await self.subscribers.values.forEach { subscriber in
+                        subscriber.yield(.failure(error))
+                    }
+                } catch {}
+            }
+        }
+    }
+
+    func add_subscriber(_ id: UUID, _ continuation: MessageStream.Continuation) {
+        subscribers[id] = continuation
+    }
+
+    nonisolated func remove_subscriber(_ id: UUID) {
+        Task {
+            await self._remove_subscriber(id)
+        }
+    }
+
+    private func _remove_subscriber(_ id: UUID) {
+        subscribers.removeValue(forKey: id)
+    }
+
+    public func messages() -> MessageStream {
+        start_message_handler()
+
+        let id = UUID()
+        return AsyncStream { continuation in
+            continuation.onTermination = { @Sendable _ in
+                self.remove_subscriber(id)
+            }
+
+            self.add_subscriber(id, continuation)
+        }
     }
 
     /// Listen for messages published to the given channels

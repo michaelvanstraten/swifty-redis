@@ -1,6 +1,6 @@
 //
 //  Errors.swift
-//  
+//
 //
 //  Created by Michael Van straten on 05.07.22.
 //
@@ -10,11 +10,10 @@ import Network
 
 /**
  Represents an error which could accrue when interacting with redis.
- 
+
  ## Overview
  If the response parser encounters and error while parsing or it notices that the response is a redis error, this type gets thrown.
  */
-
 public enum RedisError: Error, Equatable {
     /// Encountering an error response which containers an error kind but no detail this case will be chosen.
     /// Incase the data returned from the socket cloud not be decode as UTF-8 or the first byte of the response is not a valid type indicator this case also gets chosen.
@@ -25,7 +24,7 @@ public enum RedisError: Error, Equatable {
     case ExtensionError(String, String)
     /// Wrapped error of the underling socket connection
     case NWError(NWError)
-    
+
     internal init(parse errorResponse: String) {
         let desc = "An error was signalled by the server"
         let pieces = errorResponse.split(separator: " ", maxSplits: 1)
@@ -40,10 +39,10 @@ public enum RedisError: Error, Equatable {
             self = .ExtensionError(code, String(pieces.last ?? "Unknown extension error encountered"))
         }
     }
-    
+
     public static let InvalidResponse = RedisError.WithDescription(.ResponseError, "Invalid response from server")
     public static let InvalidUTF8 = RedisError.WithDescription(.TypeError, "Invalid UTF-8")
-    
+
     public static func make_invalid_type_error(detail: String) -> RedisError {
         return RedisError.WithDescriptionAndDetail(.TypeError, "Response was of incompatible type", detail)
     }
@@ -89,7 +88,7 @@ public enum ErrorKind: Equatable {
     case ExtensionError
     /// Attempt to write to a read-only server.
     case ReadOnly
-    
+
     internal init?(piece: String) {
         switch piece {
         case "ERR":

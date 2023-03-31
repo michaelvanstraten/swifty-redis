@@ -17,7 +17,6 @@ import Semaphore
  and to read a response from it. It's bound to a single database and can
  only be created from the ``RedisClient``.
  */
-
 public class RedisConnection {
     var con: NWConnection
     let parser: RedisResponseParser
