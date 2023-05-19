@@ -28,6 +28,16 @@ public protocol FromRedisValue {
     init(_ value: RedisValue) throws
 }
 
+extension FromRedisValue {
+    init(_ optinal_value: RedisValue?) throws {
+        guard let value = optinal_value else {
+            throw RedisError.make_invalid_type_error(detail: "Expected value got nil.")
+        }
+        
+        self = try .init(value)
+    }
+}
+
 extension String: FromRedisValue {
     public init(_ value: RedisValue) throws {
         switch value {
