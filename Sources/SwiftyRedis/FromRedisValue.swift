@@ -31,9 +31,8 @@ public protocol FromRedisValue {
 extension FromRedisValue {
     init(_ optinal_value: RedisValue?) throws {
         guard let value = optinal_value else {
-            throw RedisError.make_invalid_type_error(detail: "Expected value got nil.")
+            throw RedisError.make_invalid_type_error(detail: "Can not convert nil RedisValue to \(Self.Type.self)")
         }
-        
         self = try .init(value)
     }
 }
@@ -43,8 +42,10 @@ extension String: FromRedisValue {
         switch value {
         case let .SimpleString(string), let .BulkString(string):
             self = string
+        case let .Int(int):
+            self = "\(int)"
         default:
-            throw RedisError.make_invalid_type_error(detail: "Response type not string compatible.")
+            throw RedisError.make_invalid_type_error(detail: "Response type (\(value)), is not String compatible")
         }
     }
 }
@@ -56,12 +57,12 @@ extension Float64: FromRedisValue {
             if let float = Float64(string) {
                 self = float
             } else {
-                throw RedisError.make_invalid_type_error(detail: "Could not convert from string.")
+                throw RedisError.make_invalid_type_error(detail: "Could not convert String (\"\(string)\") to Float64")
             }
         case let .Int(int):
             self = Float64(int)
         default:
-            throw RedisError.make_invalid_type_error(detail: "Response type not convertible to float.")
+            throw RedisError.make_invalid_type_error(detail: "Response type (\(value)), is not Float64 compatible")
         }
     }
 }
@@ -73,12 +74,12 @@ extension Float32: FromRedisValue {
             if let float = Float(string) {
                 self = float
             } else {
-                throw RedisError.make_invalid_type_error(detail: "Could not convert from string.")
+                throw RedisError.make_invalid_type_error(detail: "Could not convert String (\"\(string)\") to Float32")
             }
         case let .Int(int):
             self = Float32(int)
         default:
-            throw RedisError.make_invalid_type_error(detail: "Response type not convertible to float.")
+            throw RedisError.make_invalid_type_error(detail: "Response type (\(value)), is not Float32 compatible")
         }
     }
 }
@@ -100,12 +101,12 @@ extension Int64: FromRedisValue {
             if let int = Int64(string) {
                 self = int
             } else {
-                throw RedisError.make_invalid_type_error(detail: "Could not convert from string.")
+                throw RedisError.make_invalid_type_error(detail: "Could not convert String (\"\(string)\") to Int64")
             }
         case let .Int(int):
             self = int
         default:
-            throw RedisError.make_invalid_type_error(detail: "Response type not convertible too int.")
+            throw RedisError.make_invalid_type_error(detail: "Response type (\(value)), is not Int64 compatible")
         }
     }
 }
@@ -152,7 +153,7 @@ extension Array: FromRedisValue where Element: FromRedisValue {
         case let .Array(array):
             self = try array.map { value in try Element(value) }
         default:
-            throw RedisError.make_invalid_type_error(detail: "Response type not array compatible.")
+            throw RedisError.make_invalid_type_error(detail: "Response type (\(value)), is not Array compatible")
         }
     }
 }
@@ -191,12 +192,12 @@ extension Bool: FromRedisValue {
             } else if string == "0" {
                 self = false
             } else {
-                throw RedisError.make_invalid_type_error(detail: "Could not convert from string.")
+                throw RedisError.make_invalid_type_error(detail: "Could not convert String (\"\(string)\")) to Bool")
             }
         case .Nil:
             self = false
         case .Array:
-            throw RedisError.make_invalid_type_error(detail: "Response type not bool compatible.")
+            throw RedisError.make_invalid_type_error(detail: "Response type (\(value)), is not Bool compatible")
         }
     }
 }

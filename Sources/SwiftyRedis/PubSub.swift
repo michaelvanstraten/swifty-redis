@@ -75,41 +75,41 @@ public struct PubSubMessage: FromRedisValue {
         case subscribe(number_of_channels: Int)
         case unsubscribe(number_of_channels: Int)
     }
-    
+
     var channel: String
     var type: MessageType
 
     public init(_ value: RedisValue) throws {
         if case var .Array(array) = value {
             array = array.reversed()
-            let first_element = array.popLast()
-            
-            self.channel = try String(array.popLast())
-            
-            switch try String(first_element) {
+            let message_type = try String(array.popLast())
+
+            channel = try String(array.popLast())
+
+            switch message_type {
             case "message", "pmessage", "smessage":
                 let payload = try String(array.popLast())
-   
+
                 if let actual_payload = array.popLast() {
-                    self.channel = payload
-                    self.type = .message(pattern: self.channel, payload: try String(actual_payload))
+                    channel = payload
+                    type = try .message(pattern: channel, payload: String(actual_payload))
                 } else {
-                    self.type = .message(pattern: nil, payload: payload)
+                    type = .message(pattern: nil, payload: payload)
                 }
             case "subscribe", "psubscribe", "ssubscribe":
-                self.type = .subscribe(number_of_channels: try Int(array.popLast()))
+                type = try .subscribe(number_of_channels: Int(array.popLast()))
             case "unsubscribe", "punsubscribe", "sunsubscribe":
-                self.type = .unsubscribe(number_of_channels: try Int(array.popLast()))
+                type = try .unsubscribe(number_of_channels: Int(array.popLast()))
             default:
-                throw RedisError.make_invalid_type_error(detail: "Unexprected message type")
+                throw RedisError.make_invalid_type_error(detail: "Unexprected PubSubMessage type (\"\(message_type)\")")
             }
         } else {
-            throw RedisError.make_invalid_type_error(detail: "Response type not convertible to PubSubMessage.")
+            throw RedisError.make_invalid_type_error(detail: "Response type (\(value)) is not convertible to PubSubMessage")
         }
     }
 }
 
-extension PubSubConnection {
+public extension PubSubConnection {
     /// Listen for messages published to the given channels
     /// ## Available since
     /// 2.0.0
@@ -117,7 +117,7 @@ extension PubSubConnection {
     /// O(N) where N is the number of channels to subscribe to.
     /// ## Documentation
     /// view the docs for [SUBSCRIBE](https://redis.io/commands/subscribe)
-    public func subscribe(_ channel: String...) async throws {
+    func subscribe(_ channel: String...) async throws {
         let cmd = Cmd("SUBSCRIBE").arg(channel)
         try await con.send_packed_command(cmd.pack_command())
     }
@@ -129,7 +129,7 @@ extension PubSubConnection {
     /// O(N) where N is the number of patterns the client is already subscribed to.
     /// ## Documentation
     /// view the docs for [PSUBSCRIBE](https://redis.io/commands/psubscribe)
-    public func psubscribe(_ pattern: String...) async throws {
+    func psubscribe(_ pattern: String...) async throws {
         let cmd = Cmd("PSUBSCRIBE").arg(pattern)
         try await con.send_packed_command(cmd.pack_command())
     }
@@ -141,7 +141,7 @@ extension PubSubConnection {
     /// O(N) where N is the number of shard channels to subscribe to.
     /// ## Documentation
     /// view the docs for [SSUBSCRIBE](https://redis.io/commands/ssubscribe)
-    public func ssubscribe(_ shardchannel: String...) async throws {
+    func ssubscribe(_ shardchannel: String...) async throws {
         let cmd = Cmd("SSUBSCRIBE").arg(shardchannel)
         try await con.send_packed_command(cmd.pack_command())
     }
@@ -153,7 +153,7 @@ extension PubSubConnection {
     /// O(N) where N is the number of clients already subscribed to a channel.
     /// ## Documentation
     /// view the docs for [UNSUBSCRIBE](https://redis.io/commands/unsubscribe)
-    public func unsubscribe(_ channel: String...) async throws {
+    func unsubscribe(_ channel: String...) async throws {
         let cmd = Cmd("UNSUBSCRIBE").arg(channel)
         try await con.send_packed_command(cmd.pack_command())
     }
@@ -165,7 +165,7 @@ extension PubSubConnection {
     /// O(N+M) where N is the number of patterns the client is already subscribed and M is the number of total patterns subscribed in the system (by any client).
     /// ## Documentation
     /// view the docs for [PUNSUBSCRIBE](https://redis.io/commands/punsubscribe)
-    public func punsubscribe(_ pattern: String...) async throws {
+    func punsubscribe(_ pattern: String...) async throws {
         let cmd = Cmd("PUNSUBSCRIBE").arg(pattern)
         try await con.send_packed_command(cmd.pack_command())
     }
@@ -177,7 +177,7 @@ extension PubSubConnection {
     /// O(N) where N is the number of clients already subscribed to a shard channel.
     /// ## Documentation
     /// view the docs for [SUNSUBSCRIBE](https://redis.io/commands/sunsubscribe)
-    public func sunsubscribe(_ shardchannel: String...) async throws {
+    func sunsubscribe(_ shardchannel: String...) async throws {
         let cmd = Cmd("SUNSUBSCRIBE").arg(shardchannel)
         try await con.send_packed_command(cmd.pack_command())
     }
