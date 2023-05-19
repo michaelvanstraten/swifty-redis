@@ -1,6 +1,6 @@
 //
 //  Value.swift
-//  
+//
 //
 //  Created by Michael Van straten on 06.07.22.
 //
@@ -22,5 +22,5 @@ public indirect enum RedisValue: Equatable {
     /// Signals the non-existence of a value
     case Nil
     /// Certain Redis commands, that return collections of elements to the client, use Arrays as their replies, this the corresponding return case.
-    case Array(Array<RedisValue>)
+    case Array([RedisValue])
 }
