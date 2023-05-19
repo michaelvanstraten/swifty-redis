@@ -88,6 +88,7 @@ extension Float32: FromRedisValue {
 @available(tvOS 14.0, *)
 @available(iOS 14.0, *)
 @available(macOS 11.0, *)
+@available(macOS, unavailable)
 extension Float16: FromRedisValue {
     public init(_ value: RedisValue) throws {
         self = try Float16(Int(value))
