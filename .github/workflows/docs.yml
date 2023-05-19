@@ -15,9 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Pages
-        uses: actions/configure-pages@v1
+        uses: actions/configure-pages@v3.0.6
       - name: Set up Swift
-        uses: fwal/setup-swift@v1
+        uses: swift-actions/setup-swift@v1.23.0
         with:
           swift-version: "5.7"
       - name: Generate DocC
@@ -29,7 +29,7 @@ jobs:
           disable-indexing: "true"
           hosting-base-path: swifty-redis
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v1.0.8
         with:
           path: ./public
   deploy:
