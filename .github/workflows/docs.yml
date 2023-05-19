@@ -19,7 +19,7 @@ jobs:
       - name: Set up Swift
         uses: fwal/setup-swift@v1
         with:
-          swift-version: "5.6"
+          swift-version: "5.7"
       - name: Generate DocC
         uses: fwcd/swift-docc-action@v1
         with:
