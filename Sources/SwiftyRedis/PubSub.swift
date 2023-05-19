@@ -7,6 +7,10 @@
 
 import Foundation
 
+/**
+ A PubSubConnection is an object that represents a single redis connection,
+ on which only PubSub commands can be executed.
+ */
 public actor PubSubConnection {
     public typealias MessageStream = AsyncStream<Result<PubSubMessage, RedisError>>
     let con: RedisConnection

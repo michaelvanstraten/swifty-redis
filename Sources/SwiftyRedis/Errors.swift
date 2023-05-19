@@ -12,15 +12,18 @@ import Network
  Represents an error which could accrue when interacting with redis.
 
  ## Overview
- If the response parser encounters and error while parsing or it notices that the response is a redis error, this type gets thrown.
+ If the response parser encounters and error while parsing or it notices
+ that the response is a redis error, this type gets thrown.
  */
 public enum RedisError: Error, Equatable {
     /// Encountering an error response which containers an error kind but no detail this case will be chosen.
-    /// Incase the data returned from the socket cloud not be decode as UTF-8 or the first byte of the response is not a valid type indicator this case also gets chosen.
+    /// In case the data returned from the socket cloud not be decode as UTF-8
+    /// or the first byte of the response is not a valid type indicator this case also gets chosen.
     case WithDescription(ErrorKind, String)
     /// If an error as well some details to this error gets returned from redis this case will be chosen.
     case WithDescriptionAndDetail(ErrorKind, String, String)
-    /// If the returned value is detected as an error but it can't be correlated to any of the known redis error an error with an redis extension is assumed
+    /// If the returned value is detected as an error but it can't be correlated
+    /// to any of the known redis error an error with an redis extension is assumed
     case ExtensionError(String, String)
     /// Wrapped error of the underling socket connection
     case NWError(NWError)

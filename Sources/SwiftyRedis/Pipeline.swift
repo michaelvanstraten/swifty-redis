@@ -13,7 +13,6 @@ import Foundation
  but it allows multiple commands to be chained and some features such
  as iteration are not available.
  */
-
 public class RedisPipeline {
     private var commands: [Cmd] = []
 

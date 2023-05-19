@@ -1,14 +1,16 @@
 //
 //  ProtocolSpec.swift
-//  
+//
 //
 //  Created by Michael Van straten on 12.07.22.
 //
 
 import Foundation
 
-/// Swift representation of [RESP protocol description](https://redis.io/docs/reference/protocol-spec/#resp-protocol-description) constants.
-public struct RedisRESP {
+/**
+ Swift representation of [RESP protocol description](https://redis.io/docs/reference/protocol-spec/#resp-protocol-description) constants.
+ */
+public enum RedisRESP {
     /// Different parts of the protocol are always terminated with "\r\n" (CRLF).
     public static let CRLF = [UInt8(13), UInt8(10)]
     /// Simple Strings, the first byte of the reply is "+"
