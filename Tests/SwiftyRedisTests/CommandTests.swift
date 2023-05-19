@@ -47,4 +47,33 @@ final class ConnectionTests: XCTestCase {
         let search: RedisValue = try await connection.geosearch("Sincily", .FROMLONLAT(.init(13, 38)), .BOX(.init(1000, 1000, .km)), .ASC, .init(2, []), [.WITHCOORD])
         print(search)
     }
+    
+    func test_pub_sub() async throws {
+        let connection = try await client.get_pub_sub_connection()
+        
+        Task {
+            let connection = try await client.get_connection()
+            if #available(macOS 13.0, *) {
+                try await Task.sleep(until: .now + .seconds(1), clock: .continuous)
+            }
+            try await connection.publish("first", "Hello World")
+        }
+        
+        try await connection.subscribe("first")
+        let message_stream = await connection.messages()
+        
+        for await result in message_stream {
+            switch result {
+            case .success(let message):
+                guard case let .message(_, payload) = message.type else {
+                  continue
+                }
+                if payload == "Hello World" {
+                    return
+                }
+            case .failure(let error):
+                throw error
+            }
+        }
+    }
 }
