@@ -51,7 +51,7 @@ public actor PubSubConnection {
         }
     }
 
-    private func _remove_subscriber(_ id: UUID) {
+    func _remove_subscriber(_ id: UUID) {
         subscribers.removeValue(forKey: id)
     }
 
@@ -67,7 +67,49 @@ public actor PubSubConnection {
             self.add_subscriber(id, continuation)
         }
     }
+}
 
+public struct PubSubMessage: FromRedisValue {
+    enum MessageType {
+        case message(pattern: String?, payload: String)
+        case subscribe(number_of_channels: Int)
+        case unsubscribe(number_of_channels: Int)
+    }
+    
+    var channel: String
+    var type: MessageType
+
+    public init(_ value: RedisValue) throws {
+        if case var .Array(array) = value {
+            array = array.reversed()
+            let first_element = array.popLast()
+            
+            self.channel = try String(array.popLast())
+            
+            switch try String(first_element) {
+            case "message", "pmessage", "smessage":
+                let payload = try String(array.popLast())
+   
+                if let actual_payload = array.popLast() {
+                    self.channel = payload
+                    self.type = .message(pattern: self.channel, payload: try String(actual_payload))
+                } else {
+                    self.type = .message(pattern: nil, payload: payload)
+                }
+            case "subscribe", "psubscribe", "ssubscribe":
+                self.type = .subscribe(number_of_channels: try Int(array.popLast()))
+            case "unsubscribe", "punsubscribe", "sunsubscribe":
+                self.type = .unsubscribe(number_of_channels: try Int(array.popLast()))
+            default:
+                throw RedisError.make_invalid_type_error(detail: "Unexprected message type")
+            }
+        } else {
+            throw RedisError.make_invalid_type_error(detail: "Response type not convertible to PubSubMessage.")
+        }
+    }
+}
+
+extension PubSubConnection {
     /// Listen for messages published to the given channels
     /// ## Available since
     /// 2.0.0
@@ -138,39 +180,5 @@ public actor PubSubConnection {
     public func sunsubscribe(_ shardchannel: String...) async throws {
         let cmd = Cmd("SUNSUBSCRIBE").arg(shardchannel)
         try await con.send_packed_command(cmd.pack_command())
-    }
-}
-
-public enum PubSubMessage: FromRedisValue {
-    case message(channel: String, pattern: String?, payload: String)
-    case subscribe(channel: String, number_of_channels: Int)
-    case unsubscribe(channel: String, number_of_channels: Int)
-
-    public init(_ value: RedisValue) throws {
-        if case var .Array(array) = value {
-            array = array.reversed()
-            switch array.popLast() {
-            case let .BulkString(message_type), let .SimpleString(message_type):
-                switch message_type {
-                case "message", "smessage":
-                    if let channel_data = array.popLast() {
-                        if let payload_data = array.popLast() {
-                            self = try .message(channel: String(channel_data), pattern: nil, payload: String(payload_data))
-                        }
-                    }
-                case "subscribe", "ssubscribe", "psubscribe":
-                    if let channel_data = array.popLast() {
-                        if let payload_data = array.popLast() {
-                            self = try .message(channel: String(channel_data), pattern: nil, payload: String(payload_data))
-                        }
-                    }
-                default:
-                    break
-                }
-            default:
-                break
-            }
-        }
-        throw RedisError.make_invalid_type_error(detail: "Response type not convertible to PubSubMessage.")
     }
 }
