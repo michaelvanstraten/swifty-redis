@@ -8,21 +8,26 @@
 import Foundation
 
 /**
- Used to convert a value into one or multiple redis argument
- strings.
-
+ Used to convert a value into one or multiple Redis argument strings.
  */
 public protocol ToRedisArgs {
-    /// This writes the value into an Array of bytes. Each item
-    /// is a single argument. Most items generate a single item.
-    /// The exception to this rule currently are Arrays of items.
+    /**
+     Writes the value into an array of bytes. Each item represents a single Redis argument.
+     Most items generate a single item. The exception to this rule currently are Arrays of items.
+
+     - Parameters:
+     - out: An inout parameter that represents the array of bytes.
+     */
     func write_redis_args(out: inout [Data])
 }
 
 public extension ToRedisArgs {
-    /// This converts the value into an Array of bytes. Each item
-    /// is a single argument. Most items generate a vector of a
-    /// single item. The exception to this rule currently are Arrays of items.
+    /**
+     Converts the value into an array of bytes. Each item represents a single Redis argument.
+     Most items generate a single item. The exception to this rule currently are Arrays of items.
+
+     - Returns: An array of bytes representing the Redis arguments.
+     */
     func to_redis_args() -> [Data] {
         var data: [Data] = Array()
         write_redis_args(out: &data)
