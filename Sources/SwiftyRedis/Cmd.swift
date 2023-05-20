@@ -8,43 +8,69 @@
 import Foundation
 
 /**
- A command acts as a builder interface to creating encoded redis
- requests.  This allows you to easily assemble a packed command
- by chaining arguments together.
+ A command acts as a builder interface for creating encoded Redis requests. It allows you to easily assemble a packed command by chaining arguments together.
 
- <doc:ImplementYourOwnCommands>
+ For more information on implementing your own commands, refer to <doc:ImplementYourOwnCommands>.
  */
 public class Cmd {
     private var args: [Data] = Array()
 
+    /**
+     Initializes a new `Cmd` instance.
+
+     - Parameter name: An optional name to be included as the first argument of the command.
+     */
     public init(_ name: String? = nil) {
         if let name = name {
             arg(name)
         }
     }
 
-    /// Appends an argument to the command. The argument passed must
-    /// be a type that conforms to ``ToRedisArgs``. Most primitive types as
-    /// well as Arrays of primitive types conform to it.
+    /**
+     Appends an argument to the command.
+
+     - Parameter arg: The argument to be appended. It must conform to the ``ToRedisArgs`` protocol. Most primitive types conform to it.
+
+     - Returns: The current `Cmd` instance.
+     */
     @discardableResult
     public func arg<T: ToRedisArgs>(_ arg: T) -> Self {
         arg.write_redis_args(out: &args)
         return self
     }
 
-    /// Sends the command as query to the connection and converts the result to the target redis value.
-    /// This is the general way how you can retrieve data.
+    /**
+     Sends the command as a query to the Redis connection and converts the result to the target type.
+
+     - Parameter con: The ``RedisConnection`` to which the command is sent.
+
+     - Returns: The result of the query, converted to the specified ``FromRedisValue`` type.
+
+     - Throws: An error if the query fails.
+     */
     public func query<T: FromRedisValue>(_ con: RedisConnection) async throws -> T {
         let value = try await con.request_packed_cmd(pack_command())
         return try T(value)
     }
 
-    /// This is a shortcut to ``Cmd/query(_:)`` that does not return a ``RedisValue`` and will throw if the query fails because of an error.
-    /// This is mainly useful in examples and for simple commands like setting keys.
+    /**
+     Executes the command as a query to the Redis connection and dosn't return a value.
+
+     This is a shortcut to ``query(_:)`` that does not return a ``RedisValue``.
+
+     - Parameter con: The ``RedisConnection`` to which the command is sent.
+
+     - Throws: An error if the query fails.
+     */
     public func exec(_ con: RedisConnection) async throws {
         let _: RedisValue = try await query(con)
     }
 
+    /**
+     Packs the command into a `Data` object for transmission.
+
+     - Returns: The packed command as `Data`.
+     */
     internal func pack_command() -> Data {
         var packed_cmd = Data()
 
