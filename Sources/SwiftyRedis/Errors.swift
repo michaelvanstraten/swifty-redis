@@ -9,25 +9,38 @@ import Foundation
 import Network
 
 /**
- Represents an error which could accrue when interacting with redis.
+ Represents an error that could occur when interacting with Redis.
 
  ## Overview
- If the response parser encounters and error while parsing or it notices
- that the response is a redis error, this type gets thrown.
+ If the response parser encounters an error while parsing or detects
+ that the response is a Redis error, this type is thrown.
  */
 public enum RedisError: Error, Equatable {
-    /// Encountering an error response which containers an error kind but no detail this case will be chosen.
-    /// In case the data returned from the socket cloud not be decode as UTF-8
-    /// or the first byte of the response is not a valid type indicator this case also gets chosen.
+    /**
+     Encountering an error response that contains an error kind but no detail will choose this case.
+     This case is also chosen if the data returned from the socket cannot be decoded as UTF-8
+     or if the first byte of the response is not a valid type indicator.
+     */
     case WithDescription(ErrorKind, String)
-    /// If an error as well some details to this error gets returned from redis this case will be chosen.
+    /**
+     If an error and some details are returned from Redis, this case is chosen.
+     */
     case WithDescriptionAndDetail(ErrorKind, String, String)
-    /// If the returned value is detected as an error but it can't be correlated
-    /// to any of the known redis error an error with an redis extension is assumed
+    /**
+     If the returned value is detected as an error but it cannot be correlated
+     to any known Redis error, an error with a Redis extension is assumed.
+     */
     case ExtensionError(String, String)
-    /// Wrapped error of the underling socket connection
+    /**
+     Wrapped error of the underlying socket connection.
+      */
     case NWError(NWError)
 
+    /**
+     Initializes a ``RedisError`` by parsing the error response.
+
+     - Parameter errorResponse: The error response string.
+     */
     internal init(parse errorResponse: String) {
         let desc = "An error was signalled by the server"
         let pieces = errorResponse.split(separator: " ", maxSplits: 1)
@@ -43,9 +56,17 @@ public enum RedisError: Error, Equatable {
         }
     }
 
+    /// An invalid response error.
     public static let InvalidResponse = RedisError.WithDescription(.ResponseError, "Invalid response from server")
+    /// An error due to invalid UTF-8.
     public static let InvalidUTF8 = RedisError.WithDescription(.TypeError, "Invalid UTF-8")
 
+    /**
+     Creates a `RedisError` with an invalid type error.
+
+     - Parameter detail: The error detail.
+     - Returns: A `RedisError` instance.
+     */
     public static func make_invalid_type_error(detail: String) -> RedisError {
         return RedisError.WithDescriptionAndDetail(.TypeError, "Response was of incompatible type", detail)
     }
