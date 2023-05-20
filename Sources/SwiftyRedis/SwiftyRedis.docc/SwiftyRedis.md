@@ -27,6 +27,7 @@ This makes for a very pleasant development experience.
 
 ### Helper Types
 
+- ``JSONValue``
 - ``RedisStream``
 - ``RedisStreamElement``
 - ``XreadResponse``
