@@ -1,0 +1,80 @@
+@Tutorial(time: 12) {
+    @Intro(title: "Using a PubSubConnection") {
+        In this Tutorial we will demonstrates how to use the PubSubConnection class to subscribe
+        to Redis pub/sub channels and receive messages asynchronously in Swift.
+    }
+    
+    @Section(title: "Subscribe and Publish") {
+        @ContentAndMedia {}
+        
+        @Steps {
+            @Step {
+                Lets start of by configuring our Redis client.
+                
+                Please refer to the <doc:ConnectingToRedis> tutorial
+                for infomation on how to configure the Redis Client struct.
+                
+                @Code(name: "PubSub.swift", file: pubsub-00.swift)
+            }
+            
+            @Step {
+                Then, we create an instance of the PubSubConnection 
+                using our Redis clients ``SwiftyRedis/RedisClient/get_pub_sub_connection()`` method.
+                
+                @Code(name: "PubSub.swift", file: pubsub-01.swift)
+            }
+            
+            @Step {
+                We define a handler function `handleMessageStream` that asynchronously receives messages from the message stream.
+                
+                @Code(name: "PubSub.swift", file: pubsub-02.swift)
+            }
+            
+            @Step {
+                We subscribe to a Redis channel using the ``SwiftyRedis/PubSubConnection/subscribe(_:)`` method of ``SwiftyRedis/PubSubConnection``. 
+                
+                @Code(name: "PubSub.swift", file: pubsub-03.swift)
+            }
+            
+            @Step {
+                Then, we start listening for messages by calling the ``SwiftyRedis/PubSubConnection/messages()`` method, which returns a message stream. 
+                
+                @Code(name: "PubSub.swift", file: pubsub-04.swift)
+            }
+            
+            @Step {
+                We pass this message stream to the `handleMessageStream` function to process the received messages.
+                
+                @Code(name: "PubSub.swift", file: pubsub-05.swift)
+            }
+            
+            @Step {
+                A connection subscribed to one or more channels shouldn't issue commands, 
+                although it can `SUBSCRIBE` and `UNSUBSCRIBE` to and from other channels.
+                
+                Therefore we need to initialize a new ``SwiftyRedis/RedisConnection`` 
+                to publishing any messages on our subrscribed channel. 
+                
+                @Code(name: "PubSub.swift", file: pubsub-06.swift)
+            }
+            
+            @Step {
+                Next, we publish a message to the subscribed channel using the ``SwiftyRedis/RedisConnection/publish(_:_:)-4zrvu`` command. 
+                
+                @Code(name: "PubSub.swift", file: pubsub-07.swift)
+            }
+            
+            @Step {
+                We wait for some time to receive messages using `Task.sleep`. 
+                
+                @Code(name: "PubSub.swift", file: pubsub-08.swift)
+            }
+            
+            @Step {
+                Finally, we unsubscribe from the channel using the ``SwiftyRedis/PubSubConnection/unsubscribe(_:)`` method and disconnect from Redis.
+                
+                @Code(name: "PubSub.swift", file: pubsub-09.swift)
+            }
+        }
+    }
+}

@@ -10,17 +10,35 @@ import Foundation
 /**
  A PubSubConnection is an object that represents a single redis connection,
  on which only PubSub commands can be executed.
+
+ For more information on how to use this class, refer to <doc:UsingPubSubConnection>.
  */
 public actor PubSubConnection {
+    /// Represents a stream of `PubSubMessage` or `RedisError` results.
     public typealias MessageStream = AsyncStream<Result<PubSubMessage, RedisError>>
+
+    /// The underlying Redis connection.
     let con: RedisConnection
+
+    /// A dictionary that maps subscriber IDs to their corresponding message stream continuations.
     var subscribers: [UUID: MessageStream.Continuation] = [:]
+
+    /// A task that handles incoming messages from the Redis connection.
     var message_handler: Task<Void, Never>?
 
+    /**
+     Initializes a new `PubSubConnection` instance with the given Redis connection.
+
+     - Parameter con: The Redis connection to be associated with the `PubSubConnection`.
+     */
     internal init(con: RedisConnection) {
         self.con = con
     }
 
+    /**
+     Starts the message handler task, which continuously listens for incoming messages from the Redis connection
+     and notifies the subscribers accordingly.
+     */
     func start_message_handler() {
         if message_handler != nil {
             return
@@ -45,20 +63,45 @@ public actor PubSubConnection {
         }
     }
 
+    /**
+     Adds a new subscriber to the `PubSubConnection` with the specified ID and message stream continuation.
+
+     - Parameters:
+       - id: The ID of the subscriber.
+       - continuation: The message stream continuation associated with the subscriber.
+     */
     func add_subscriber(_ id: UUID, _ continuation: MessageStream.Continuation) {
         subscribers[id] = continuation
     }
 
+    /**
+     Removes a subscriber from the `PubSubConnection` using a nonisolated interface.
+
+     - Parameter id: The ID of the subscriber to be removed.
+     */
     nonisolated func remove_subscriber(_ id: UUID) {
         Task {
             await self._remove_subscriber(id)
         }
     }
 
+    /**
+     Actually removes the subscriber from the `PubSubConnection`.
+
+     - Parameter id: The ID of the subscriber to be removed.
+     */
     func _remove_subscriber(_ id: UUID) {
         subscribers.removeValue(forKey: id)
     }
 
+    /**
+     Returns a message stream that emits `PubSubMessage` or `RedisError` results.
+
+     This method starts the message handler task if it hasn't been started yet and associates a unique ID with the subscriber.
+     The subscriber is automatically removed when the stream is terminated or dropped.
+
+     - Returns: A message stream for receiving `PubSubMessage` or `RedisError` results.
+     */
     public func messages() -> MessageStream {
         start_message_handler()
 
@@ -73,16 +116,42 @@ public actor PubSubConnection {
     }
 }
 
+/**
+ This struct represents a parsed Pub/Sub message.
+ */
 public struct PubSubMessage: FromRedisValue {
-    enum MessageType {
+    /**
+     The type of the Redis pub/sub message.
+     */
+    public enum MessageType: Equatable {
+        /**
+         Indicates a message received as a result of a `PUBLISH` command issued by another client.
+         The `pattern` parameter represents the pattern of the channel if it was a pattern subscription,
+         otherwise it's `nil`. The payload parameter represents the actual message payload.
+         */
         case message(pattern: String?, payload: String)
+        /**
+         Indicates that we successfully subscribed to a channel.
+         The `number_of_channels` parameter represents the total number of channels we are currently subscribed to.
+         */
         case subscribe(number_of_channels: Int)
+        /**
+         Indicates that we successfully unsubscribed from a channel.
+         The `number_of_channels` parameter represents the total number of channels we are currently subscribed to.
+         */
         case unsubscribe(number_of_channels: Int)
     }
 
-    var channel: String
-    var type: MessageType
+    /// The associated channel name of the pub/sub message.
+    public var channel: String
+    /// The type of the pub/sub message.
+    public var type: MessageType
 
+    /**
+     Initializes a PubSubMessage struct from a RedisValue.
+     - Parameter value: The RedisValue representing the Pub/Sub message.
+     - Throws: An error if the RedisValue is not convertible to PubSubMessage
+     */
     public init(_ value: RedisValue) throws {
         if case var .Array(array) = value {
             array = array.reversed()
