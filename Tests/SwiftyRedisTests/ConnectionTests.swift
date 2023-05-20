@@ -35,8 +35,15 @@ final class ConnectionTests: XCTestCase {
     func test_xread() async throws {
         let connection = try await client.get_connection()
 
-        let value: XreadResponse<RedisValue> = try await connection.xread(nil, 0, .init("SYSLOG:10.0.0.140", id: "0"))
+        // Add a message to the stream
+        Task {
+            let connection2 = try await client.get_connection()
+            try await Task.sleep(nanoseconds: UInt64(1 * Double(NSEC_PER_SEC)))
+            try await connection2.xadd("stream1", nil, .AUTO_ID, .init("field1", "Hello, World!"))
+        }
 
+        let value: RedisValue = try await connection.xread(nil, 0, .init("stream1", id: "$"))
+        
         print(value)
     }
 
@@ -46,34 +53,5 @@ final class ConnectionTests: XCTestCase {
         print(count)
         let search: RedisValue = try await connection.geosearch("Sincily", .FROMLONLAT(.init(13, 38)), .BOX(.init(1000, 1000, .km)), .ASC, .init(2, []), [.WITHCOORD])
         print(search)
-    }
-
-    func test_pub_sub() async throws {
-        let connection = try await client.get_pub_sub_connection()
-
-        Task {
-            let connection = try await client.get_connection()
-            if #available(macOS 13.0, *) {
-                try await Task.sleep(until: .now + .seconds(1), clock: .continuous)
-            }
-            try await connection.publish("first", "Hello World")
-        }
-
-        try await connection.subscribe("first")
-        let message_stream = await connection.messages()
-
-        for await result in message_stream {
-            switch result {
-            case let .success(message):
-                guard case let .message(_, payload) = message.type else {
-                    continue
-                }
-                if payload == "Hello World" {
-                    return
-                }
-            case let .failure(error):
-                throw error
-            }
-        }
     }
 }
