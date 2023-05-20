@@ -8,23 +8,22 @@
 import Foundation
 
 /**
- This Protocol is used to convert a redis value into a more appropriate
- type.
+ The `FromRedisValue` protocol is used to convert a Redis value into a more appropriate Swift type.
 
  ## Overview
 
- While a ``RedisValue`` can represent any response that comes
- back from the redis server, usually you want to map this into something
- that works better in swift. For instance you might want to convert the
- return value into a `String` or an integer.
+ The `FromRedisValue` protocol is designed to handle the conversion of a ``RedisValue`` (which can represent any response from a Redis server)
+ into a Swift type that is more suitable for further processing. For example, you may want to convert the Redis value into a `String` or an integer.
 
- This Protocol is well supported throughout the package and you can
- implement it for your own types if you want.
+ This protocol is widely supported throughout the package, and you can implement it for your own custom types if needed.
  */
 public protocol FromRedisValue {
-    /// Given a ``RedisValue`` this attempts to convert it into the given
-    /// destination type. If that fails because it's not compatible an
-    /// appropriate error is generated.
+    /**
+     Initializes an instance of the conforming type using a `RedisValue` parameter.
+
+     - Parameter value: The `RedisValue` to convert into the desired destination type.
+     - Throws: An error if the conversion fails due to incompatibility with the destination type.
+     */
     init(_ value: RedisValue) throws
 }
 
@@ -85,15 +84,15 @@ extension Float32: FromRedisValue {
 }
 
 #if arch(arm64)
-@available(watchOS 7.0, *)
-@available(tvOS 14.0, *)
-@available(iOS 14.0, *)
-@available(macOS 11.0, *)
-extension Float16: FromRedisValue {
-    public init(_ value: RedisValue) throws {
-        self = try Float16(Int(value))
+    @available(watchOS 7.0, *)
+    @available(tvOS 14.0, *)
+    @available(iOS 14.0, *)
+    @available(macOS 11.0, *)
+    extension Float16: FromRedisValue {
+        public init(_ value: RedisValue) throws {
+            self = try Float16(Int(value))
+        }
     }
-}
 #endif
 
 extension Int64: FromRedisValue {
