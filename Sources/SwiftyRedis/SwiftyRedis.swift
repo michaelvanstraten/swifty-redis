@@ -8,7 +8,7 @@
 import Network
 
 /**
- The client acts as connector to the redis server. By itself it does not
+ The `RedisClient` acts as connector to the redis server. By itself it does not
  do much other than providing a convenient way to fetch a connection from it.
 
  ## Example
@@ -29,14 +29,18 @@ public class RedisClient {
     let username: String?
     let password: String?
 
-    /// Initialize the RedisClient struct without connecting to the underling endpoint. Use the ``RedisClient/get_connection()`` method to connect to the endpoint.
-    /// - Parameters:
-    ///   - host: A name or address that identifies the redis server endpoint.
-    ///   - port: The port number on which to connect to the redis server.
-    ///   - params: Used if connection needs to be established over TLS or some other protocol.
-    ///   - database: If this is not equal to zero the client will change to the specified database using the ``RedisConnection/select(index:)`` method before the connection is returned.
-    ///   - username: If this and the `password` is `Some` the client will try to authenticate with the redis server using the ``RedisConnection/auth(username:password:)`` method before the connection is returned.
-    ///   - password: Password to use when authenticating.
+    /**
+     Initialize the RedisClient struct without connecting to the underling endpoint.
+     Use the ``get_connection()`` method to connect to the endpoint.
+
+     - Parameters:
+        - host: The name or address that identifies the Redis server endpoint.
+        - port: The port number on which to connect to the Redis server.
+        - params: The parameters used if the connection needs to be established over TLS or some other protocol.
+        - database: If this is not equal to zero, the client will switch to the specified database using the ``select(_:)-4cj39`` method before the connection is returned.
+        - username: If this and the `password` are provided, the client will try to authenticate with the Redis server using the ``auth(_:_:)-1wjfv`` method before the connection is returned.
+        - password: The password to use when authenticating.
+     */
     public init(
         _ host: NWEndpoint.Host,
         port: NWEndpoint.Port = .init(integerLiteral: 6379),
@@ -53,8 +57,12 @@ public class RedisClient {
         self.password = password
     }
 
-    /// Instructs the client to actually connect to redis and returns a connection object.
-    /// The connection object can be used to send commands to the server.
+    /**
+     Establishes a connection to Redis and returns a ``RedisConnection`` object.
+
+     - Returns: A connection object that can be used to send commands to the Redis server.
+     - Throws: An error if the connection cannot be established.
+     */
     public func get_connection() async throws -> RedisConnection {
         let actual_connection = create_redis_connection()
         try await connect_to_redis(con: actual_connection)
@@ -68,6 +76,12 @@ public class RedisClient {
         return redis_connection
     }
 
+    /**
+     Establishes a connection to Redis and returns a ``PubSubConnection`` object.
+
+     - Returns: A connection object that can be used to subscribe to channels and receive messages.
+     - Throws: An error if the connection cannot be established.
+     */
     public func get_pub_sub_connection() async throws -> PubSubConnection {
         let redis_connection = try await get_connection()
         return PubSubConnection(con: redis_connection)
