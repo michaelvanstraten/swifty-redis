@@ -10,24 +10,34 @@ import Network
 import Semaphore
 
 /**
- A connection is an object that represents a single redis connection.
+ A connection is an object that represents a single Redis connection.
 
  ## Overview
- It provides basic support for sending encoded commands into a redis connection
- and to read a response from it. It's bound to a single database and can
- only be created from the ``RedisClient``.
+ The ``RedisConnection`` class provides basic support for sending encoded commands to a Redis connection and reading responses from it.
+ It is bound to a single database and can only be created from the ``RedisClient` class.
  */
 public class RedisConnection {
     var con: NWConnection
     let parser: RedisResponseParser
     let semaphore: AsyncSemaphore
 
+    /**
+     Initializes a Redis connection object.
+
+     - Parameter actual_connection: The underlying network connection.
+     */
     internal init(_ actual_connection: NWConnection) {
         con = actual_connection
         parser = RedisResponseParser()
         semaphore = AsyncSemaphore(value: 1)
     }
 
+    /**
+     Sends a packed command to the Redis server asynchronously.
+
+     - Parameter cmd: The packed command data to be sent.
+     - Throws: An error if the command sending fails.
+     */
     internal func send_packed_command(_ cmd: Data) async throws {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             self.con.send(
@@ -43,6 +53,12 @@ public class RedisConnection {
         }
     }
 
+    /**
+     Receives a Redis response from the server asynchronously.
+
+     - Returns: The parsed Redis value representing the response.
+     - Throws: An error if the response cannot be received or parsed.
+     */
     internal func receive_response() async throws -> RedisValue {
         try await withCheckedThrowingContinuation { continuation in
             self.con.receive(minimumIncompleteLength: 0, maximumLength: .max) { data, _, _, network_error in
@@ -60,9 +76,16 @@ public class RedisConnection {
         }
     }
 
-    /// Sends an already encoded command into the TCP socket and reads a response.
-    /// The command should conform to the [RESP protocol description](https://redis.io/docs/reference/protocol-spec/#resp-protocol-description).
-    /// The appropriate constants for implementing the protocol can be found here in the ``RedisRESP`` struct.
+    /**
+     Sends an already encoded command to the Redis server and reads the response.
+
+     The command should conform to the [RESP protocol description](https://redis.io/docs/reference/protocol-spec/#resp-protocol-description),
+     appropriate constants for implementing the protocol can be found here in the ``RedisRESP`` struct.
+
+     - Parameter cmd: The packed command data to be sent.
+     - Returns: The parsed ``RedisValue`` representing the response.
+     - Throws: An error if the command sending or response receiving fails.
+     */
     public func request_packed_cmd(_ cmd: Data) async throws -> RedisValue {
         await semaphore.wait()
         defer {
