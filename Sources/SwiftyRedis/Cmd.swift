@@ -30,7 +30,6 @@ public class Cmd {
      Appends an argument to the command.
 
      - Parameter arg: The argument to be appended. It must conform to the ``ToRedisArgs`` protocol. Most primitive types conform to it.
-
      - Returns: The current `Cmd` instance.
      */
     @discardableResult
@@ -43,9 +42,7 @@ public class Cmd {
      Sends the command as a query to the Redis connection and converts the result to the target type.
 
      - Parameter con: The ``RedisConnection`` to which the command is sent.
-
      - Returns: The result of the query, converted to the specified ``FromRedisValue`` type.
-
      - Throws: An error if the query fails.
      */
     public func query<T: FromRedisValue>(_ con: RedisConnection) async throws -> T {
@@ -59,7 +56,6 @@ public class Cmd {
      This is a shortcut to ``query(_:)`` that does not return a ``RedisValue``.
 
      - Parameter con: The ``RedisConnection`` to which the command is sent.
-
      - Throws: An error if the query fails.
      */
     public func exec(_ con: RedisConnection) async throws {
