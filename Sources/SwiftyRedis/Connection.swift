@@ -18,7 +18,7 @@ import Semaphore
  */
 public class RedisConnection {
     var con: NWConnection
-    let parser: RedisResponseParser
+    let parser: ResponseValueParser
     let semaphore: AsyncSemaphore
 
     /**
@@ -28,7 +28,7 @@ public class RedisConnection {
      */
     internal init(_ actual_connection: NWConnection) {
         con = actual_connection
-        parser = RedisResponseParser()
+        parser = ResponseValueParser(parse: con.dataStream())
         semaphore = AsyncSemaphore(value: 1)
     }
 
@@ -39,18 +39,7 @@ public class RedisConnection {
      - Throws: An error if the command sending fails.
      */
     internal func send_packed_command(_ cmd: Data) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            self.con.send(
-                content: cmd,
-                completion: .contentProcessed { error in
-                    if let error = error {
-                        continuation.resume(throwing: error)
-                    } else {
-                        continuation.resume(returning: ())
-                    }
-                }
-            )
-        }
+        try await con.send(content: cmd)
     }
 
     /**
@@ -60,20 +49,7 @@ public class RedisConnection {
      - Throws: An error if the response cannot be received or parsed.
      */
     internal func receive_response() async throws -> RedisValue {
-        try await withCheckedThrowingContinuation { continuation in
-            self.con.receive(minimumIncompleteLength: 0, maximumLength: .max) { data, _, _, network_error in
-                if let network_error = network_error {
-                    continuation.resume(throwing: network_error)
-                } else {
-                    do {
-                        let value = try self.parser.parse_response(data ?? Data())
-                        continuation.resume(returning: value)
-                    } catch {
-                        continuation.resume(throwing: error)
-                    }
-                }
-            }
-        }
+        try await parser.parse_value()
     }
 
     /**
@@ -93,5 +69,25 @@ public class RedisConnection {
         }
         try await send_packed_command(cmd)
         return try await receive_response()
+    }
+
+    /**
+     Sends multiple packed commands to the Redis server asynchronously and receives multiple responses.
+
+     This method is used to send multiple commands to Redis and receive multiple responses in a single operation, such as in a Redis pipeline.
+     The commands should already be encoded as packed command data, conforming to the [RESP protocol description](https://redis.io/docs/reference/protocol-spec/#resp-protocol-description).
+
+     - Parameter cmd: The packed command data to be sent.
+     - Parameter count: The number of commands to be sent.
+     - Returns: An array of parsed ``RedisValue` objects representing the responses.
+     - Throws: An error if the command sending or response receiving fails.
+     */
+    public func request_packed_cmds(_ cmd: Data, count: Int) async throws -> [RedisValue] {
+        await semaphore.wait()
+        defer {
+            semaphore.signal()
+        }
+        try await send_packed_command(cmd)
+        return try await (1 ... count).mapAsync { _ in try await receive_response() }
     }
 }

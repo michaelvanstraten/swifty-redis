@@ -64,8 +64,8 @@ public class RedisClient {
      - Throws: An error if the connection cannot be established.
      */
     public func get_connection() async throws -> RedisConnection {
-        let actual_connection = create_redis_connection()
-        try await connect_to_redis(con: actual_connection)
+        let actual_connection = create_nw_connection()
+        try await actual_connection.start(queue: DispatchQueue(label: "redis-connection-updates"))
         let redis_connection = RedisConnection(actual_connection)
         if database != 0 {
             try await redis_connection.select(Int(database))
@@ -87,31 +87,11 @@ public class RedisClient {
         return PubSubConnection(con: redis_connection)
     }
 
-    private func create_redis_connection() -> NWConnection {
+    private func create_nw_connection() -> NWConnection {
         return NWConnection(
             host: host,
             port: port,
             using: params
         )
-    }
-
-    private func connect_to_redis(con: NWConnection) async throws {
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            con.stateUpdateHandler = { newState in
-                switch newState {
-                case let .waiting(error), let .failed(error):
-                    con.stateUpdateHandler = nil
-                    continuation.resume(throwing: RedisError.NWError(error))
-                case .ready:
-                    con.stateUpdateHandler = nil
-                    continuation.resume()
-                case .cancelled:
-                    con.restart()
-                default:
-                    break
-                }
-            }
-            con.start(queue: DispatchQueue(label: "redis-updates"))
-        }
     }
 }

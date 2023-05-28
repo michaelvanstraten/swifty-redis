@@ -7,35 +7,55 @@
 
 import Foundation
 
-class ResponseValueParser<I> where I: AsyncSequence, I.Element == UInt8 {
-    private var iterator: I.AsyncIterator
+/**
+ The ResponseValueParser class is responsible for parsing Redis server responses.
+ */
+class ResponseValueParser {
+    private var stream: AsyncDataStream
 
-    init(parse toParseStream: I.AsyncIterator) where I: AsyncSequence {
-        iterator = toParseStream
+    /**
+     Initializes a new instance of `ResponseValueParser` with the specified parse stream.
+
+     - Parameter toParseStream: The `AsyncDataStream` to parse.
+     */
+    init(parse toParseStream: AsyncDataStream) {
+        stream = toParseStream
     }
 
+    /**
+     Parses the next Redis value from the stream asynchronously.
+
+     - Returns: The parsed `RedisValue`.
+
+     - Throws: An error of type `RedisError` if there is an error during parsing.
+     */
     func parse_value() async throws -> RedisValue {
-        if let firstByte = try await iterator.next() {
-            switch firstByte {
-            case RedisRESP.SimpleString:
-                return .SimpleString(try await parse_next_line())
-            case RedisRESP.BulkString:
-                return try await parse_bulk_string()
-            case RedisRESP.Int:
-                return try await parse_int()
-            case RedisRESP.Array:
-                return try await parse_array()
-            case RedisRESP.Error:
-                throw try await parse_error()
-            default:
-                break
-            }
+        let firstByte = try await stream.next()
+        switch firstByte {
+        case RedisRESP.SimpleString:
+            return try .SimpleString(await parse_next_line())
+        case RedisRESP.BulkString:
+            return try await parse_bulk_string()
+        case RedisRESP.Int:
+            return try await parse_int()
+        case RedisRESP.Array:
+            return try await parse_array()
+        case RedisRESP.Error:
+            throw try RedisError(parse: await parse_next_line())
+        default:
+            throw RedisError.InvalidResponse
         }
-        throw RedisError.InvalidResponse
     }
 
-    func parse_next_line() async throws -> String {
-        if let line = String(data: try await iterator.popUntilCRLF(), encoding: .utf8) {
+    /**
+     Parses the next line from the stream asynchronously.
+
+     - Returns: The parsed line as a `String`.
+
+     - Throws: An error of type `RedisError` if there is an error during parsing or if the UTF-8 encoding is invalid.
+     */
+    private func parse_next_line() async throws -> String {
+        if let line = try String(data: await stream.nextUntil(subsequence: RedisRESP.CRLF), encoding: .utf8) {
             try await disgard_crlf_token()
             return line
         } else {
@@ -43,15 +63,14 @@ class ResponseValueParser<I> where I: AsyncSequence, I.Element == UInt8 {
         }
     }
 
-    func parse_error() async throws -> RedisError {
-        if let error = String(data: try await iterator.popUntilCRLF(), encoding: .utf8) {
-            return RedisError(parse: error)
-        } else {
-            throw RedisError.InvalidResponse
-        }
-    }
+    /**
+     Parses the next integer value from the stream asynchronously.
 
-    func parse_int() async throws -> RedisValue {
+     - Returns: The parsed integer value as a `RedisValue`.
+
+     - Throws: An error of type `RedisError` if there is an error during parsing or if the parsed value is not an integer.
+     */
+    private func parse_int() async throws -> RedisValue {
         if let value = try await Int64(parse_next_line()) {
             return .Int(value)
         } else {
@@ -59,12 +78,19 @@ class ResponseValueParser<I> where I: AsyncSequence, I.Element == UInt8 {
         }
     }
 
-    func parse_bulk_string() async throws -> RedisValue {
+    /**
+     Parses the next bulk string value from the stream asynchronously.
+
+     - Returns: The parsed bulk string value as a `RedisValue`.
+
+     - Throws: An error of type `RedisError` if there is an error during parsing or if the UTF-8 encoding is invalid.
+     */
+    private func parse_bulk_string() async throws -> RedisValue {
         if case let .Int(length) = try await parse_int() {
             if length < 0 {
                 return .Nil
             } else {
-                if let value = String(data: try await iterator.popN(count: length), encoding: .utf8) {
+                if let value = try String(data: await stream.next(n: Int(length)), encoding: .utf8) {
                     try await disgard_crlf_token()
                     return .BulkString(value)
                 } else {
@@ -76,7 +102,14 @@ class ResponseValueParser<I> where I: AsyncSequence, I.Element == UInt8 {
         }
     }
 
-    func parse_array() async throws -> RedisValue {
+    /**
+     Parses the next array value from the stream asynchronously.
+
+     - Returns: The parsed array value as a `RedisValue`.
+
+     - Throws: An error of type `RedisError` if there is an error during parsing.
+     */
+    private func parse_array() async throws -> RedisValue {
         if case let .Int(length) = try await parse_int() {
             if length < 0 {
                 return .Nil
@@ -90,49 +123,29 @@ class ResponseValueParser<I> where I: AsyncSequence, I.Element == UInt8 {
         }
     }
 
+    /**
+     Discards the CRLF token from the stream asynchronously.
+
+     - Returns: The discarded data as a `Data` object.
+
+     - Throws: An error of type `RedisError` if there is an error during discarding the token.
+     */
     @discardableResult
-    func disgard_crlf_token() async throws -> Data {
-        let disgarded_value = try await (1 ... RedisRESP.CRLF.count).mapAsync { _ in try await iterator.next()}.compactMap { $0 }
+    private func disgard_crlf_token() async throws -> Data {
+        let disgarded_value = try await stream.next(n: RedisRESP.CRLF.count)
         return Data(disgarded_value)
     }
 }
 
-extension AsyncIteratorProtocol where Element == UInt8 {
-    mutating func popN(count: Int64) async throws -> Data {
-        if count <= 0 {
-            return Data()
-        } else {
-            return try await Data((1 ... count).mapAsync ({ _ in try await self.next() }).compactMap ({ $0 }))
-        }
-    }
-    
-    mutating func popUntilCRLF() async throws -> Data {
-        var poppedData = Data()
-        
-        while poppedData.suffix(RedisRESP.CRLF.count) != RedisRESP.CRLF {
-            poppedData.append(try await self.next()!)
-        }
-        
-        return poppedData
-    }
-}
+/**
+ Unreachable.swift - https://github.com/nvzqz/Unreachable/blob/master/Sources/Unreachable.swift
 
-// https://github.com/nvzqz/Unreachable/blob/master/Sources/Unreachable.swift
+ Utility function to mark code paths as unreachable.
+
+ - Returns: A Never value.
+ - Note: This function is used internally and should not be called directly.
+  */
 @inline(__always)
 func unreachable() -> Never {
     return unsafeBitCast((), to: Never.self)
-}
-
-extension Sequence {
-    func mapAsync<T>(
-        _ transform: (Element) async throws -> T
-    ) async rethrows -> [T] {
-        var values = [T]()
-
-        for element in self {
-            try await values.append(transform(element))
-        }
-
-        return values
-    }
 }

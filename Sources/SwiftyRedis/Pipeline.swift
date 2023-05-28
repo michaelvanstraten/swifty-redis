@@ -2,7 +2,7 @@
 //  Pipeline.swift
 //
 //
-//  Created by Michael Van straten on 21.07.22.
+//  Created by Michael van Straten on 21.07.22.
 //
 
 import Foundation
@@ -70,13 +70,13 @@ public class RedisPipeline {
     /**
      Sends the pipeline as a query to the Redis connection and converts the result to the specified Redis value type.
 
-     - Parameter con: The Redis connection to send the query to.
+     - Parameter con: The ``RedisConnection`` to send the query to.
      - Returns: The result of the query as the specified Redis value type.
      - Throws: An error if the query fails.
      */
     public func query<T: FromRedisValue>(_ con: RedisConnection) async throws -> T {
-        let value = try await con.request_packed_cmd(pack_pipeline())
-        return try T(value)
+        let values = try await con.request_packed_cmds(pack_pipeline(), count: self.commands.count)
+        return try T(RedisValue.Array(values))
     }
 
     /**
