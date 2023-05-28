@@ -20,13 +20,9 @@ import Foundation
  ```
 
  - Note: This struct assumes that the stored JSON value can be successfully decoded into the specified type `T` using `JSONDecoder`.
-
- - Important: This struct implements the ``FromRedisValue`` protocol for automatic conversion from ``RedisValue`` to ``JSONValue`` when decoding JSON values from Redis. Ensure that the type `T` conforms to ``Decodable`` to enable successful decoding.
-
+ - Important: This struct implements the ``FromRedisValue`` protocol for automatic conversion from ``RedisValue`` to ``JSONValue`` when decoding JSON values from Redis. Ensure that the type `T` conforms to `Decodable` to enable successful decoding.
  - Requires: Swift 4 (or newer)
-
  - Warning: If the Redis value is not a bulk string, a ``RedisError`` will be thrown with an invalid type error message.
-
  - SeeAlso: ``FromRedisValue``, ``RedisValue``, ``RedisError``
  */
 public struct JSONValue<T> {
