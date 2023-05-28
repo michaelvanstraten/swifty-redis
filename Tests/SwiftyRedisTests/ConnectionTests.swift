@@ -12,7 +12,7 @@ import XCTest
 final class ConnectionTests: XCTestCase {
     let client = RedisClient.LOCAL
 
-    func testSimple() async throws {
+    func test_simple() async throws {
         let connection = try await client.get_connection()
         try await connection.acl_setuser("virginia", "on", "+GET", "allkeys", "(+SET ~app2*)")
         let user_info: RedisValue = try await connection.acl_getuser("virginia")
@@ -43,7 +43,7 @@ final class ConnectionTests: XCTestCase {
         }
 
         let value: RedisValue = try await connection.xread(nil, 0, .init("stream1", id: "$"))
-        
+
         print(value)
     }
 
@@ -53,5 +53,27 @@ final class ConnectionTests: XCTestCase {
         print(count)
         let search: RedisValue = try await connection.geosearch("Sincily", .FROMLONLAT(.init(13, 38)), .BOX(.init(1000, 1000, .km)), .ASC, .init(2, []), [.WITHCOORD])
         print(search)
+    }
+
+    func test_json_64KB() async throws {
+        let connection = try await client.get_connection()
+
+        let json_data = try String(contentsOf: .init(string: "https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json")!)
+
+        try await connection.set("key1", json_data)
+        let value: String = try await connection.get("key1")
+
+        XCTAssertTrue(json_data == value)
+    }
+
+    func test_json_1MB() async throws {
+        let connection = try await client.get_connection()
+
+        let json_data = try String(contentsOf: .init(string: "https://microsoftedge.github.io/Demos/json-dummy-data/1MB.json")!)
+
+        try await connection.set("key1", json_data)
+        let value: String = try await connection.get("key1")
+
+        XCTAssertTrue(json_data == value)
     }
 }
