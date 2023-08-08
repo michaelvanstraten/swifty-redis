@@ -26,7 +26,6 @@ class ResponseValueParser {
      Parses the next Redis value from the stream asynchronously.
 
      - Returns: The parsed `RedisValue`.
-
      - Throws: An error of type `RedisError` if there is an error during parsing.
      */
     func parse_value() async throws -> RedisValue {
@@ -51,7 +50,6 @@ class ResponseValueParser {
      Parses the next line from the stream asynchronously.
 
      - Returns: The parsed line as a `String`.
-
      - Throws: An error of type `RedisError` if there is an error during parsing or if the UTF-8 encoding is invalid.
      */
     private func parse_next_line() async throws -> String {
@@ -67,7 +65,6 @@ class ResponseValueParser {
      Parses the next integer value from the stream asynchronously.
 
      - Returns: The parsed integer value as a `RedisValue`.
-
      - Throws: An error of type `RedisError` if there is an error during parsing or if the parsed value is not an integer.
      */
     private func parse_int() async throws -> RedisValue {
@@ -82,7 +79,6 @@ class ResponseValueParser {
      Parses the next bulk string value from the stream asynchronously.
 
      - Returns: The parsed bulk string value as a `RedisValue`.
-
      - Throws: An error of type `RedisError` if there is an error during parsing or if the UTF-8 encoding is invalid.
      */
     private func parse_bulk_string() async throws -> RedisValue {
@@ -106,7 +102,6 @@ class ResponseValueParser {
      Parses the next array value from the stream asynchronously.
 
      - Returns: The parsed array value as a `RedisValue`.
-
      - Throws: An error of type `RedisError` if there is an error during parsing.
      */
     private func parse_array() async throws -> RedisValue {
@@ -127,7 +122,6 @@ class ResponseValueParser {
      Discards the CRLF token from the stream asynchronously.
 
      - Returns: The discarded data as a `Data` object.
-
      - Throws: An error of type `RedisError` if there is an error during discarding the token.
      */
     @discardableResult

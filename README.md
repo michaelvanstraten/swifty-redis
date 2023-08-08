@@ -54,11 +54,11 @@ We deeply appreciate your interest in contributing to SwiftyRedis! To get starte
 
 ### Automated Code Generation
 
-To facilitate the support of Redis's extensive set of 240+ commands, I've developed a Python script that automatically generates corresponding Swift functions. This script extracts command information from the [Redis GitHub repository](https://github.com/redis/redis), parsing JSON files under `src/commands`. To re-run this auto-generation process, execute the `generate-commands.py` script found in the `Sources/Autogen` directory. The generated Swift files will be placed in the `Sources/SwiftyRedis/Autogen/Commands` directory. This ensures automatic support for new Redis commands.
+To facilitate the support of Redis's extensive set of 240+ commands, I've developed a Python script that automatically generates corresponding Swift functions. This script extracts command information from the [Redis GitHub repository](https://github.com/redis/redis), parsing JSON files under `src/commands`. To re-run this auto-generation process, execute the `generate-commands.py` script found in the `Sources/CodeGen` directory. The generated Swift files will be placed in the `Sources/SwiftyRedis/CodeGen/Commands` directory. This ensures automatic support for new Redis commands.
 
-If you encounter issues during command implementation, you can specify function names in the `commands_to_ignore.json` file located in the `Sources/Autogen/config` directory. It's important to use the function names that will be generated, not the command names themselves. This simplifies development by eliminating the need to look up actual command names.
+If you encounter issues during command implementation, you can specify function names in the `commands_to_ignore.json` file located in the `Sources/CodeGen/config` directory. It's important to use the function names that will be generated, not the command names themselves. This simplifies development by eliminating the need to look up actual command names.
 
-Additionally, the `formatting_config.json` file in the `Sources/Autogen/config` directory contains configuration settings used by [swift-format](https://github.com/apple/swift-format) for formatting generated Swift files.
+Additionally, the `formatting_config.json` file in the `Sources/CodeGen/config` directory contains configuration settings used by [swift-format](https://github.com/apple/swift-format) for formatting generated Swift files.
 
 We encourage you to contribute to the project and enhance the library's functionality!
 

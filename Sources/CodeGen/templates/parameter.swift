@@ -1,0 +1,1 @@
+{{ "_ " if not must_have_label }}{{ parameter_name }}: {{ parameter_type }}{% if is_variadic %}...{% elif is_optional %}? = nil{% endif %}

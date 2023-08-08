@@ -1,0 +1,209 @@
+//
+//  pubsub.swift
+//
+//
+//  Created by Autogen on 19.05.23.
+//
+import Foundation
+extension RedisConnection {
+    /// Get the count of subscribers for channels
+    /// ## Available since
+    /// 2.8.0
+    /// ## Time complexity
+    /// O(N) for the NUMSUB subcommand, where N is the number of requested channels
+    /// ## Documentation
+    /// view the docs for [PUBSUB NUMSUB](https://redis.io/commands/pubsub-numsub)
+    public func pubsub_numsub<T: FromRedisValue>(_ channel: String...) async throws -> T {
+        let cmd = Cmd("PUBSUB").arg("NUMSUB").arg(channel)
+        return try await cmd.query(self)
+    }
+    /// Get the count of subscribers for channels
+    /// ## Available since
+    /// 2.8.0
+    /// ## Time complexity
+    /// O(N) for the NUMSUB subcommand, where N is the number of requested channels
+    /// ## Documentation
+    /// view the docs for [PUBSUB NUMSUB](https://redis.io/commands/pubsub-numsub)
+    public func pubsub_numsub(_ channel: String...) async throws {
+        let cmd = Cmd("PUBSUB").arg("NUMSUB").arg(channel)
+        try await cmd.exec(self)
+    }
+    /// Get the count of subscribers for shard channels
+    /// ## Available since
+    /// 7.0.0
+    /// ## Time complexity
+    /// O(N) for the SHARDNUMSUB subcommand, where N is the number of requested shard channels
+    /// ## Documentation
+    /// view the docs for [PUBSUB SHARDNUMSUB](https://redis.io/commands/pubsub-shardnumsub)
+    public func pubsub_shardnumsub<T: FromRedisValue>(_ shardchannel: String...) async throws -> T {
+        let cmd = Cmd("PUBSUB").arg("SHARDNUMSUB").arg(shardchannel)
+        return try await cmd.query(self)
+    }
+    /// Get the count of subscribers for shard channels
+    /// ## Available since
+    /// 7.0.0
+    /// ## Time complexity
+    /// O(N) for the SHARDNUMSUB subcommand, where N is the number of requested shard channels
+    /// ## Documentation
+    /// view the docs for [PUBSUB SHARDNUMSUB](https://redis.io/commands/pubsub-shardnumsub)
+    public func pubsub_shardnumsub(_ shardchannel: String...) async throws {
+        let cmd = Cmd("PUBSUB").arg("SHARDNUMSUB").arg(shardchannel)
+        try await cmd.exec(self)
+    }
+    /// List active shard channels
+    /// ## Available since
+    /// 7.0.0
+    /// ## Time complexity
+    /// O(N) where N is the number of active shard channels, and assuming constant time pattern matching (relatively short shard channels).
+    /// ## Documentation
+    /// view the docs for [PUBSUB SHARDCHANNELS](https://redis.io/commands/pubsub-shardchannels)
+    public func pubsub_shardchannels<T: FromRedisValue>(_ pattern: String? = nil) async throws -> T {
+        let cmd = Cmd("PUBSUB").arg("SHARDCHANNELS").arg(pattern)
+        return try await cmd.query(self)
+    }
+    /// List active shard channels
+    /// ## Available since
+    /// 7.0.0
+    /// ## Time complexity
+    /// O(N) where N is the number of active shard channels, and assuming constant time pattern matching (relatively short shard channels).
+    /// ## Documentation
+    /// view the docs for [PUBSUB SHARDCHANNELS](https://redis.io/commands/pubsub-shardchannels)
+    public func pubsub_shardchannels(_ pattern: String? = nil) async throws {
+        let cmd = Cmd("PUBSUB").arg("SHARDCHANNELS").arg(pattern)
+        try await cmd.exec(self)
+    }
+    /// Show helpful text about the different subcommands
+    /// ## Available since
+    /// 6.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [PUBSUB HELP](https://redis.io/commands/pubsub-help)
+    public func pubsub_help<T: FromRedisValue>() async throws -> T {
+        let cmd = Cmd("PUBSUB").arg("HELP")
+        return try await cmd.query(self)
+    }
+    /// Show helpful text about the different subcommands
+    /// ## Available since
+    /// 6.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [PUBSUB HELP](https://redis.io/commands/pubsub-help)
+    public func pubsub_help() async throws {
+        let cmd = Cmd("PUBSUB").arg("HELP")
+        try await cmd.exec(self)
+    }
+    /// Get the count of unique patterns pattern subscriptions
+    /// ## Available since
+    /// 2.8.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [PUBSUB NUMPAT](https://redis.io/commands/pubsub-numpat)
+    public func pubsub_numpat<T: FromRedisValue>() async throws -> T {
+        let cmd = Cmd("PUBSUB").arg("NUMPAT")
+        return try await cmd.query(self)
+    }
+    /// Get the count of unique patterns pattern subscriptions
+    /// ## Available since
+    /// 2.8.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [PUBSUB NUMPAT](https://redis.io/commands/pubsub-numpat)
+    public func pubsub_numpat() async throws {
+        let cmd = Cmd("PUBSUB").arg("NUMPAT")
+        try await cmd.exec(self)
+    }
+    /// List active channels
+    /// ## Available since
+    /// 2.8.0
+    /// ## Time complexity
+    /// O(N) where N is the number of active channels, and assuming constant time pattern matching (relatively short channels and patterns)
+    /// ## Documentation
+    /// view the docs for [PUBSUB CHANNELS](https://redis.io/commands/pubsub-channels)
+    public func pubsub_channels<T: FromRedisValue>(_ pattern: String? = nil) async throws -> T {
+        let cmd = Cmd("PUBSUB").arg("CHANNELS").arg(pattern)
+        return try await cmd.query(self)
+    }
+    /// List active channels
+    /// ## Available since
+    /// 2.8.0
+    /// ## Time complexity
+    /// O(N) where N is the number of active channels, and assuming constant time pattern matching (relatively short channels and patterns)
+    /// ## Documentation
+    /// view the docs for [PUBSUB CHANNELS](https://redis.io/commands/pubsub-channels)
+    public func pubsub_channels(_ pattern: String? = nil) async throws {
+        let cmd = Cmd("PUBSUB").arg("CHANNELS").arg(pattern)
+        try await cmd.exec(self)
+    }
+}
+extension RedisPipeline {
+    /// Get the count of subscribers for channels
+    /// ## Available since
+    /// 2.8.0
+    /// ## Time complexity
+    /// O(N) for the NUMSUB subcommand, where N is the number of requested channels
+    /// ## Documentation
+    /// view the docs for [PUBSUB NUMSUB](https://redis.io/commands/pubsub-numsub)
+    public func pubsub_numsub(_ channel: String...) -> Self {
+        let cmd = Cmd("PUBSUB").arg("NUMSUB").arg(channel)
+        return self.add_command(cmd)
+    }
+    /// Get the count of subscribers for shard channels
+    /// ## Available since
+    /// 7.0.0
+    /// ## Time complexity
+    /// O(N) for the SHARDNUMSUB subcommand, where N is the number of requested shard channels
+    /// ## Documentation
+    /// view the docs for [PUBSUB SHARDNUMSUB](https://redis.io/commands/pubsub-shardnumsub)
+    public func pubsub_shardnumsub(_ shardchannel: String...) -> Self {
+        let cmd = Cmd("PUBSUB").arg("SHARDNUMSUB").arg(shardchannel)
+        return self.add_command(cmd)
+    }
+    /// List active shard channels
+    /// ## Available since
+    /// 7.0.0
+    /// ## Time complexity
+    /// O(N) where N is the number of active shard channels, and assuming constant time pattern matching (relatively short shard channels).
+    /// ## Documentation
+    /// view the docs for [PUBSUB SHARDCHANNELS](https://redis.io/commands/pubsub-shardchannels)
+    public func pubsub_shardchannels(_ pattern: String? = nil) -> Self {
+        let cmd = Cmd("PUBSUB").arg("SHARDCHANNELS").arg(pattern)
+        return self.add_command(cmd)
+    }
+    /// Show helpful text about the different subcommands
+    /// ## Available since
+    /// 6.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [PUBSUB HELP](https://redis.io/commands/pubsub-help)
+    public func pubsub_help() -> Self {
+        let cmd = Cmd("PUBSUB").arg("HELP")
+        return self.add_command(cmd)
+    }
+    /// Get the count of unique patterns pattern subscriptions
+    /// ## Available since
+    /// 2.8.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [PUBSUB NUMPAT](https://redis.io/commands/pubsub-numpat)
+    public func pubsub_numpat() -> Self {
+        let cmd = Cmd("PUBSUB").arg("NUMPAT")
+        return self.add_command(cmd)
+    }
+    /// List active channels
+    /// ## Available since
+    /// 2.8.0
+    /// ## Time complexity
+    /// O(N) where N is the number of active channels, and assuming constant time pattern matching (relatively short channels and patterns)
+    /// ## Documentation
+    /// view the docs for [PUBSUB CHANNELS](https://redis.io/commands/pubsub-channels)
+    public func pubsub_channels(_ pattern: String? = nil) -> Self {
+        let cmd = Cmd("PUBSUB").arg("CHANNELS").arg(pattern)
+        return self.add_command(cmd)
+    }
+}
