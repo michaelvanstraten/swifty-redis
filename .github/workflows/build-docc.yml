@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "Sources/SwiftyRedis"
+      - "Sources/SwiftyRedis/**"
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
