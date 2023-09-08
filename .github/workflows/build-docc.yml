@@ -1,6 +1,6 @@
 # Taken from https://github.com/fwcd/lighthouse-client-swift/blob/e9f345f1d936c917e520449e379c9c0f00cccbb2/.github/workflows/docs.yml
 
-name: Generate DocC
+name: Build DocC
 on:
   push:
     branches: [main]

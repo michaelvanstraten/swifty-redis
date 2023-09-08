@@ -1,5 +1,5 @@
-![Tests](https://github.com/michaelvanstraten/swifty-redis/actions/workflows/generate-docc.yml/badge.svg)
-![DocC Build](https://github.com/michaelvanstraten/swifty-redis/actions/workflows/run-tests.yml/badge.svg)
+![Build DocC](https://github.com/michaelvanstraten/swifty-redis/actions/workflows/build-docc.yml/badge.svg)
+![Integration Tests](https://github.com/michaelvanstraten/swifty-redis/actions/workflows/integration-tests.yml/badge.svg)
 
 # SwiftyRedis
 
