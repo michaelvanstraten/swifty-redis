@@ -2,7 +2,7 @@
 //  {{ filename }}
 //  
 //
-//  Created by Autogen on {{ creation_date }}.
+//  Created by CodeGen on {{ creation_date }}.
 //
 
 import Foundation

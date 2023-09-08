@@ -2,7 +2,7 @@
 //  latency.swift
 //
 //
-//  Created by Autogen on 19.05.23.
+//  Created by CodeGen on 08.09.23.
 //
 import Foundation
 extension RedisConnection {
