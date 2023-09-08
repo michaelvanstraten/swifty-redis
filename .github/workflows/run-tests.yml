@@ -1,0 +1,24 @@
+name: Run Tests
+
+on:
+  push:
+    paths:
+      - "**.swift"
+
+  pull_request:
+
+jobs:
+  run-tests:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Redis
+        run: brew install redis
+      - name: Build
+        run: swift build
+      - name: Test
+        run: |
+          brew services start redis
+          swift test
+          brew services stop redis

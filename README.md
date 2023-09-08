@@ -1,3 +1,6 @@
+![Tests](https://github.com/michaelvanstraten/swifty-redis/actions/workflows/generate-docc.yml/badge.svg)
+![DocC Build](https://github.com/michaelvanstraten/swifty-redis/actions/workflows/run-tests.yml/badge.svg)
+
 # SwiftyRedis
 
 SwiftyRedis is a robust and versatile asynchronous Redis library for Swift, designed to streamline your interaction with Redis databases. Drawing inspiration from the [redis-rs](https://github.com/redis-rs/redis-rs) Rust crate, SwiftyRedis offers a high-level interface to Redis functionality while preserving low-level flexibility. It is tailored to enhance your development experience by providing customizable type conversions and harnessing modern async-await patterns.
