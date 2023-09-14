@@ -1,21 +1,28 @@
 import click
+import os
+import glob
 
-from os.path import abspath
+from datetime import date
 from typing import List
 
 from parse import process_json_files
 from parsing_types.command import Command
 from utils import (
     make_sure_remote_repo_is_downloaded,
-    clean_out_directory,
-    get_todays_date,
     THIS_DIR,
 )
 from swift_format import format_files
 from templates import render
 
-SRC_DIR = abspath(THIS_DIR + "/redis/src")
-OUT_DIR = abspath(THIS_DIR + "/../SwiftyRedis/CodeGen/Commands")
+SRC_DIR = os.path.abspath(THIS_DIR + "/redis/src")
+OUT_DIR = os.path.abspath(THIS_DIR + "/../SwiftyRedis/CodeGen/Commands")
+
+
+def clean_out_directory():
+    click.echo("Cleaning out directory...")
+    os.makedirs(OUT_DIR, exist_ok=True)
+    for file_path in glob.glob(os.path.join(OUT_DIR, "*")):
+        os.remove(file_path)
 
 
 def write_extensions_file(commands: List[Command], file_name: str):
@@ -24,7 +31,7 @@ def write_extensions_file(commands: List[Command], file_name: str):
             render(
                 "extension.swift",
                 filename=file_name,
-                creation_date=get_todays_date(),
+                creation_date=date.today().strftime("%d.%m.%y"),
                 commands=commands,
             )
         )
@@ -44,7 +51,7 @@ def commands():
     commands, subcommands = process_json_files(SRC_DIR)
     commands.sort(key=lambda command: command.fullname())
 
-    clean_out_directory(OUT_DIR)
+    clean_out_directory()
 
     to_format_files = []
 

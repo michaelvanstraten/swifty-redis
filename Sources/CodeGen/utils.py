@@ -1,8 +1,5 @@
 import os
-import glob
 import re
-from datetime import date
-import click
 from git.repo import Repo
 from git import RemoteProgress
 from tqdm import tqdm
@@ -66,14 +63,3 @@ def kebab_case(s):
 
 def sanitize(s):
     return s.replace("-", "_").replace(":", "")
-
-
-def clean_out_directory(out_dir):
-    click.echo("Cleaning out directory...")
-    os.makedirs(out_dir, exist_ok=True)
-    for file_path in glob.glob(os.path.join(out_dir, "*")):
-        os.remove(file_path)
-
-
-def get_todays_date():
-    return date.today().strftime("%d.%m.%y")
