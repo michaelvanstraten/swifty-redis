@@ -3,6 +3,7 @@ from git import RemoteProgress
 from tqdm import tqdm
 from utils import THIS_DIR
 
+
 # https://stackoverflow.com/a/65576165
 class ProgressHandler(RemoteProgress):
     def __init__(self, desc):

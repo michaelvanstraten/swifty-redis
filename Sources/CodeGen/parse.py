@@ -1,47 +1,34 @@
-from typing import List
+from typing import List, Dict
 import glob
 import json
+import os
 
-from os.path import abspath
-from typing import Dict
 from parsing_types.command import Command
-from utils import THIS_DIR
-
-try:
-    with open(abspath(THIS_DIR + "/config/commands_to_ignore.json")) as f:
-        commands_to_ignore: List[str] = json.load(f)
-except:
-    commands_to_ignore: List[str] = []
+from config import commands_to_ignore
 
 subcommands: Dict[str, List[Command]] = {}
 commands: List[Command] = []
 
 
 def create_command(name, desc):
-    if desc.get("container"):
-        cmd = Command(name, desc, True)
-        if not cmd.func_name() in commands_to_ignore:
-            if subcommands.get(desc["container"]):
-                cmds = subcommands[desc["container"]]
-                cmds.append(cmd)
-            else:
-                cmds = [cmd]
-                subcommands[desc["container"]] = cmds
-    else:
-        cmd = Command(name, desc)
-        if not cmd.func_name() in commands_to_ignore:
+    container = desc.get("container")
+    cmd = Command(name, desc, container is not None)
+    if cmd.func_name() not in commands_to_ignore:
+        if container:
+            subcommands.setdefault(container, []).append(cmd)
+        else:
             commands.append(cmd)
 
 
 def process_json_files(src_dir):
-    print("Processing json files...")
-    for filename in glob.glob(f"{src_dir}/commands/*.json"):
+    print("Processing JSON files...")
+    for filename in glob.glob(os.path.join(src_dir, "commands", "*.json")):
         with open(filename) as f:
             try:
-                d = json.load(f)
-                for name, desc in d.items():
+                data = json.load(f)
+                for name, desc in data.items():
                     create_command(name, desc)
-            except json.decoder.JSONDecodeError as err:
+            except json.JSONDecodeError as err:
                 print(f"Error processing {filename}: {err}")
                 exit(1)
 

@@ -1,0 +1,31 @@
+{
+  "commandsToIgnore": [
+    "subscribe",
+    "psubscribe",
+    "ssubscribe",
+    "unsubscribe",
+    "punsubscribe",
+    "sunsubscribe"
+  ],
+  "argumentsToIgnore": [],
+  "formatingConfig": {
+    "version": 1,
+    "lineLength": 120,
+    "indentation": {
+      "spaces": 4
+    },
+    "maximumBlankLines": 0,
+    "respectsExistingLineBreaks": false
+  },
+  "namesToSubstitute": {
+    "operator": "rOperator",
+    "where": "rWhere"
+  },
+  "tokenToSubstitute": {
+    "*": "AUTO_ID",
+    "=": "EQUAL",
+    "~": "APPROXIMATELY",
+    "$": "NEW_ID",
+    "\"\"": "EMPTY_STRING"
+  }
+}

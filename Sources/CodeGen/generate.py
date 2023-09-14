@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
+import click
 
-import json
 from os.path import abspath
 from typing import List
 
@@ -15,29 +14,30 @@ from swift_format import format_files
 SRC_DIR = abspath(THIS_DIR + "/redis/src")
 OUT_DIR = abspath(THIS_DIR + "/../SwiftyRedis/CodeGen/Commands")
 
+
 def write_extensions_file(commands: List[Command], file_name: str):
-    with open(f"{OUT_DIR}/{file_name}", 'x') as file:
-        file.write(extension.render(
-            filename=file_name,
-            creation_date=get_todays_date(),
-            commands=commands
-        ))
+    with open(f"{OUT_DIR}/{file_name}", "x") as file:
+        file.write(
+            extension.render(
+                filename=file_name, creation_date=get_todays_date(), commands=commands
+            )
+        )
 
-if __name__ == "__main__":
-    try:
-        with open(abspath(THIS_DIR + "/config/commands_to_ignore.json")) as f:
-            commands_to_ignore: List[str] = json.load(f)
-    except:
-        commands_to_ignore: List[str] = []
 
-    with open(THIS_DIR + "/templates/extension.swift", 'r') as file:
-        extension = Template(file.read())
+with open(THIS_DIR + "/templates/extension.swift", "r") as file:
+    extension = Template(file.read())
 
+
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
+def commands():
     make_sure_remote_repo_is_downloaded(
-        "redis", 
-        "https://github.com/redis/redis.git", 
-        branch="7.0"
-    )   
+        "redis", "https://github.com/redis/redis.git", branch="7.0"
+    )
 
     commands, subcommands = process_json_files(SRC_DIR)
     commands.sort(key=lambda command: command.fullname())
@@ -47,20 +47,19 @@ if __name__ == "__main__":
     to_format_files = []
 
     print("Creating swift files...")
-    
+
     if len(commands) > 0:
         write_extensions_file(commands, "containerless.swift")
         to_format_files.append(f"{OUT_DIR}/containerless.swift")
 
     for container_name, commands in subcommands.items():
         container_name = container_name.lower()
-        write_extensions_file(
-            commands,
-            f"{container_name}.swift"
-        )
-        to_format_files.append(
-            f"{OUT_DIR}/{container_name}.swift"
-        )
+        write_extensions_file(commands, f"{container_name}.swift")
+        to_format_files.append(f"{OUT_DIR}/{container_name}.swift")
 
     if len(to_format_files) > 0:
         format_files(*to_format_files)
+
+
+if __name__ == "__main__":
+    cli()

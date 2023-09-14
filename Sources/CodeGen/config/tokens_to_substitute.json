@@ -1,7 +1,0 @@
-{
-    "*": "AUTO_ID",
-    "=": "EQUAL",
-    "~": "APPROXIMATELY",
-    "$": "NEW_ID",
-    "\"\"": "EMPTY_STRING"
-}
