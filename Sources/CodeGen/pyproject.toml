@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "swifty-redis-codegen"
+version = "0.1.0"
+description = "Code generation for swift package swifty-redis"
+authors = ["Michael van Straten <michael@vanstraten.de>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+jinja2 = "^3.1.2"
+tqdm = "^4.66.1"
+gitpython = "^3.1.36"
+click = "^8.1.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

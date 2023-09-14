@@ -1,0 +1,5 @@
+{
+  "exclude": ["**/__pycache__"],
+  "venv": "swifty-redis-codegen-YKd2kwY0-py3.9",
+  "venvPath": "/Users/michaelvanstraten/Library/Caches/pypoetry/virtualenvs"
+}
