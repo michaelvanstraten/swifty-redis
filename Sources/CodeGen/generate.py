@@ -5,8 +5,12 @@ from typing import List
 
 from parse import process_json_files
 from parsing_types.command import Command
-from git_utils import make_sure_remote_repo_is_downloaded
-from utils import clean_out_directory, get_todays_date, THIS_DIR
+from utils import (
+    make_sure_remote_repo_is_downloaded,
+    clean_out_directory,
+    get_todays_date,
+    THIS_DIR,
+)
 from swift_format import format_files
 from templates import render
 

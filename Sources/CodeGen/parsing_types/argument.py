@@ -1,10 +1,8 @@
-import os.path
 from collections import Counter
 from typing import List, Dict
-from jinja2 import Template
 
 from templates import render
-from utils import camel_case, snake_case, THIS_DIR
+from utils import camel_case, snake_case 
 from config import names_to_substitute, token_to_substitute, arguments_to_ignore
 
 ARG_TYPES = {

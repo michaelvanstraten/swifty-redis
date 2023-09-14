@@ -3,7 +3,7 @@ import subprocess
 import sys
 from os.path import exists
 
-from git_utils import make_sure_remote_repo_is_downloaded
+from utils import make_sure_remote_repo_is_downloaded
 from config import formating_config
 
 
@@ -32,7 +32,7 @@ def make_sure_swift_format_is_compiled():
         compile_swift_format()
 
 
-def compile_swift_format(*files: str):
+def compile_swift_format():
     print("Compiling swift-format...")
     try:
         subprocess.check_call(
