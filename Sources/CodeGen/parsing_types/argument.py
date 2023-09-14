@@ -1,8 +1,9 @@
-from ast import Set
+import os.path
+from collections import Counter
 from typing import List, Dict
-from os.path import abspath
 from jinja2 import Template
 
+from templates import render
 from utils import camel_case, snake_case, THIS_DIR
 from config import names_to_substitute, token_to_substitute, arguments_to_ignore
 
@@ -25,28 +26,22 @@ TEST_VALUES = {
     "Int64": "123",
 }
 
-with open(abspath(f"{THIS_DIR}/templates/parameter.swift")) as file:
-    parameter_template = Template(file.read())
 
-with open(abspath(f"{THIS_DIR}/templates/test_parameter.swift")) as file:
-    test_parameter_template = Template(file.read())
-
-
-class Argument(object):
+class Argument:
     def __init__(self, desc: Dict):
-        self.name: str = names_to_substitute.get(
+        self.name = names_to_substitute.get(
             camel_case(desc["name"]), camel_case(desc["name"])
         )
-        self.type: str = ARG_TYPES.get(desc["type"])
+        self.type = ARG_TYPES.get(desc["type"], "unsupported type")
         self.token = desc.get("token")
-        self.backup_token: str = desc["name"]
-        self.sanitized_token: str = (
+        self.backup_token = desc["name"]
+        self.sanitized_token = (
             token_to_substitute.get(self.token, self.token)
             if self.token
             else snake_case(self.backup_token).upper()
         )
-        self.is_optional: bool = desc.get("optional", False)
-        self.is_variadic: bool = desc.get("multiple", False)
+        self.is_optional = desc.get("optional", False)
+        self.is_variadic = desc.get("multiple", False)
         self.must_have_label = False
         if self.token:
             self.token = self.token.replace('"', '\\"')
@@ -55,7 +50,8 @@ class Argument(object):
         self.name = self.sanitized_token
 
     def parameter(self):
-        return parameter_template.render(
+        return render(
+            "parameter.swift",
             parameter_name=self.name,
             parameter_type=self.type,
             is_optional=self.is_optional,
@@ -64,7 +60,8 @@ class Argument(object):
         )
 
     def test_parameter(self):
-        return test_parameter_template.render(
+        return render(
+            "test_parameter.swift",
             parameter_name=self.name,
             parameter_value=self.test_value(),
         )
@@ -79,9 +76,9 @@ class Argument(object):
 def parse_args(
     args: List[Dict], parent_name: str, make_options_arg=True, are_sub_args=False
 ):
-    parsed_args: List[Argument] = []
-    optional_args: List[Argument] = []
-    used_arg_names: Set[str] = set()
+    parsed_args = []
+    optional_args = []
+    arg_names_counter = Counter()
 
     for arg in args:
         if arg["type"] == "oneof":
@@ -95,12 +92,12 @@ def parse_args(
         else:
             new_arg = Argument(arg)
 
-        if new_arg.name in used_arg_names:
+        if arg_names_counter[new_arg.name] > 0:
             new_arg.use_token_as_name()
         else:
-            used_arg_names.add(new_arg.name)
+            arg_names_counter[new_arg.name] += 1
 
-        if not new_arg.name in arguments_to_ignore:
+        if new_arg.name not in arguments_to_ignore:
             if new_arg.is_option() and make_options_arg:
                 optional_args.append(new_arg)
             else:

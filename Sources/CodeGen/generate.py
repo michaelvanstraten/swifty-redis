@@ -3,13 +3,12 @@ import click
 from os.path import abspath
 from typing import List
 
-from jinja2 import Template
 from parse import process_json_files
-
 from parsing_types.command import Command
 from git_utils import make_sure_remote_repo_is_downloaded
 from utils import clean_out_directory, get_todays_date, THIS_DIR
 from swift_format import format_files
+from templates import render
 
 SRC_DIR = abspath(THIS_DIR + "/redis/src")
 OUT_DIR = abspath(THIS_DIR + "/../SwiftyRedis/CodeGen/Commands")
@@ -18,14 +17,13 @@ OUT_DIR = abspath(THIS_DIR + "/../SwiftyRedis/CodeGen/Commands")
 def write_extensions_file(commands: List[Command], file_name: str):
     with open(f"{OUT_DIR}/{file_name}", "x") as file:
         file.write(
-            extension.render(
-                filename=file_name, creation_date=get_todays_date(), commands=commands
+            render(
+                "extension.swift",
+                filename=file_name,
+                creation_date=get_todays_date(),
+                commands=commands,
             )
         )
-
-
-with open(THIS_DIR + "/templates/extension.swift", "r") as file:
-    extension = Template(file.read())
 
 
 @click.group()

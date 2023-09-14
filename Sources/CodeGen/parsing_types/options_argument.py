@@ -1,13 +1,7 @@
-from os.path import abspath
-from jinja2 import Template
-
-from utils import pascal_case, THIS_DIR
+from utils import pascal_case
 from parsing_types.complex_argument import ComplexArgument
+from templates import render
 
-with open(abspath(THIS_DIR + "/templates/options.swift")) as file:
-    options_template = Template(
-        file.read(),
-    )
 
 class OptionsArgument(ComplexArgument):
     def __init__(self, parent_name, options, is_sub_arg=False):
@@ -19,7 +13,4 @@ class OptionsArgument(ComplexArgument):
         self.must_have_label = False
 
     def custom_type(self):
-        return options_template.render(
-            options_name=self.type,
-            options=self.options
-        )
+        return render("options.swift", options_name=self.type, options=self.options)
