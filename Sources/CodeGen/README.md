@@ -23,7 +23,7 @@ To get started with this package and commence Swift function generation, simply 
 To regenerate Swift functions corresponding to Redis commands, execute the following command:
 
 ```shell
-poetry run python generate.py
+poetry run python generate.py commands
 ```
 
 The resulting Swift files will be automatically deposited into the `Sources/SwiftyRedis/CodeGen/Commands` directory.
