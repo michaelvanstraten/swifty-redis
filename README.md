@@ -4,11 +4,11 @@
 
 # SwiftyRedis
 
-SwiftyRedis is a robust and versatile asynchronous Redis library for Swift, designed to streamline your interaction with Redis databases. Drawing inspiration from the [redis-rs](https://github.com/redis-rs/redis-rs) Rust crate, SwiftyRedis offers a high-level interface to Redis functionality while preserving low-level flexibility. It is tailored to enhance your development experience by providing customizable type conversions and harnessing modern async-await patterns.
+SwiftyRedis is an asynchronous Redis library for Swift, designed to streamline your interactions with Redis databases. Drawing inspiration from the [redis-rs](https://github.com/redis-rs/redis-rs) Rust crate, SwiftyRedis offers a high-level interface to Redis functionality while preserving low-level flexibility. It is tailored to enhance your development experience by providing a very flexible type conversion protocol as well as modern async-await patterns.
 
 ## Getting Started
 
-To integrate SwiftyRedis into your project, you can use Swift Package Manager. Simply add the following dependency to your `Package.swift` file:
+To integrate SwiftyRedis into your project, you can use the Swift Package Manager. Simply add the following dependency to your `Package.swift` file:
 
 ```swift
 .package(url: "https://github.com/michaelvanstraten/swifty-redis.git", from: "0.1.2")
@@ -43,6 +43,7 @@ let value: String = try await connection.hget("myhash", "field1")
 - [ ] Upcoming: Cluster support
 - [ ] Upcoming: RedisJSON implementation
 - [ ] Upcoming: RedisTimeSeries implementation
+- [ ] Upcoming: SwiftNIO networking backend
 
 ## Documentation
 
@@ -56,14 +57,14 @@ We greatly appreciate your interest in contributing to SwiftyRedis! To get start
 - **Refine Documentation Structure:** Enhance the clarity and organization of our documentation. Your contributions can help users navigate information more effectively.
 - **Enrich Tutorials:** Consider adding new tutorials or refining existing ones in the documentation. This can significantly assist users in effectively utilizing SwiftyRedis.
 
-### Automated Code Generation
+To start contributing, run the following command to clone the repository:
 
-To support Redis's extensive set of 240+ commands, we've developed a Python script for automatic generation of corresponding Swift functions. This script extracts command information from the [Redis GitHub repository](https://github.com/redis/redis), parsing JSON files under `src/commands`. To re-run this auto-generation process, execute the `generate-commands.py` script found in the `Sources/CodeGen` directory. The generated Swift files will be placed in the `Sources/SwiftyRedis/CodeGen/Commands` directory, ensuring automatic inclusion of new Redis commands.
+```bash
+git clone --recurse-submodules https://github.com/michaelvanstraten/swifty-redis.git
+```
 
-If you encounter issues during command implementation, specify function names in the `commands_to_ignore.json` file located in the `Sources/CodeGen/config` directory. Use the generated function names, not the command names themselves. This simplifies development by eliminating the need to look up actual command names.
-
-Additionally, the `formatting_config.json` file in the `Sources/CodeGen/config` directory contains configuration settings used by [swift-format](https://github.com/apple/swift-format) for formatting generated Swift files.
+If you are interested in the automatic code generation package we developed to stay up to date with the latest Redis versions, navigate to the `Sources/CodeGen` directory.
 
 We invite you to contribute to the project and enhance the library's functionality!
 
-**Please Note:** The information in this readme is accurate as of August 2023.
+**Please Note:** The information in this readme is accurate as of September 2023.
