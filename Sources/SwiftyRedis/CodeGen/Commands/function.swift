@@ -2,33 +2,33 @@
 //  function.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Deleting all functions
+    /// Deletes all libraries and functions.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N) where N is the number of functions deleted
     /// ## Documentation
     /// view the docs for [FUNCTION FLUSH](https://redis.io/commands/function-flush)
-    public func function_flush<T: FromRedisValue>(_ async: FunctionFlushAsync? = nil) async throws -> T {
-        let cmd = Cmd("FUNCTION").arg("FLUSH").arg(async)
+    public func function_flush<T: FromRedisValue>(_ flushType: FunctionFlushFlushtype? = nil) async throws -> T {
+        let cmd = Cmd("FUNCTION").arg("FLUSH").arg(flushType)
         return try await cmd.query(self)
     }
-    /// Deleting all functions
+    /// Deletes all libraries and functions.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N) where N is the number of functions deleted
     /// ## Documentation
     /// view the docs for [FUNCTION FLUSH](https://redis.io/commands/function-flush)
-    public func function_flush(_ async: FunctionFlushAsync? = nil) async throws {
-        let cmd = Cmd("FUNCTION").arg("FLUSH").arg(async)
+    public func function_flush(_ flushType: FunctionFlushFlushtype? = nil) async throws {
+        let cmd = Cmd("FUNCTION").arg("FLUSH").arg(flushType)
         try await cmd.exec(self)
     }
-    /// List information about all the functions
+    /// Returns information about all libraries.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -43,7 +43,7 @@ extension RedisConnection {
         ).arg(options)
         return try await cmd.query(self)
     }
-    /// List information about all the functions
+    /// Returns information about all libraries.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -56,7 +56,7 @@ extension RedisConnection {
         ).arg(options)
         try await cmd.exec(self)
     }
-    /// Delete a function by name
+    /// Deletes a library and its functions.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -67,7 +67,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("DELETE").arg(libraryName)
         return try await cmd.query(self)
     }
-    /// Delete a function by name
+    /// Deletes a library and its functions.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -78,7 +78,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("DELETE").arg(libraryName)
         try await cmd.exec(self)
     }
-    /// Return information about the function currently running (name, description, duration)
+    /// Returns information about a function during execution.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -89,7 +89,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("STATS")
         return try await cmd.query(self)
     }
-    /// Return information about the function currently running (name, description, duration)
+    /// Returns information about a function during execution.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -100,7 +100,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("STATS")
         try await cmd.exec(self)
     }
-    /// Restore all the functions on the given payload
+    /// Restores all libraries from a payload.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -113,7 +113,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("RESTORE").arg(serializedValue).arg(policy)
         return try await cmd.query(self)
     }
-    /// Restore all the functions on the given payload
+    /// Restores all libraries from a payload.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -124,7 +124,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("RESTORE").arg(serializedValue).arg(policy)
         try await cmd.exec(self)
     }
-    /// Create a function with the given arguments (name, code, description)
+    /// Creates a library.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -137,7 +137,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("LOAD").arg(functionCode).arg(options)
         return try await cmd.query(self)
     }
-    /// Create a function with the given arguments (name, code, description)
+    /// Creates a library.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -148,7 +148,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("LOAD").arg(functionCode).arg(options)
         try await cmd.exec(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -159,7 +159,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -170,7 +170,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Kill the function currently in execution.
+    /// Terminates a function during execution.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -181,7 +181,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("KILL")
         return try await cmd.query(self)
     }
-    /// Kill the function currently in execution.
+    /// Terminates a function during execution.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -192,7 +192,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("KILL")
         try await cmd.exec(self)
     }
-    /// Dump all functions into a serialized binary payload
+    /// Dumps all libraries into a serialized binary payload.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -203,7 +203,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION").arg("DUMP")
         return try await cmd.query(self)
     }
-    /// Dump all functions into a serialized binary payload
+    /// Dumps all libraries into a serialized binary payload.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -216,18 +216,18 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// Deleting all functions
+    /// Deletes all libraries and functions.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N) where N is the number of functions deleted
     /// ## Documentation
     /// view the docs for [FUNCTION FLUSH](https://redis.io/commands/function-flush)
-    public func function_flush(_ async: FunctionFlushAsync? = nil) -> Self {
-        let cmd = Cmd("FUNCTION").arg("FLUSH").arg(async)
+    public func function_flush(_ flushType: FunctionFlushFlushtype? = nil) -> Self {
+        let cmd = Cmd("FUNCTION").arg("FLUSH").arg(flushType)
         return self.add_command(cmd)
     }
-    /// List information about all the functions
+    /// Returns information about all libraries.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -240,7 +240,7 @@ extension RedisPipeline {
         ).arg(options)
         return self.add_command(cmd)
     }
-    /// Delete a function by name
+    /// Deletes a library and its functions.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -251,7 +251,7 @@ extension RedisPipeline {
         let cmd = Cmd("FUNCTION").arg("DELETE").arg(libraryName)
         return self.add_command(cmd)
     }
-    /// Return information about the function currently running (name, description, duration)
+    /// Returns information about a function during execution.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -262,7 +262,7 @@ extension RedisPipeline {
         let cmd = Cmd("FUNCTION").arg("STATS")
         return self.add_command(cmd)
     }
-    /// Restore all the functions on the given payload
+    /// Restores all libraries from a payload.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -273,7 +273,7 @@ extension RedisPipeline {
         let cmd = Cmd("FUNCTION").arg("RESTORE").arg(serializedValue).arg(policy)
         return self.add_command(cmd)
     }
-    /// Create a function with the given arguments (name, code, description)
+    /// Creates a library.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -284,7 +284,7 @@ extension RedisPipeline {
         let cmd = Cmd("FUNCTION").arg("LOAD").arg(functionCode).arg(options)
         return self.add_command(cmd)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -295,7 +295,7 @@ extension RedisPipeline {
         let cmd = Cmd("FUNCTION").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Kill the function currently in execution.
+    /// Terminates a function during execution.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -306,7 +306,7 @@ extension RedisPipeline {
         let cmd = Cmd("FUNCTION").arg("KILL")
         return self.add_command(cmd)
     }
-    /// Dump all functions into a serialized binary payload
+    /// Dumps all libraries into a serialized binary payload.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -318,7 +318,7 @@ extension RedisPipeline {
         return self.add_command(cmd)
     }
 }
-public enum FunctionFlushAsync: ToRedisArgs {
+public enum FunctionFlushFlushtype: ToRedisArgs {
     case ASYNC
     case SYNC
     public func write_redis_args(out: inout [Data]) {

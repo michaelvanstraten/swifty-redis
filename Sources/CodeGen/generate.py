@@ -44,10 +44,6 @@ def cli():
 
 @cli.command()
 def commands():
-    make_sure_remote_repo_is_downloaded(
-        "redis", "https://github.com/redis/redis.git", branch="7.0"
-    )
-
     commands, subcommands = process_json_files(SRC_DIR)
     commands.sort(key=lambda command: command.fullname())
 

@@ -2,11 +2,11 @@
 //  script.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Kill the script currently in execution.
+    /// Terminates a server-side Lua script during execution.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -17,7 +17,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT").arg("KILL")
         return try await cmd.query(self)
     }
-    /// Kill the script currently in execution.
+    /// Terminates a server-side Lua script during execution.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -28,7 +28,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT").arg("KILL")
         try await cmd.exec(self)
     }
-    /// Remove all the scripts from the script cache.
+    /// Removes all server-side Lua scripts from the script cache.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -37,11 +37,11 @@ extension RedisConnection {
     /// - 6.2.0, Added the `ASYNC` and `SYNC` flushing mode modifiers.
     /// ## Documentation
     /// view the docs for [SCRIPT FLUSH](https://redis.io/commands/script-flush)
-    public func script_flush<T: FromRedisValue>(_ async: ScriptFlushAsync? = nil) async throws -> T {
-        let cmd = Cmd("SCRIPT").arg("FLUSH").arg(async)
+    public func script_flush<T: FromRedisValue>(_ flushType: ScriptFlushFlushtype? = nil) async throws -> T {
+        let cmd = Cmd("SCRIPT").arg("FLUSH").arg(flushType)
         return try await cmd.query(self)
     }
-    /// Remove all the scripts from the script cache.
+    /// Removes all server-side Lua scripts from the script cache.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -50,11 +50,11 @@ extension RedisConnection {
     /// - 6.2.0, Added the `ASYNC` and `SYNC` flushing mode modifiers.
     /// ## Documentation
     /// view the docs for [SCRIPT FLUSH](https://redis.io/commands/script-flush)
-    public func script_flush(_ async: ScriptFlushAsync? = nil) async throws {
-        let cmd = Cmd("SCRIPT").arg("FLUSH").arg(async)
+    public func script_flush(_ flushType: ScriptFlushFlushtype? = nil) async throws {
+        let cmd = Cmd("SCRIPT").arg("FLUSH").arg(flushType)
         try await cmd.exec(self)
     }
-    /// Load the specified Lua script into the script cache.
+    /// Loads a server-side Lua script to the script cache.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -65,7 +65,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT").arg("LOAD").arg(script)
         return try await cmd.query(self)
     }
-    /// Load the specified Lua script into the script cache.
+    /// Loads a server-side Lua script to the script cache.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -76,7 +76,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT").arg("LOAD").arg(script)
         try await cmd.exec(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -87,7 +87,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -98,7 +98,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Set the debug mode for executed scripts.
+    /// Sets the debug mode of server-side Lua scripts.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -109,7 +109,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT").arg("DEBUG").arg(mode)
         return try await cmd.query(self)
     }
-    /// Set the debug mode for executed scripts.
+    /// Sets the debug mode of server-side Lua scripts.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -120,7 +120,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT").arg("DEBUG").arg(mode)
         try await cmd.exec(self)
     }
-    /// Check existence of scripts in the script cache.
+    /// Determines whether server-side Lua scripts exist in the script cache.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -131,7 +131,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT").arg("EXISTS").arg(sha1)
         return try await cmd.query(self)
     }
-    /// Check existence of scripts in the script cache.
+    /// Determines whether server-side Lua scripts exist in the script cache.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -144,7 +144,7 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// Kill the script currently in execution.
+    /// Terminates a server-side Lua script during execution.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -155,7 +155,7 @@ extension RedisPipeline {
         let cmd = Cmd("SCRIPT").arg("KILL")
         return self.add_command(cmd)
     }
-    /// Remove all the scripts from the script cache.
+    /// Removes all server-side Lua scripts from the script cache.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -164,11 +164,11 @@ extension RedisPipeline {
     /// - 6.2.0, Added the `ASYNC` and `SYNC` flushing mode modifiers.
     /// ## Documentation
     /// view the docs for [SCRIPT FLUSH](https://redis.io/commands/script-flush)
-    public func script_flush(_ async: ScriptFlushAsync? = nil) -> Self {
-        let cmd = Cmd("SCRIPT").arg("FLUSH").arg(async)
+    public func script_flush(_ flushType: ScriptFlushFlushtype? = nil) -> Self {
+        let cmd = Cmd("SCRIPT").arg("FLUSH").arg(flushType)
         return self.add_command(cmd)
     }
-    /// Load the specified Lua script into the script cache.
+    /// Loads a server-side Lua script to the script cache.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -179,7 +179,7 @@ extension RedisPipeline {
         let cmd = Cmd("SCRIPT").arg("LOAD").arg(script)
         return self.add_command(cmd)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -190,7 +190,7 @@ extension RedisPipeline {
         let cmd = Cmd("SCRIPT").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Set the debug mode for executed scripts.
+    /// Sets the debug mode of server-side Lua scripts.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -201,7 +201,7 @@ extension RedisPipeline {
         let cmd = Cmd("SCRIPT").arg("DEBUG").arg(mode)
         return self.add_command(cmd)
     }
-    /// Check existence of scripts in the script cache.
+    /// Determines whether server-side Lua scripts exist in the script cache.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -213,7 +213,7 @@ extension RedisPipeline {
         return self.add_command(cmd)
     }
 }
-public enum ScriptFlushAsync: ToRedisArgs {
+public enum ScriptFlushFlushtype: ToRedisArgs {
     case ASYNC
     case SYNC
     public func write_redis_args(out: inout [Data]) {

@@ -1,0 +1,4 @@
+[submodule "Sources/CodeGen/redis"]
+	path = Sources/CodeGen/redis
+	url = https://github.com/redis/redis.git
+	branch = unstable

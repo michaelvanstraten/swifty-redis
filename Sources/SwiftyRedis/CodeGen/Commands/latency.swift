@@ -2,11 +2,11 @@
 //  latency.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Show helpful text about the different subcommands.
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -17,7 +17,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands.
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -28,7 +28,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Return a latency graph for the event.
+    /// Returns a latency graph for an event.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -39,7 +39,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("GRAPH").arg(event)
         return try await cmd.query(self)
     }
-    /// Return a latency graph for the event.
+    /// Returns a latency graph for an event.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -50,7 +50,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("GRAPH").arg(event)
         try await cmd.exec(self)
     }
-    /// Return timestamp-latency samples for the event.
+    /// Returns timestamp-latency samples for an event.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -61,7 +61,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("HISTORY").arg(event)
         return try await cmd.query(self)
     }
-    /// Return timestamp-latency samples for the event.
+    /// Returns timestamp-latency samples for an event.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -72,7 +72,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("HISTORY").arg(event)
         try await cmd.exec(self)
     }
-    /// Return the latest latency samples for all events.
+    /// Returns the latest latency samples for all events.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -83,7 +83,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("LATEST")
         return try await cmd.query(self)
     }
-    /// Return the latest latency samples for all events.
+    /// Returns the latest latency samples for all events.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -94,7 +94,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("LATEST")
         try await cmd.exec(self)
     }
-    /// Return the cumulative distribution of latencies of a subset of commands or all.
+    /// Returns the cumulative distribution of latencies of a subset or all commands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -105,7 +105,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("HISTOGRAM").arg(command)
         return try await cmd.query(self)
     }
-    /// Return the cumulative distribution of latencies of a subset of commands or all.
+    /// Returns the cumulative distribution of latencies of a subset or all commands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -116,7 +116,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("HISTOGRAM").arg(command)
         try await cmd.exec(self)
     }
-    /// Reset latency data for one or more events.
+    /// Resets the latency data for one or more events.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -127,7 +127,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("RESET").arg(event)
         return try await cmd.query(self)
     }
-    /// Reset latency data for one or more events.
+    /// Resets the latency data for one or more events.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -138,7 +138,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("RESET").arg(event)
         try await cmd.exec(self)
     }
-    /// Return a human readable latency analysis report.
+    /// Returns a human-readable latency analysis report.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -149,7 +149,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY").arg("DOCTOR")
         return try await cmd.query(self)
     }
-    /// Return a human readable latency analysis report.
+    /// Returns a human-readable latency analysis report.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -162,7 +162,7 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// Show helpful text about the different subcommands.
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -173,7 +173,7 @@ extension RedisPipeline {
         let cmd = Cmd("LATENCY").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Return a latency graph for the event.
+    /// Returns a latency graph for an event.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -184,7 +184,7 @@ extension RedisPipeline {
         let cmd = Cmd("LATENCY").arg("GRAPH").arg(event)
         return self.add_command(cmd)
     }
-    /// Return timestamp-latency samples for the event.
+    /// Returns timestamp-latency samples for an event.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -195,7 +195,7 @@ extension RedisPipeline {
         let cmd = Cmd("LATENCY").arg("HISTORY").arg(event)
         return self.add_command(cmd)
     }
-    /// Return the latest latency samples for all events.
+    /// Returns the latest latency samples for all events.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -206,7 +206,7 @@ extension RedisPipeline {
         let cmd = Cmd("LATENCY").arg("LATEST")
         return self.add_command(cmd)
     }
-    /// Return the cumulative distribution of latencies of a subset of commands or all.
+    /// Returns the cumulative distribution of latencies of a subset or all commands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -217,7 +217,7 @@ extension RedisPipeline {
         let cmd = Cmd("LATENCY").arg("HISTOGRAM").arg(command)
         return self.add_command(cmd)
     }
-    /// Reset latency data for one or more events.
+    /// Resets the latency data for one or more events.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -228,7 +228,7 @@ extension RedisPipeline {
         let cmd = Cmd("LATENCY").arg("RESET").arg(event)
         return self.add_command(cmd)
     }
-    /// Return a human readable latency analysis report.
+    /// Returns a human-readable latency analysis report.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity

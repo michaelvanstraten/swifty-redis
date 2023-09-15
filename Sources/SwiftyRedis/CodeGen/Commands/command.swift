@@ -2,33 +2,33 @@
 //  command.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Extract keys and access flags given a full Redis command
+    /// Extracts the key names and access flags for an arbitrary command.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N) where N is the number of arguments to the command
     /// ## Documentation
     /// view the docs for [COMMAND GETKEYSANDFLAGS](https://redis.io/commands/command-getkeysandflags)
-    public func command_getkeysandflags<T: FromRedisValue>() async throws -> T {
-        let cmd = Cmd("COMMAND").arg("GETKEYSANDFLAGS")
+    public func command_getkeysandflags<T: FromRedisValue>(_ command: String, _ arg: String...) async throws -> T {
+        let cmd = Cmd("COMMAND").arg("GETKEYSANDFLAGS").arg(command).arg(arg)
         return try await cmd.query(self)
     }
-    /// Extract keys and access flags given a full Redis command
+    /// Extracts the key names and access flags for an arbitrary command.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N) where N is the number of arguments to the command
     /// ## Documentation
     /// view the docs for [COMMAND GETKEYSANDFLAGS](https://redis.io/commands/command-getkeysandflags)
-    public func command_getkeysandflags() async throws {
-        let cmd = Cmd("COMMAND").arg("GETKEYSANDFLAGS")
+    public func command_getkeysandflags(_ command: String, _ arg: String...) async throws {
+        let cmd = Cmd("COMMAND").arg("GETKEYSANDFLAGS").arg(command).arg(arg)
         try await cmd.exec(self)
     }
-    /// Get array of specific Redis command documentation
+    /// Returns documentary information about one, multiple or all commands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -39,7 +39,7 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND").arg("DOCS").arg(commandName)
         return try await cmd.query(self)
     }
-    /// Get array of specific Redis command documentation
+    /// Returns documentary information about one, multiple or all commands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -50,7 +50,7 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND").arg("DOCS").arg(commandName)
         try await cmd.exec(self)
     }
-    /// Get total number of Redis commands
+    /// Returns a count of commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -61,7 +61,7 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND").arg("COUNT")
         return try await cmd.query(self)
     }
-    /// Get total number of Redis commands
+    /// Returns a count of commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -72,7 +72,7 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND").arg("COUNT")
         try await cmd.exec(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -83,7 +83,7 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -94,29 +94,29 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Extract keys given a full Redis command
+    /// Extracts the key names from an arbitrary command.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
     /// O(N) where N is the number of arguments to the command
     /// ## Documentation
     /// view the docs for [COMMAND GETKEYS](https://redis.io/commands/command-getkeys)
-    public func command_getkeys<T: FromRedisValue>() async throws -> T {
-        let cmd = Cmd("COMMAND").arg("GETKEYS")
+    public func command_getkeys<T: FromRedisValue>(_ command: String, _ arg: String...) async throws -> T {
+        let cmd = Cmd("COMMAND").arg("GETKEYS").arg(command).arg(arg)
         return try await cmd.query(self)
     }
-    /// Extract keys given a full Redis command
+    /// Extracts the key names from an arbitrary command.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
     /// O(N) where N is the number of arguments to the command
     /// ## Documentation
     /// view the docs for [COMMAND GETKEYS](https://redis.io/commands/command-getkeys)
-    public func command_getkeys() async throws {
-        let cmd = Cmd("COMMAND").arg("GETKEYS")
+    public func command_getkeys(_ command: String, _ arg: String...) async throws {
+        let cmd = Cmd("COMMAND").arg("GETKEYS").arg(command).arg(arg)
         try await cmd.exec(self)
     }
-    /// Get array of specific Redis command details, or all when no argument is given.
+    /// Returns information about one, multiple or all commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -129,7 +129,7 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND").arg("INFO").arg(commandName)
         return try await cmd.query(self)
     }
-    /// Get array of specific Redis command details, or all when no argument is given.
+    /// Returns information about one, multiple or all commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -142,7 +142,7 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND").arg("INFO").arg(commandName)
         try await cmd.exec(self)
     }
-    /// Get an array of Redis command names
+    /// Returns a list of command names.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -153,7 +153,7 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND").arg("LIST").arg((filterby != nil) ? "FILTERBY" : nil).arg(filterby)
         return try await cmd.query(self)
     }
-    /// Get an array of Redis command names
+    /// Returns a list of command names.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -166,18 +166,18 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// Extract keys and access flags given a full Redis command
+    /// Extracts the key names and access flags for an arbitrary command.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N) where N is the number of arguments to the command
     /// ## Documentation
     /// view the docs for [COMMAND GETKEYSANDFLAGS](https://redis.io/commands/command-getkeysandflags)
-    public func command_getkeysandflags() -> Self {
-        let cmd = Cmd("COMMAND").arg("GETKEYSANDFLAGS")
+    public func command_getkeysandflags(_ command: String, _ arg: String...) -> Self {
+        let cmd = Cmd("COMMAND").arg("GETKEYSANDFLAGS").arg(command).arg(arg)
         return self.add_command(cmd)
     }
-    /// Get array of specific Redis command documentation
+    /// Returns documentary information about one, multiple or all commands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -188,7 +188,7 @@ extension RedisPipeline {
         let cmd = Cmd("COMMAND").arg("DOCS").arg(commandName)
         return self.add_command(cmd)
     }
-    /// Get total number of Redis commands
+    /// Returns a count of commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -199,7 +199,7 @@ extension RedisPipeline {
         let cmd = Cmd("COMMAND").arg("COUNT")
         return self.add_command(cmd)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -210,18 +210,18 @@ extension RedisPipeline {
         let cmd = Cmd("COMMAND").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Extract keys given a full Redis command
+    /// Extracts the key names from an arbitrary command.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
     /// O(N) where N is the number of arguments to the command
     /// ## Documentation
     /// view the docs for [COMMAND GETKEYS](https://redis.io/commands/command-getkeys)
-    public func command_getkeys() -> Self {
-        let cmd = Cmd("COMMAND").arg("GETKEYS")
+    public func command_getkeys(_ command: String, _ arg: String...) -> Self {
+        let cmd = Cmd("COMMAND").arg("GETKEYS").arg(command).arg(arg)
         return self.add_command(cmd)
     }
-    /// Get array of specific Redis command details, or all when no argument is given.
+    /// Returns information about one, multiple or all commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -234,7 +234,7 @@ extension RedisPipeline {
         let cmd = Cmd("COMMAND").arg("INFO").arg(commandName)
         return self.add_command(cmd)
     }
-    /// Get an array of Redis command names
+    /// Returns a list of command names.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity

@@ -2,11 +2,11 @@
 //  acl.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Return the name of the user associated to the current connection
+    /// Returns the authenticated username of the current connection.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -17,7 +17,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("WHOAMI")
         return try await cmd.query(self)
     }
-    /// Return the name of the user associated to the current connection
+    /// Returns the authenticated username of the current connection.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -28,7 +28,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("WHOAMI")
         try await cmd.exec(self)
     }
-    /// Get the rules for a specific ACL user
+    /// Lists the ACL rules of a user.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -42,7 +42,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("GETUSER").arg(username)
         return try await cmd.query(self)
     }
-    /// Get the rules for a specific ACL user
+    /// Lists the ACL rules of a user.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -56,7 +56,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("GETUSER").arg(username)
         try await cmd.exec(self)
     }
-    /// Save the current ACL rules in the configured ACL file
+    /// Saves the effective ACL rules in the configured ACL file.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -67,7 +67,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("SAVE")
         return try await cmd.query(self)
     }
-    /// Save the current ACL rules in the configured ACL file
+    /// Saves the effective ACL rules in the configured ACL file.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -78,51 +78,55 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("SAVE")
         try await cmd.exec(self)
     }
-    /// List latest events denied because of ACLs in place
+    /// Lists recent security events generated due to ACL rules.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
     /// O(N) with N being the number of entries shown.
+    /// ## History
+    /// - 7.2.0, Added entry ID, timestamp created, and timestamp last updated.
     /// ## Documentation
     /// view the docs for [ACL LOG](https://redis.io/commands/acl-log)
     public func acl_log<T: FromRedisValue>(_ operation: AclLogOperation? = nil) async throws -> T {
         let cmd = Cmd("ACL").arg("LOG").arg(operation)
         return try await cmd.query(self)
     }
-    /// List latest events denied because of ACLs in place
+    /// Lists recent security events generated due to ACL rules.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
     /// O(N) with N being the number of entries shown.
+    /// ## History
+    /// - 7.2.0, Added entry ID, timestamp created, and timestamp last updated.
     /// ## Documentation
     /// view the docs for [ACL LOG](https://redis.io/commands/acl-log)
     public func acl_log(_ operation: AclLogOperation? = nil) async throws {
         let cmd = Cmd("ACL").arg("LOG").arg(operation)
         try await cmd.exec(self)
     }
-    /// List the ACL categories or the commands inside a category
+    /// Lists the ACL categories, or the commands inside a category.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
     /// O(1) since the categories and commands are a fixed set.
     /// ## Documentation
     /// view the docs for [ACL CAT](https://redis.io/commands/acl-cat)
-    public func acl_cat<T: FromRedisValue>(_ categoryname: String? = nil) async throws -> T {
-        let cmd = Cmd("ACL").arg("CAT").arg(categoryname)
+    public func acl_cat<T: FromRedisValue>(_ category: String? = nil) async throws -> T {
+        let cmd = Cmd("ACL").arg("CAT").arg(category)
         return try await cmd.query(self)
     }
-    /// List the ACL categories or the commands inside a category
+    /// Lists the ACL categories, or the commands inside a category.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
     /// O(1) since the categories and commands are a fixed set.
     /// ## Documentation
     /// view the docs for [ACL CAT](https://redis.io/commands/acl-cat)
-    public func acl_cat(_ categoryname: String? = nil) async throws {
-        let cmd = Cmd("ACL").arg("CAT").arg(categoryname)
+    public func acl_cat(_ category: String? = nil) async throws {
+        let cmd = Cmd("ACL").arg("CAT").arg(category)
         try await cmd.exec(self)
     }
-    /// Returns whether the user can execute the given command without executing the command.
+    /// Simulates the execution of a command by a user, without executing the command.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -134,7 +138,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("DRYRUN").arg(username).arg(command).arg(arg)
         return try await cmd.query(self)
     }
-    /// Returns whether the user can execute the given command without executing the command.
+    /// Simulates the execution of a command by a user, without executing the command.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -145,7 +149,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("DRYRUN").arg(username).arg(command).arg(arg)
         try await cmd.exec(self)
     }
-    /// List the username of all the configured ACL rules
+    /// Lists all ACL users.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -156,7 +160,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("USERS")
         return try await cmd.query(self)
     }
-    /// List the username of all the configured ACL rules
+    /// Lists all ACL users.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -167,7 +171,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("USERS")
         try await cmd.exec(self)
     }
-    /// Modify or create the rules for a specific ACL user
+    /// Creates and modifies an ACL user and its rules.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -181,7 +185,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("SETUSER").arg(username).arg(rule)
         return try await cmd.query(self)
     }
-    /// Modify or create the rules for a specific ACL user
+    /// Creates and modifies an ACL user and its rules.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -195,7 +199,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("SETUSER").arg(username).arg(rule)
         try await cmd.exec(self)
     }
-    /// Reload the ACLs from the configured ACL file
+    /// Reloads the rules from the configured ACL file.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -206,7 +210,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("LOAD")
         return try await cmd.query(self)
     }
-    /// Reload the ACLs from the configured ACL file
+    /// Reloads the rules from the configured ACL file.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -217,7 +221,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("LOAD")
         try await cmd.exec(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -228,7 +232,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -239,7 +243,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Remove the specified ACL users and the associated rules
+    /// Deletes ACL users, and terminates their connections.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -250,7 +254,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("DELUSER").arg(username)
         return try await cmd.query(self)
     }
-    /// Remove the specified ACL users and the associated rules
+    /// Deletes ACL users, and terminates their connections.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -261,7 +265,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("DELUSER").arg(username)
         try await cmd.exec(self)
     }
-    /// Generate a pseudorandom secure password to use for ACL users
+    /// Generates a pseudorandom, secure password that can be used to identify ACL users.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -272,7 +276,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("GENPASS").arg(bits)
         return try await cmd.query(self)
     }
-    /// Generate a pseudorandom secure password to use for ACL users
+    /// Generates a pseudorandom, secure password that can be used to identify ACL users.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -283,7 +287,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("GENPASS").arg(bits)
         try await cmd.exec(self)
     }
-    /// List the current ACL rules in ACL config file format
+    /// Dumps the effective rules in ACL file format.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -294,7 +298,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL").arg("LIST")
         return try await cmd.query(self)
     }
-    /// List the current ACL rules in ACL config file format
+    /// Dumps the effective rules in ACL file format.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -307,7 +311,7 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// Return the name of the user associated to the current connection
+    /// Returns the authenticated username of the current connection.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -318,7 +322,7 @@ extension RedisPipeline {
         let cmd = Cmd("ACL").arg("WHOAMI")
         return self.add_command(cmd)
     }
-    /// Get the rules for a specific ACL user
+    /// Lists the ACL rules of a user.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -332,7 +336,7 @@ extension RedisPipeline {
         let cmd = Cmd("ACL").arg("GETUSER").arg(username)
         return self.add_command(cmd)
     }
-    /// Save the current ACL rules in the configured ACL file
+    /// Saves the effective ACL rules in the configured ACL file.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -343,29 +347,31 @@ extension RedisPipeline {
         let cmd = Cmd("ACL").arg("SAVE")
         return self.add_command(cmd)
     }
-    /// List latest events denied because of ACLs in place
+    /// Lists recent security events generated due to ACL rules.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
     /// O(N) with N being the number of entries shown.
+    /// ## History
+    /// - 7.2.0, Added entry ID, timestamp created, and timestamp last updated.
     /// ## Documentation
     /// view the docs for [ACL LOG](https://redis.io/commands/acl-log)
     public func acl_log(_ operation: AclLogOperation? = nil) -> Self {
         let cmd = Cmd("ACL").arg("LOG").arg(operation)
         return self.add_command(cmd)
     }
-    /// List the ACL categories or the commands inside a category
+    /// Lists the ACL categories, or the commands inside a category.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
     /// O(1) since the categories and commands are a fixed set.
     /// ## Documentation
     /// view the docs for [ACL CAT](https://redis.io/commands/acl-cat)
-    public func acl_cat(_ categoryname: String? = nil) -> Self {
-        let cmd = Cmd("ACL").arg("CAT").arg(categoryname)
+    public func acl_cat(_ category: String? = nil) -> Self {
+        let cmd = Cmd("ACL").arg("CAT").arg(category)
         return self.add_command(cmd)
     }
-    /// Returns whether the user can execute the given command without executing the command.
+    /// Simulates the execution of a command by a user, without executing the command.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -376,7 +382,7 @@ extension RedisPipeline {
         let cmd = Cmd("ACL").arg("DRYRUN").arg(username).arg(command).arg(arg)
         return self.add_command(cmd)
     }
-    /// List the username of all the configured ACL rules
+    /// Lists all ACL users.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -387,7 +393,7 @@ extension RedisPipeline {
         let cmd = Cmd("ACL").arg("USERS")
         return self.add_command(cmd)
     }
-    /// Modify or create the rules for a specific ACL user
+    /// Creates and modifies an ACL user and its rules.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -401,7 +407,7 @@ extension RedisPipeline {
         let cmd = Cmd("ACL").arg("SETUSER").arg(username).arg(rule)
         return self.add_command(cmd)
     }
-    /// Reload the ACLs from the configured ACL file
+    /// Reloads the rules from the configured ACL file.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -412,7 +418,7 @@ extension RedisPipeline {
         let cmd = Cmd("ACL").arg("LOAD")
         return self.add_command(cmd)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -423,7 +429,7 @@ extension RedisPipeline {
         let cmd = Cmd("ACL").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Remove the specified ACL users and the associated rules
+    /// Deletes ACL users, and terminates their connections.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -434,7 +440,7 @@ extension RedisPipeline {
         let cmd = Cmd("ACL").arg("DELUSER").arg(username)
         return self.add_command(cmd)
     }
-    /// Generate a pseudorandom secure password to use for ACL users
+    /// Generates a pseudorandom, secure password that can be used to identify ACL users.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -445,7 +451,7 @@ extension RedisPipeline {
         let cmd = Cmd("ACL").arg("GENPASS").arg(bits)
         return self.add_command(cmd)
     }
-    /// List the current ACL rules in ACL config file format
+    /// Dumps the effective rules in ACL file format.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity

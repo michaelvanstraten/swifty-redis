@@ -2,35 +2,35 @@
 //  client.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Unblock a client blocked in a blocking command from a different connection
+    /// Unblocks a client blocked by a blocking command from a different connection.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
     /// O(log N) where N is the number of client connections
     /// ## Documentation
     /// view the docs for [CLIENT UNBLOCK](https://redis.io/commands/client-unblock)
-    public func client_unblock<T: FromRedisValue>(_ clientId: Int, _ timeoutError: ClientUnblockTimeouterror? = nil)
+    public func client_unblock<T: FromRedisValue>(_ clientId: Int, _ unblockType: ClientUnblockUnblocktype? = nil)
         async throws -> T
     {
-        let cmd = Cmd("CLIENT").arg("UNBLOCK").arg(clientId).arg(timeoutError)
+        let cmd = Cmd("CLIENT").arg("UNBLOCK").arg(clientId).arg(unblockType)
         return try await cmd.query(self)
     }
-    /// Unblock a client blocked in a blocking command from a different connection
+    /// Unblocks a client blocked by a blocking command from a different connection.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
     /// O(log N) where N is the number of client connections
     /// ## Documentation
     /// view the docs for [CLIENT UNBLOCK](https://redis.io/commands/client-unblock)
-    public func client_unblock(_ clientId: Int, _ timeoutError: ClientUnblockTimeouterror? = nil) async throws {
-        let cmd = Cmd("CLIENT").arg("UNBLOCK").arg(clientId).arg(timeoutError)
+    public func client_unblock(_ clientId: Int, _ unblockType: ClientUnblockUnblocktype? = nil) async throws {
+        let cmd = Cmd("CLIENT").arg("UNBLOCK").arg(clientId).arg(unblockType)
         try await cmd.exec(self)
     }
-    /// Returns the client ID for the current connection
+    /// Returns the unique client ID of the connection.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -41,7 +41,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("ID")
         return try await cmd.query(self)
     }
-    /// Returns the client ID for the current connection
+    /// Returns the unique client ID of the connection.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -52,7 +52,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("ID")
         try await cmd.exec(self)
     }
-    /// Set the current connection name
+    /// Sets the connection name.
     /// ## Available since
     /// 2.6.9
     /// ## Time complexity
@@ -63,7 +63,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("SETNAME").arg(connectionName)
         return try await cmd.query(self)
     }
-    /// Set the current connection name
+    /// Sets the connection name.
     /// ## Available since
     /// 2.6.9
     /// ## Time complexity
@@ -74,7 +74,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("SETNAME").arg(connectionName)
         try await cmd.exec(self)
     }
-    /// Get the list of client connections
+    /// Lists open connections.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -88,15 +88,15 @@ extension RedisConnection {
     /// - 7.0.3, Added `ssub` field.
     /// ## Documentation
     /// view the docs for [CLIENT LIST](https://redis.io/commands/client-list)
-    public func client_list<T: FromRedisValue>(
-        _ normalMasterReplicaPubsub: ClientListNormalmasterreplicapubsub? = nil, _ id: ClientListId? = nil
-    ) async throws -> T {
-        let cmd = Cmd("CLIENT").arg("LIST").arg((normalMasterReplicaPubsub != nil) ? "TYPE" : nil).arg(
-            normalMasterReplicaPubsub
-        ).arg((id != nil) ? "ID" : nil).arg(id)
+    public func client_list<T: FromRedisValue>(_ clientType: ClientListClienttype? = nil, _ clientId: Int...)
+        async throws -> T
+    {
+        let cmd = Cmd("CLIENT").arg("LIST").arg((clientType != nil) ? "TYPE" : nil).arg(clientType).arg(
+            (!clientId.isEmpty) ? "ID" : nil
+        ).arg(clientId)
         return try await cmd.query(self)
     }
-    /// Get the list of client connections
+    /// Lists open connections.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -110,15 +110,13 @@ extension RedisConnection {
     /// - 7.0.3, Added `ssub` field.
     /// ## Documentation
     /// view the docs for [CLIENT LIST](https://redis.io/commands/client-list)
-    public func client_list(
-        _ normalMasterReplicaPubsub: ClientListNormalmasterreplicapubsub? = nil, _ id: ClientListId? = nil
-    ) async throws {
-        let cmd = Cmd("CLIENT").arg("LIST").arg((normalMasterReplicaPubsub != nil) ? "TYPE" : nil).arg(
-            normalMasterReplicaPubsub
-        ).arg((id != nil) ? "ID" : nil).arg(id)
+    public func client_list(_ clientType: ClientListClienttype? = nil, _ clientId: Int...) async throws {
+        let cmd = Cmd("CLIENT").arg("LIST").arg((clientType != nil) ? "TYPE" : nil).arg(clientType).arg(
+            (!clientId.isEmpty) ? "ID" : nil
+        ).arg(clientId)
         try await cmd.exec(self)
     }
-    /// Returns information about the current client connection.
+    /// Returns information about the connection.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -129,7 +127,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("INFO")
         return try await cmd.query(self)
     }
-    /// Returns information about the current client connection.
+    /// Returns information about the connection.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -140,7 +138,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("INFO")
         try await cmd.exec(self)
     }
-    /// Get the current connection name
+    /// Returns the name of the connection.
     /// ## Available since
     /// 2.6.9
     /// ## Time complexity
@@ -151,7 +149,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("GETNAME")
         return try await cmd.query(self)
     }
-    /// Get the current connection name
+    /// Returns the name of the connection.
     /// ## Available since
     /// 2.6.9
     /// ## Time complexity
@@ -162,7 +160,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("GETNAME")
         try await cmd.exec(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -173,7 +171,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -184,7 +182,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Return information about server assisted client side caching for the current connection
+    /// Returns information about server-assisted client-side caching for the connection.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -195,7 +193,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("TRACKINGINFO")
         return try await cmd.query(self)
     }
-    /// Return information about server assisted client side caching for the current connection
+    /// Returns information about server-assisted client-side caching for the connection.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -206,7 +204,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("TRACKINGINFO")
         try await cmd.exec(self)
     }
-    /// Set client eviction mode for the current connection
+    /// Sets the client eviction mode of the connection.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -217,7 +215,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("NO_EVICT").arg(enabled)
         return try await cmd.query(self)
     }
-    /// Set client eviction mode for the current connection
+    /// Sets the client eviction mode of the connection.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -228,9 +226,9 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("NO_EVICT").arg(enabled)
         try await cmd.exec(self)
     }
-    /// Stop processing commands from clients for some time
+    /// Suspends commands processing.
     /// ## Available since
-    /// 2.9.50
+    /// 3.0.0
     /// ## Time complexity
     /// O(1)
     /// ## History
@@ -241,9 +239,9 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("PAUSE").arg(timeout).arg(mode)
         return try await cmd.query(self)
     }
-    /// Stop processing commands from clients for some time
+    /// Suspends commands processing.
     /// ## Available since
-    /// 2.9.50
+    /// 3.0.0
     /// ## Time complexity
     /// O(1)
     /// ## History
@@ -254,29 +252,29 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("PAUSE").arg(timeout).arg(mode)
         try await cmd.exec(self)
     }
-    /// Instruct the server whether to reply to commands
+    /// Instructs the server whether to reply to commands.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
     /// O(1)
     /// ## Documentation
     /// view the docs for [CLIENT REPLY](https://redis.io/commands/client-reply)
-    public func client_reply<T: FromRedisValue>(_ onOffSkip: ClientReplyOnoffskip) async throws -> T {
-        let cmd = Cmd("CLIENT").arg("REPLY").arg(onOffSkip)
+    public func client_reply<T: FromRedisValue>(_ action: ClientReplyAction) async throws -> T {
+        let cmd = Cmd("CLIENT").arg("REPLY").arg(action)
         return try await cmd.query(self)
     }
-    /// Instruct the server whether to reply to commands
+    /// Instructs the server whether to reply to commands.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
     /// O(1)
     /// ## Documentation
     /// view the docs for [CLIENT REPLY](https://redis.io/commands/client-reply)
-    public func client_reply(_ onOffSkip: ClientReplyOnoffskip) async throws {
-        let cmd = Cmd("CLIENT").arg("REPLY").arg(onOffSkip)
+    public func client_reply(_ action: ClientReplyAction) async throws {
+        let cmd = Cmd("CLIENT").arg("REPLY").arg(action)
         try await cmd.exec(self)
     }
-    /// Kill the connection of a client
+    /// Terminates open connections.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -293,7 +291,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("KILL").arg(filter)
         return try await cmd.query(self)
     }
-    /// Kill the connection of a client
+    /// Terminates open connections.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -310,7 +308,29 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("KILL").arg(filter)
         try await cmd.exec(self)
     }
-    /// Instruct the server about tracking or not keys in the next request
+    /// Controls whether commands sent by the client affect the LRU/LFU of accessed keys.
+    /// ## Available since
+    /// 7.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [CLIENT NO_TOUCH](https://redis.io/commands/client-no-touch)
+    public func client_no_touch<T: FromRedisValue>(_ enabled: ClientNoTouchEnabled) async throws -> T {
+        let cmd = Cmd("CLIENT").arg("NO_TOUCH").arg(enabled)
+        return try await cmd.query(self)
+    }
+    /// Controls whether commands sent by the client affect the LRU/LFU of accessed keys.
+    /// ## Available since
+    /// 7.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [CLIENT NO_TOUCH](https://redis.io/commands/client-no-touch)
+    public func client_no_touch(_ enabled: ClientNoTouchEnabled) async throws {
+        let cmd = Cmd("CLIENT").arg("NO_TOUCH").arg(enabled)
+        try await cmd.exec(self)
+    }
+    /// Instructs the server whether to track the keys in the next request.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -321,7 +341,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("CACHING").arg(mode)
         return try await cmd.query(self)
     }
-    /// Instruct the server about tracking or not keys in the next request
+    /// Instructs the server whether to track the keys in the next request.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -332,7 +352,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("CACHING").arg(mode)
         try await cmd.exec(self)
     }
-    /// Get tracking notifications redirection client ID if any
+    /// Returns the client ID to which the connection's tracking notifications are redirected.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -343,7 +363,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("GETREDIR")
         return try await cmd.query(self)
     }
-    /// Get tracking notifications redirection client ID if any
+    /// Returns the client ID to which the connection's tracking notifications are redirected.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -354,7 +374,29 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("GETREDIR")
         try await cmd.exec(self)
     }
-    /// Resume processing of clients that were paused
+    /// Sets information specific to the client or connection.
+    /// ## Available since
+    /// 7.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [CLIENT SETINFO](https://redis.io/commands/client-setinfo)
+    public func client_setinfo<T: FromRedisValue>(_ attr: ClientSetinfoAttr) async throws -> T {
+        let cmd = Cmd("CLIENT").arg("SETINFO").arg(attr)
+        return try await cmd.query(self)
+    }
+    /// Sets information specific to the client or connection.
+    /// ## Available since
+    /// 7.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [CLIENT SETINFO](https://redis.io/commands/client-setinfo)
+    public func client_setinfo(_ attr: ClientSetinfoAttr) async throws {
+        let cmd = Cmd("CLIENT").arg("SETINFO").arg(attr)
+        try await cmd.exec(self)
+    }
+    /// Resumes processing commands from paused clients.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -365,7 +407,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("UNPAUSE")
         return try await cmd.query(self)
     }
-    /// Resume processing of clients that were paused
+    /// Resumes processing commands from paused clients.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -376,7 +418,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT").arg("UNPAUSE")
         try await cmd.exec(self)
     }
-    /// Enable or disable server assisted client side caching support
+    /// Controls server-assisted client-side caching for the connection.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -392,7 +434,7 @@ extension RedisConnection {
         ).arg(prefix).arg(options)
         return try await cmd.query(self)
     }
-    /// Enable or disable server assisted client side caching support
+    /// Controls server-assisted client-side caching for the connection.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -410,18 +452,18 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// Unblock a client blocked in a blocking command from a different connection
+    /// Unblocks a client blocked by a blocking command from a different connection.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
     /// O(log N) where N is the number of client connections
     /// ## Documentation
     /// view the docs for [CLIENT UNBLOCK](https://redis.io/commands/client-unblock)
-    public func client_unblock(_ clientId: Int, _ timeoutError: ClientUnblockTimeouterror? = nil) -> Self {
-        let cmd = Cmd("CLIENT").arg("UNBLOCK").arg(clientId).arg(timeoutError)
+    public func client_unblock(_ clientId: Int, _ unblockType: ClientUnblockUnblocktype? = nil) -> Self {
+        let cmd = Cmd("CLIENT").arg("UNBLOCK").arg(clientId).arg(unblockType)
         return self.add_command(cmd)
     }
-    /// Returns the client ID for the current connection
+    /// Returns the unique client ID of the connection.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -432,7 +474,7 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("ID")
         return self.add_command(cmd)
     }
-    /// Set the current connection name
+    /// Sets the connection name.
     /// ## Available since
     /// 2.6.9
     /// ## Time complexity
@@ -443,7 +485,7 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("SETNAME").arg(connectionName)
         return self.add_command(cmd)
     }
-    /// Get the list of client connections
+    /// Lists open connections.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -457,15 +499,13 @@ extension RedisPipeline {
     /// - 7.0.3, Added `ssub` field.
     /// ## Documentation
     /// view the docs for [CLIENT LIST](https://redis.io/commands/client-list)
-    public func client_list(
-        _ normalMasterReplicaPubsub: ClientListNormalmasterreplicapubsub? = nil, _ id: ClientListId? = nil
-    ) -> Self {
-        let cmd = Cmd("CLIENT").arg("LIST").arg((normalMasterReplicaPubsub != nil) ? "TYPE" : nil).arg(
-            normalMasterReplicaPubsub
-        ).arg((id != nil) ? "ID" : nil).arg(id)
+    public func client_list(_ clientType: ClientListClienttype? = nil, _ clientId: Int...) -> Self {
+        let cmd = Cmd("CLIENT").arg("LIST").arg((clientType != nil) ? "TYPE" : nil).arg(clientType).arg(
+            (!clientId.isEmpty) ? "ID" : nil
+        ).arg(clientId)
         return self.add_command(cmd)
     }
-    /// Returns information about the current client connection.
+    /// Returns information about the connection.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -476,7 +516,7 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("INFO")
         return self.add_command(cmd)
     }
-    /// Get the current connection name
+    /// Returns the name of the connection.
     /// ## Available since
     /// 2.6.9
     /// ## Time complexity
@@ -487,7 +527,7 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("GETNAME")
         return self.add_command(cmd)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -498,7 +538,7 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Return information about server assisted client side caching for the current connection
+    /// Returns information about server-assisted client-side caching for the connection.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -509,7 +549,7 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("TRACKINGINFO")
         return self.add_command(cmd)
     }
-    /// Set client eviction mode for the current connection
+    /// Sets the client eviction mode of the connection.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -520,9 +560,9 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("NO_EVICT").arg(enabled)
         return self.add_command(cmd)
     }
-    /// Stop processing commands from clients for some time
+    /// Suspends commands processing.
     /// ## Available since
-    /// 2.9.50
+    /// 3.0.0
     /// ## Time complexity
     /// O(1)
     /// ## History
@@ -533,18 +573,18 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("PAUSE").arg(timeout).arg(mode)
         return self.add_command(cmd)
     }
-    /// Instruct the server whether to reply to commands
+    /// Instructs the server whether to reply to commands.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
     /// O(1)
     /// ## Documentation
     /// view the docs for [CLIENT REPLY](https://redis.io/commands/client-reply)
-    public func client_reply(_ onOffSkip: ClientReplyOnoffskip) -> Self {
-        let cmd = Cmd("CLIENT").arg("REPLY").arg(onOffSkip)
+    public func client_reply(_ action: ClientReplyAction) -> Self {
+        let cmd = Cmd("CLIENT").arg("REPLY").arg(action)
         return self.add_command(cmd)
     }
-    /// Kill the connection of a client
+    /// Terminates open connections.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -561,7 +601,18 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("KILL").arg(filter)
         return self.add_command(cmd)
     }
-    /// Instruct the server about tracking or not keys in the next request
+    /// Controls whether commands sent by the client affect the LRU/LFU of accessed keys.
+    /// ## Available since
+    /// 7.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [CLIENT NO_TOUCH](https://redis.io/commands/client-no-touch)
+    public func client_no_touch(_ enabled: ClientNoTouchEnabled) -> Self {
+        let cmd = Cmd("CLIENT").arg("NO_TOUCH").arg(enabled)
+        return self.add_command(cmd)
+    }
+    /// Instructs the server whether to track the keys in the next request.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -572,7 +623,7 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("CACHING").arg(mode)
         return self.add_command(cmd)
     }
-    /// Get tracking notifications redirection client ID if any
+    /// Returns the client ID to which the connection's tracking notifications are redirected.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -583,7 +634,18 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("GETREDIR")
         return self.add_command(cmd)
     }
-    /// Resume processing of clients that were paused
+    /// Sets information specific to the client or connection.
+    /// ## Available since
+    /// 7.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [CLIENT SETINFO](https://redis.io/commands/client-setinfo)
+    public func client_setinfo(_ attr: ClientSetinfoAttr) -> Self {
+        let cmd = Cmd("CLIENT").arg("SETINFO").arg(attr)
+        return self.add_command(cmd)
+    }
+    /// Resumes processing commands from paused clients.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -594,7 +656,7 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT").arg("UNPAUSE")
         return self.add_command(cmd)
     }
-    /// Enable or disable server assisted client side caching support
+    /// Controls server-assisted client-side caching for the connection.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -611,7 +673,7 @@ extension RedisPipeline {
         return self.add_command(cmd)
     }
 }
-public enum ClientUnblockTimeouterror: ToRedisArgs {
+public enum ClientUnblockUnblocktype: ToRedisArgs {
     case TIMEOUT
     case ERROR
     public func write_redis_args(out: inout [Data]) {
@@ -621,24 +683,19 @@ public enum ClientUnblockTimeouterror: ToRedisArgs {
         }
     }
 }
-public enum ClientListNormalmasterreplicapubsub: ToRedisArgs {
-    case normal
-    case master
-    case replica
-    case pubsub
+public enum ClientListClienttype: ToRedisArgs {
+    case NORMAL
+    case MASTER
+    case REPLICA
+    case PUBSUB
     public func write_redis_args(out: inout [Data]) {
         switch self {
-        case .normal: out.append("normal".data(using: .utf8)!)
-        case .master: out.append("master".data(using: .utf8)!)
-        case .replica: out.append("replica".data(using: .utf8)!)
-        case .pubsub: out.append("pubsub".data(using: .utf8)!)
+        case .NORMAL: out.append("normal".data(using: .utf8)!)
+        case .MASTER: out.append("master".data(using: .utf8)!)
+        case .REPLICA: out.append("replica".data(using: .utf8)!)
+        case .PUBSUB: out.append("pubsub".data(using: .utf8)!)
         }
     }
-}
-public struct ClientListId: ToRedisArgs {
-    let clientId: [Int]
-    public init(_ clientId: Int...) { self.clientId = clientId }
-    public func write_redis_args(out: inout [Data]) { clientId.write_redis_args(out: &out) }
 }
 public enum ClientNoEvictEnabled: ToRedisArgs {
     case ON
@@ -660,7 +717,7 @@ public enum ClientPauseMode: ToRedisArgs {
         }
     }
 }
-public enum ClientReplyOnoffskip: ToRedisArgs {
+public enum ClientReplyAction: ToRedisArgs {
     case ON
     case OFF
     case SKIP
@@ -673,29 +730,29 @@ public enum ClientReplyOnoffskip: ToRedisArgs {
     }
 }
 public enum ClientKillFilter: ToRedisArgs {
-    case IP_PORT(String)
+    case OLD_FORMAT(String)
     case NEW_FORMAT(Newformat)
     public func write_redis_args(out: inout [Data]) {
         switch self {
-        case .IP_PORT(let string): string.write_redis_args(out: &out)
+        case .OLD_FORMAT(let string): string.write_redis_args(out: &out)
         case .NEW_FORMAT(let newformat): newformat.write_redis_args(out: &out)
         }
     }
     public enum Newformat: ToRedisArgs {
         case ID(Int)
-        case TYPE(Normalmasterslavepubsub)
+        case TYPE(Clienttype)
         case USER(String)
         case ADDR(String)
         case LADDR(String)
-        case SKIPME(String)
+        case SKIPME(Skipme)
         public func write_redis_args(out: inout [Data]) {
             switch self {
             case .ID(let int):
                 out.append("ID".data(using: .utf8)!)
                 int.write_redis_args(out: &out)
-            case .TYPE(let normalmasterslavepubsub):
+            case .TYPE(let clienttype):
                 out.append("TYPE".data(using: .utf8)!)
-                normalmasterslavepubsub.write_redis_args(out: &out)
+                clienttype.write_redis_args(out: &out)
             case .USER(let string):
                 out.append("USER".data(using: .utf8)!)
                 string.write_redis_args(out: &out)
@@ -705,26 +762,46 @@ public enum ClientKillFilter: ToRedisArgs {
             case .LADDR(let string):
                 out.append("LADDR".data(using: .utf8)!)
                 string.write_redis_args(out: &out)
-            case .SKIPME(let string):
+            case .SKIPME(let skipme):
                 out.append("SKIPME".data(using: .utf8)!)
-                string.write_redis_args(out: &out)
+                skipme.write_redis_args(out: &out)
             }
         }
-        public enum Normalmasterslavepubsub: ToRedisArgs {
-            case normal
-            case master
-            case slave
-            case replica
-            case pubsub
+        public enum Clienttype: ToRedisArgs {
+            case NORMAL
+            case MASTER
+            case SLAVE
+            case REPLICA
+            case PUBSUB
             public func write_redis_args(out: inout [Data]) {
                 switch self {
-                case .normal: out.append("normal".data(using: .utf8)!)
-                case .master: out.append("master".data(using: .utf8)!)
-                case .slave: out.append("slave".data(using: .utf8)!)
-                case .replica: out.append("replica".data(using: .utf8)!)
-                case .pubsub: out.append("pubsub".data(using: .utf8)!)
+                case .NORMAL: out.append("normal".data(using: .utf8)!)
+                case .MASTER: out.append("master".data(using: .utf8)!)
+                case .SLAVE: out.append("slave".data(using: .utf8)!)
+                case .REPLICA: out.append("replica".data(using: .utf8)!)
+                case .PUBSUB: out.append("pubsub".data(using: .utf8)!)
                 }
             }
+        }
+        public enum Skipme: ToRedisArgs {
+            case YES
+            case NO
+            public func write_redis_args(out: inout [Data]) {
+                switch self {
+                case .YES: out.append("YES".data(using: .utf8)!)
+                case .NO: out.append("NO".data(using: .utf8)!)
+                }
+            }
+        }
+    }
+}
+public enum ClientNoTouchEnabled: ToRedisArgs {
+    case ON
+    case OFF
+    public func write_redis_args(out: inout [Data]) {
+        switch self {
+        case .ON: out.append("ON".data(using: .utf8)!)
+        case .OFF: out.append("OFF".data(using: .utf8)!)
         }
     }
 }
@@ -735,6 +812,20 @@ public enum ClientCachingMode: ToRedisArgs {
         switch self {
         case .YES: out.append("YES".data(using: .utf8)!)
         case .NO: out.append("NO".data(using: .utf8)!)
+        }
+    }
+}
+public enum ClientSetinfoAttr: ToRedisArgs {
+    case LIB_NAME(String)
+    case LIB_VER(String)
+    public func write_redis_args(out: inout [Data]) {
+        switch self {
+        case .LIB_NAME(let string):
+            out.append("lib-name".data(using: .utf8)!)
+            string.write_redis_args(out: &out)
+        case .LIB_VER(let string):
+            out.append("lib-ver".data(using: .utf8)!)
+            string.write_redis_args(out: &out)
         }
     }
 }

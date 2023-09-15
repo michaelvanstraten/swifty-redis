@@ -2,11 +2,11 @@
 //  pubsub.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Get the count of subscribers for channels
+    /// Returns a count of subscribers to channels.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -17,7 +17,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("NUMSUB").arg(channel)
         return try await cmd.query(self)
     }
-    /// Get the count of subscribers for channels
+    /// Returns a count of subscribers to channels.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -28,7 +28,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("NUMSUB").arg(channel)
         try await cmd.exec(self)
     }
-    /// Get the count of subscribers for shard channels
+    /// Returns the count of subscribers of shard channels.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -39,7 +39,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("SHARDNUMSUB").arg(shardchannel)
         return try await cmd.query(self)
     }
-    /// Get the count of subscribers for shard channels
+    /// Returns the count of subscribers of shard channels.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -50,7 +50,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("SHARDNUMSUB").arg(shardchannel)
         try await cmd.exec(self)
     }
-    /// List active shard channels
+    /// Returns the active shard channels.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -61,7 +61,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("SHARDCHANNELS").arg(pattern)
         return try await cmd.query(self)
     }
-    /// List active shard channels
+    /// Returns the active shard channels.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -72,7 +72,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("SHARDCHANNELS").arg(pattern)
         try await cmd.exec(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -83,7 +83,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -94,7 +94,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Get the count of unique patterns pattern subscriptions
+    /// Returns a count of unique pattern subscriptions.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -105,7 +105,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("NUMPAT")
         return try await cmd.query(self)
     }
-    /// Get the count of unique patterns pattern subscriptions
+    /// Returns a count of unique pattern subscriptions.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -116,7 +116,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("NUMPAT")
         try await cmd.exec(self)
     }
-    /// List active channels
+    /// Returns the active channels.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -127,7 +127,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB").arg("CHANNELS").arg(pattern)
         return try await cmd.query(self)
     }
-    /// List active channels
+    /// Returns the active channels.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -140,7 +140,7 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// Get the count of subscribers for channels
+    /// Returns a count of subscribers to channels.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -151,7 +151,7 @@ extension RedisPipeline {
         let cmd = Cmd("PUBSUB").arg("NUMSUB").arg(channel)
         return self.add_command(cmd)
     }
-    /// Get the count of subscribers for shard channels
+    /// Returns the count of subscribers of shard channels.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -162,7 +162,7 @@ extension RedisPipeline {
         let cmd = Cmd("PUBSUB").arg("SHARDNUMSUB").arg(shardchannel)
         return self.add_command(cmd)
     }
-    /// List active shard channels
+    /// Returns the active shard channels.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -173,7 +173,7 @@ extension RedisPipeline {
         let cmd = Cmd("PUBSUB").arg("SHARDCHANNELS").arg(pattern)
         return self.add_command(cmd)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -184,7 +184,7 @@ extension RedisPipeline {
         let cmd = Cmd("PUBSUB").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Get the count of unique patterns pattern subscriptions
+    /// Returns a count of unique pattern subscriptions.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -195,7 +195,7 @@ extension RedisPipeline {
         let cmd = Cmd("PUBSUB").arg("NUMPAT")
         return self.add_command(cmd)
     }
-    /// List active channels
+    /// Returns the active channels.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity

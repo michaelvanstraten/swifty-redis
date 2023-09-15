@@ -2,11 +2,11 @@
 //  memory.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Show memory usage details
+    /// Returns details about memory usage.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -17,7 +17,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("STATS")
         return try await cmd.query(self)
     }
-    /// Show memory usage details
+    /// Returns details about memory usage.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -28,7 +28,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("STATS")
         try await cmd.exec(self)
     }
-    /// Ask the allocator to release memory
+    /// Asks the allocator to release memory.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -39,7 +39,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("PURGE")
         return try await cmd.query(self)
     }
-    /// Ask the allocator to release memory
+    /// Asks the allocator to release memory.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -50,7 +50,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("PURGE")
         try await cmd.exec(self)
     }
-    /// Outputs memory problems report
+    /// Outputs a memory problems report.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -61,7 +61,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("DOCTOR")
         return try await cmd.query(self)
     }
-    /// Outputs memory problems report
+    /// Outputs a memory problems report.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -72,7 +72,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("DOCTOR")
         try await cmd.exec(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -83,7 +83,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -94,7 +94,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Estimate the memory usage of a key
+    /// Estimates the memory usage of a key.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -105,7 +105,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("USAGE").arg(key).arg((count != nil) ? "SAMPLES" : nil).arg(count)
         return try await cmd.query(self)
     }
-    /// Estimate the memory usage of a key
+    /// Estimates the memory usage of a key.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -116,7 +116,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("USAGE").arg(key).arg((count != nil) ? "SAMPLES" : nil).arg(count)
         try await cmd.exec(self)
     }
-    /// Show allocator internal stats
+    /// Returns the allocator statistics.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -127,7 +127,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY").arg("MALLOC_STATS")
         return try await cmd.query(self)
     }
-    /// Show allocator internal stats
+    /// Returns the allocator statistics.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -140,7 +140,7 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// Show memory usage details
+    /// Returns details about memory usage.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -151,7 +151,7 @@ extension RedisPipeline {
         let cmd = Cmd("MEMORY").arg("STATS")
         return self.add_command(cmd)
     }
-    /// Ask the allocator to release memory
+    /// Asks the allocator to release memory.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -162,7 +162,7 @@ extension RedisPipeline {
         let cmd = Cmd("MEMORY").arg("PURGE")
         return self.add_command(cmd)
     }
-    /// Outputs memory problems report
+    /// Outputs a memory problems report.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -173,7 +173,7 @@ extension RedisPipeline {
         let cmd = Cmd("MEMORY").arg("DOCTOR")
         return self.add_command(cmd)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -184,7 +184,7 @@ extension RedisPipeline {
         let cmd = Cmd("MEMORY").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Estimate the memory usage of a key
+    /// Estimates the memory usage of a key.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -195,7 +195,7 @@ extension RedisPipeline {
         let cmd = Cmd("MEMORY").arg("USAGE").arg(key).arg((count != nil) ? "SAMPLES" : nil).arg(count)
         return self.add_command(cmd)
     }
-    /// Show allocator internal stats
+    /// Returns the allocator statistics.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity

@@ -2,7 +2,7 @@ from collections import Counter
 from typing import List, Dict
 
 from templates import render
-from utils import camel_case, snake_case 
+from utils import camel_case, snake_case
 from config import names_to_substitute, token_to_substitute, arguments_to_ignore
 
 ARG_TYPES = {
@@ -33,11 +33,11 @@ class Argument:
         self.type = ARG_TYPES.get(desc["type"], "unsupported type")
         self.token = desc.get("token")
         self.backup_token = desc["name"]
-        self.sanitized_token = (
+        self.sanitized_token = snake_case(
             token_to_substitute.get(self.token, self.token)
             if self.token
-            else snake_case(self.backup_token).upper()
-        )
+            else self.backup_token
+        ).upper()
         self.is_optional = desc.get("optional", False)
         self.is_variadic = desc.get("multiple", False)
         self.must_have_label = False

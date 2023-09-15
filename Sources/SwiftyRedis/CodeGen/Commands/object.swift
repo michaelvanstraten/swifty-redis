@@ -2,11 +2,11 @@
 //  object.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Get the logarithmic access frequency counter of a Redis object
+    /// Returns the logarithmic access frequency counter of a Redis object.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -17,7 +17,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT").arg("FREQ").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the logarithmic access frequency counter of a Redis object
+    /// Returns the logarithmic access frequency counter of a Redis object.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -28,7 +28,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT").arg("FREQ").arg(key)
         try await cmd.exec(self)
     }
-    /// Get the number of references to the value of the key
+    /// Returns the reference count of a value of a key.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -39,7 +39,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT").arg("REFCOUNT").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the number of references to the value of the key
+    /// Returns the reference count of a value of a key.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -50,7 +50,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT").arg("REFCOUNT").arg(key)
         try await cmd.exec(self)
     }
-    /// Get the time since a Redis object was last accessed
+    /// Returns the time since the last access to a Redis object.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -61,7 +61,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT").arg("IDLETIME").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the time since a Redis object was last accessed
+    /// Returns the time since the last access to a Redis object.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -72,7 +72,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT").arg("IDLETIME").arg(key)
         try await cmd.exec(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -83,7 +83,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -94,7 +94,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Inspect the internal encoding of a Redis object
+    /// Returns the internal encoding of a Redis object.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -105,7 +105,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT").arg("ENCODING").arg(key)
         return try await cmd.query(self)
     }
-    /// Inspect the internal encoding of a Redis object
+    /// Returns the internal encoding of a Redis object.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -118,7 +118,7 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// Get the logarithmic access frequency counter of a Redis object
+    /// Returns the logarithmic access frequency counter of a Redis object.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -129,7 +129,7 @@ extension RedisPipeline {
         let cmd = Cmd("OBJECT").arg("FREQ").arg(key)
         return self.add_command(cmd)
     }
-    /// Get the number of references to the value of the key
+    /// Returns the reference count of a value of a key.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -140,7 +140,7 @@ extension RedisPipeline {
         let cmd = Cmd("OBJECT").arg("REFCOUNT").arg(key)
         return self.add_command(cmd)
     }
-    /// Get the time since a Redis object was last accessed
+    /// Returns the time since the last access to a Redis object.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -151,7 +151,7 @@ extension RedisPipeline {
         let cmd = Cmd("OBJECT").arg("IDLETIME").arg(key)
         return self.add_command(cmd)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -162,7 +162,7 @@ extension RedisPipeline {
         let cmd = Cmd("OBJECT").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Inspect the internal encoding of a Redis object
+    /// Returns the internal encoding of a Redis object.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity

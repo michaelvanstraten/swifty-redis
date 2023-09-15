@@ -2,11 +2,11 @@
 //  config.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -17,7 +17,7 @@ extension RedisConnection {
         let cmd = Cmd("CONFIG").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -28,7 +28,7 @@ extension RedisConnection {
         let cmd = Cmd("CONFIG").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Rewrite the configuration file with the in memory configuration
+    /// Persists the effective configuration to file.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -39,7 +39,7 @@ extension RedisConnection {
         let cmd = Cmd("CONFIG").arg("REWRITE")
         return try await cmd.query(self)
     }
-    /// Rewrite the configuration file with the in memory configuration
+    /// Persists the effective configuration to file.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -50,7 +50,7 @@ extension RedisConnection {
         let cmd = Cmd("CONFIG").arg("REWRITE")
         try await cmd.exec(self)
     }
-    /// Reset the stats returned by INFO
+    /// Resets the server's statistics.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -61,7 +61,7 @@ extension RedisConnection {
         let cmd = Cmd("CONFIG").arg("RESETSTAT")
         return try await cmd.query(self)
     }
-    /// Reset the stats returned by INFO
+    /// Resets the server's statistics.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -72,7 +72,7 @@ extension RedisConnection {
         let cmd = Cmd("CONFIG").arg("RESETSTAT")
         try await cmd.exec(self)
     }
-    /// Get the values of configuration parameters
+    /// Returns the effective values of configuration parameters.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -81,11 +81,11 @@ extension RedisConnection {
     /// - 7.0.0, Added the ability to pass multiple pattern parameters in one call
     /// ## Documentation
     /// view the docs for [CONFIG GET](https://redis.io/commands/config-get)
-    public func config_get<T: FromRedisValue>(_ parameter: ConfigGetParameter...) async throws -> T {
+    public func config_get<T: FromRedisValue>(_ parameter: String...) async throws -> T {
         let cmd = Cmd("CONFIG").arg("GET").arg(parameter)
         return try await cmd.query(self)
     }
-    /// Get the values of configuration parameters
+    /// Returns the effective values of configuration parameters.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -94,11 +94,11 @@ extension RedisConnection {
     /// - 7.0.0, Added the ability to pass multiple pattern parameters in one call
     /// ## Documentation
     /// view the docs for [CONFIG GET](https://redis.io/commands/config-get)
-    public func config_get(_ parameter: ConfigGetParameter...) async throws {
+    public func config_get(_ parameter: String...) async throws {
         let cmd = Cmd("CONFIG").arg("GET").arg(parameter)
         try await cmd.exec(self)
     }
-    /// Set configuration parameters to the given values
+    /// Sets configuration parameters in-flight.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -107,11 +107,11 @@ extension RedisConnection {
     /// - 7.0.0, Added the ability to set multiple parameters in one call.
     /// ## Documentation
     /// view the docs for [CONFIG SET](https://redis.io/commands/config-set)
-    public func config_set<T: FromRedisValue>(_ parameterValue: ConfigSetParametervalue...) async throws -> T {
-        let cmd = Cmd("CONFIG").arg("SET").arg(parameterValue)
+    public func config_set<T: FromRedisValue>(_ data: ConfigSetData...) async throws -> T {
+        let cmd = Cmd("CONFIG").arg("SET").arg(data)
         return try await cmd.query(self)
     }
-    /// Set configuration parameters to the given values
+    /// Sets configuration parameters in-flight.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -120,13 +120,13 @@ extension RedisConnection {
     /// - 7.0.0, Added the ability to set multiple parameters in one call.
     /// ## Documentation
     /// view the docs for [CONFIG SET](https://redis.io/commands/config-set)
-    public func config_set(_ parameterValue: ConfigSetParametervalue...) async throws {
-        let cmd = Cmd("CONFIG").arg("SET").arg(parameterValue)
+    public func config_set(_ data: ConfigSetData...) async throws {
+        let cmd = Cmd("CONFIG").arg("SET").arg(data)
         try await cmd.exec(self)
     }
 }
 extension RedisPipeline {
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -137,7 +137,7 @@ extension RedisPipeline {
         let cmd = Cmd("CONFIG").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Rewrite the configuration file with the in memory configuration
+    /// Persists the effective configuration to file.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -148,7 +148,7 @@ extension RedisPipeline {
         let cmd = Cmd("CONFIG").arg("REWRITE")
         return self.add_command(cmd)
     }
-    /// Reset the stats returned by INFO
+    /// Resets the server's statistics.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -159,7 +159,7 @@ extension RedisPipeline {
         let cmd = Cmd("CONFIG").arg("RESETSTAT")
         return self.add_command(cmd)
     }
-    /// Get the values of configuration parameters
+    /// Returns the effective values of configuration parameters.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -168,11 +168,11 @@ extension RedisPipeline {
     /// - 7.0.0, Added the ability to pass multiple pattern parameters in one call
     /// ## Documentation
     /// view the docs for [CONFIG GET](https://redis.io/commands/config-get)
-    public func config_get(_ parameter: ConfigGetParameter...) -> Self {
+    public func config_get(_ parameter: String...) -> Self {
         let cmd = Cmd("CONFIG").arg("GET").arg(parameter)
         return self.add_command(cmd)
     }
-    /// Set configuration parameters to the given values
+    /// Sets configuration parameters in-flight.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -181,17 +181,12 @@ extension RedisPipeline {
     /// - 7.0.0, Added the ability to set multiple parameters in one call.
     /// ## Documentation
     /// view the docs for [CONFIG SET](https://redis.io/commands/config-set)
-    public func config_set(_ parameterValue: ConfigSetParametervalue...) -> Self {
-        let cmd = Cmd("CONFIG").arg("SET").arg(parameterValue)
+    public func config_set(_ data: ConfigSetData...) -> Self {
+        let cmd = Cmd("CONFIG").arg("SET").arg(data)
         return self.add_command(cmd)
     }
 }
-public struct ConfigGetParameter: ToRedisArgs {
-    let parameter: String
-    public init(_ parameter: String) { self.parameter = parameter }
-    public func write_redis_args(out: inout [Data]) { parameter.write_redis_args(out: &out) }
-}
-public struct ConfigSetParametervalue: ToRedisArgs {
+public struct ConfigSetData: ToRedisArgs {
     let parameter: String
     let value: String
     public init(_ parameter: String, _ value: String) {

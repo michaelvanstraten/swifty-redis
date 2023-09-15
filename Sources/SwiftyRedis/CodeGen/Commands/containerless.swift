@@ -2,11 +2,11 @@
 //  containerless.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// A container for Access List Control commands
+    /// A container for Access List Control commands.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -17,7 +17,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL")
         return try await cmd.query(self)
     }
-    /// A container for Access List Control commands
+    /// A container for Access List Control commands.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -28,7 +28,7 @@ extension RedisConnection {
         let cmd = Cmd("ACL")
         try await cmd.exec(self)
     }
-    /// Append a value to a key
+    /// Appends a string to the value of a key. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -39,7 +39,7 @@ extension RedisConnection {
         let cmd = Cmd("APPEND").arg(key).arg(value)
         return try await cmd.query(self)
     }
-    /// Append a value to a key
+    /// Appends a string to the value of a key. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -50,7 +50,7 @@ extension RedisConnection {
         let cmd = Cmd("APPEND").arg(key).arg(value)
         try await cmd.exec(self)
     }
-    /// Sent by cluster clients after an -ASK redirect
+    /// Signals that a cluster client is following an -ASK redirect.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -61,7 +61,7 @@ extension RedisConnection {
         let cmd = Cmd("ASKING")
         return try await cmd.query(self)
     }
-    /// Sent by cluster clients after an -ASK redirect
+    /// Signals that a cluster client is following an -ASK redirect.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -72,7 +72,7 @@ extension RedisConnection {
         let cmd = Cmd("ASKING")
         try await cmd.exec(self)
     }
-    /// Authenticate to the server
+    /// Authenticates the connection.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -85,7 +85,7 @@ extension RedisConnection {
         let cmd = Cmd("AUTH").arg(username).arg(password)
         return try await cmd.query(self)
     }
-    /// Authenticate to the server
+    /// Authenticates the connection.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -98,7 +98,7 @@ extension RedisConnection {
         let cmd = Cmd("AUTH").arg(username).arg(password)
         try await cmd.exec(self)
     }
-    /// Asynchronously rewrite the append-only file
+    /// Asynchronously rewrites the append-only file to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -109,7 +109,7 @@ extension RedisConnection {
         let cmd = Cmd("BGREWRITEAOF")
         return try await cmd.query(self)
     }
-    /// Asynchronously rewrite the append-only file
+    /// Asynchronously rewrites the append-only file to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -120,7 +120,7 @@ extension RedisConnection {
         let cmd = Cmd("BGREWRITEAOF")
         try await cmd.exec(self)
     }
-    /// Asynchronously save the dataset to disk
+    /// Asynchronously saves the database(s) to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -133,7 +133,7 @@ extension RedisConnection {
         let cmd = Cmd("BGSAVE").arg(options)
         return try await cmd.query(self)
     }
-    /// Asynchronously save the dataset to disk
+    /// Asynchronously saves the database(s) to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -146,7 +146,7 @@ extension RedisConnection {
         let cmd = Cmd("BGSAVE").arg(options)
         try await cmd.exec(self)
     }
-    /// Count set bits in a string
+    /// Counts the number of set bits (population counting) in a string.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -155,11 +155,11 @@ extension RedisConnection {
     /// - 7.0.0, Added the `BYTE|BIT` option.
     /// ## Documentation
     /// view the docs for [BITCOUNT](https://redis.io/commands/bitcount)
-    public func bitcount<T: FromRedisValue>(_ key: String, _ index: BitcountIndex? = nil) async throws -> T {
-        let cmd = Cmd("BITCOUNT").arg(key).arg(index)
+    public func bitcount<T: FromRedisValue>(_ key: String, _ range: BitcountRange? = nil) async throws -> T {
+        let cmd = Cmd("BITCOUNT").arg(key).arg(range)
         return try await cmd.query(self)
     }
-    /// Count set bits in a string
+    /// Counts the number of set bits (population counting) in a string.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -168,11 +168,11 @@ extension RedisConnection {
     /// - 7.0.0, Added the `BYTE|BIT` option.
     /// ## Documentation
     /// view the docs for [BITCOUNT](https://redis.io/commands/bitcount)
-    public func bitcount(_ key: String, _ index: BitcountIndex? = nil) async throws {
-        let cmd = Cmd("BITCOUNT").arg(key).arg(index)
+    public func bitcount(_ key: String, _ range: BitcountRange? = nil) async throws {
+        let cmd = Cmd("BITCOUNT").arg(key).arg(range)
         try await cmd.exec(self)
     }
-    /// Perform arbitrary bitfield integer operations on strings
+    /// Performs arbitrary bitfield integer operations on strings.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -183,7 +183,7 @@ extension RedisConnection {
         let cmd = Cmd("BITFIELD").arg(key).arg(operation)
         return try await cmd.query(self)
     }
-    /// Perform arbitrary bitfield integer operations on strings
+    /// Performs arbitrary bitfield integer operations on strings.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -194,53 +194,53 @@ extension RedisConnection {
         let cmd = Cmd("BITFIELD").arg(key).arg(operation)
         try await cmd.exec(self)
     }
-    /// Perform arbitrary bitfield integer operations on strings. Read-only variant of BITFIELD
+    /// Performs arbitrary read-only bitfield integer operations on strings.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
     /// O(1) for each subcommand specified
     /// ## Documentation
     /// view the docs for [BITFIELD_RO](https://redis.io/commands/bitfield-ro)
-    public func bitfield_ro<T: FromRedisValue>(_ key: String, _ encodingOffset: BitfieldRoEncodingoffset...)
-        async throws -> T
+    public func bitfield_ro<T: FromRedisValue>(_ key: String, _ getBlock: BitfieldRoGetblock...) async throws -> T {
+        let cmd = Cmd("BITFIELD_RO").arg(key).arg((!getBlock.isEmpty) ? "GET" : nil).arg(getBlock)
+        return try await cmd.query(self)
+    }
+    /// Performs arbitrary read-only bitfield integer operations on strings.
+    /// ## Available since
+    /// 6.0.0
+    /// ## Time complexity
+    /// O(1) for each subcommand specified
+    /// ## Documentation
+    /// view the docs for [BITFIELD_RO](https://redis.io/commands/bitfield-ro)
+    public func bitfield_ro(_ key: String, _ getBlock: BitfieldRoGetblock...) async throws {
+        let cmd = Cmd("BITFIELD_RO").arg(key).arg((!getBlock.isEmpty) ? "GET" : nil).arg(getBlock)
+        try await cmd.exec(self)
+    }
+    /// Performs bitwise operations on multiple strings, and stores the result.
+    /// ## Available since
+    /// 2.6.0
+    /// ## Time complexity
+    /// O(N)
+    /// ## Documentation
+    /// view the docs for [BITOP](https://redis.io/commands/bitop)
+    public func bitop<T: FromRedisValue>(_ operation: BitopOperation, _ destkey: String, _ key: String...) async throws
+        -> T
     {
-        let cmd = Cmd("BITFIELD_RO").arg(key).arg((!encodingOffset.isEmpty) ? "GET" : nil).arg(encodingOffset)
+        let cmd = Cmd("BITOP").arg(operation).arg(destkey).arg(key)
         return try await cmd.query(self)
     }
-    /// Perform arbitrary bitfield integer operations on strings. Read-only variant of BITFIELD
-    /// ## Available since
-    /// 6.0.0
-    /// ## Time complexity
-    /// O(1) for each subcommand specified
-    /// ## Documentation
-    /// view the docs for [BITFIELD_RO](https://redis.io/commands/bitfield-ro)
-    public func bitfield_ro(_ key: String, _ encodingOffset: BitfieldRoEncodingoffset...) async throws {
-        let cmd = Cmd("BITFIELD_RO").arg(key).arg((!encodingOffset.isEmpty) ? "GET" : nil).arg(encodingOffset)
-        try await cmd.exec(self)
-    }
-    /// Perform bitwise operations between strings
+    /// Performs bitwise operations on multiple strings, and stores the result.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
     /// O(N)
     /// ## Documentation
     /// view the docs for [BITOP](https://redis.io/commands/bitop)
-    public func bitop<T: FromRedisValue>(_ operation: String, _ destkey: String, _ key: String...) async throws -> T {
-        let cmd = Cmd("BITOP").arg(operation).arg(destkey).arg(key)
-        return try await cmd.query(self)
-    }
-    /// Perform bitwise operations between strings
-    /// ## Available since
-    /// 2.6.0
-    /// ## Time complexity
-    /// O(N)
-    /// ## Documentation
-    /// view the docs for [BITOP](https://redis.io/commands/bitop)
-    public func bitop(_ operation: String, _ destkey: String, _ key: String...) async throws {
+    public func bitop(_ operation: BitopOperation, _ destkey: String, _ key: String...) async throws {
         let cmd = Cmd("BITOP").arg(operation).arg(destkey).arg(key)
         try await cmd.exec(self)
     }
-    /// Find first bit set or clear in a string
+    /// Finds the first set (1) or clear (0) bit in a string.
     /// ## Available since
     /// 2.8.7
     /// ## Time complexity
@@ -249,11 +249,11 @@ extension RedisConnection {
     /// - 7.0.0, Added the `BYTE|BIT` option.
     /// ## Documentation
     /// view the docs for [BITPOS](https://redis.io/commands/bitpos)
-    public func bitpos<T: FromRedisValue>(_ key: String, _ bit: Int, _ index: BitposIndex? = nil) async throws -> T {
-        let cmd = Cmd("BITPOS").arg(key).arg(bit).arg(index)
+    public func bitpos<T: FromRedisValue>(_ key: String, _ bit: Int, _ range: BitposRange? = nil) async throws -> T {
+        let cmd = Cmd("BITPOS").arg(key).arg(bit).arg(range)
         return try await cmd.query(self)
     }
-    /// Find first bit set or clear in a string
+    /// Finds the first set (1) or clear (0) bit in a string.
     /// ## Available since
     /// 2.8.7
     /// ## Time complexity
@@ -262,11 +262,11 @@ extension RedisConnection {
     /// - 7.0.0, Added the `BYTE|BIT` option.
     /// ## Documentation
     /// view the docs for [BITPOS](https://redis.io/commands/bitpos)
-    public func bitpos(_ key: String, _ bit: Int, _ index: BitposIndex? = nil) async throws {
-        let cmd = Cmd("BITPOS").arg(key).arg(bit).arg(index)
+    public func bitpos(_ key: String, _ bit: Int, _ range: BitposRange? = nil) async throws {
+        let cmd = Cmd("BITPOS").arg(key).arg(bit).arg(range)
         try await cmd.exec(self)
     }
-    /// Pop an element from a list, push it to another list and return it; or block until one is available
+    /// Pops an element from a list, pushes it to another list and returns it. Blocks until an element is available otherwise. Deletes the list if the last element was moved.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -280,7 +280,7 @@ extension RedisConnection {
         let cmd = Cmd("BLMOVE").arg(source).arg(destination).arg(wherefrom).arg(whereto).arg(timeout)
         return try await cmd.query(self)
     }
-    /// Pop an element from a list, push it to another list and return it; or block until one is available
+    /// Pops an element from a list, pushes it to another list and returns it. Blocks until an element is available otherwise. Deletes the list if the last element was moved.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -294,7 +294,7 @@ extension RedisConnection {
         let cmd = Cmd("BLMOVE").arg(source).arg(destination).arg(wherefrom).arg(whereto).arg(timeout)
         try await cmd.exec(self)
     }
-    /// Pop elements from a list, or block until one is available
+    /// Pops the first element from one of multiple lists. Blocks until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -308,7 +308,7 @@ extension RedisConnection {
             count)
         return try await cmd.query(self)
     }
-    /// Pop elements from a list, or block until one is available
+    /// Pops the first element from one of multiple lists. Blocks until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -322,7 +322,7 @@ extension RedisConnection {
             count)
         try await cmd.exec(self)
     }
-    /// Remove and get the first element in a list, or block until one is available
+    /// Removes and returns the first element in a list. Blocks until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -335,7 +335,7 @@ extension RedisConnection {
         let cmd = Cmd("BLPOP").arg(key).arg(timeout)
         return try await cmd.query(self)
     }
-    /// Remove and get the first element in a list, or block until one is available
+    /// Removes and returns the first element in a list. Blocks until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -348,7 +348,7 @@ extension RedisConnection {
         let cmd = Cmd("BLPOP").arg(key).arg(timeout)
         try await cmd.exec(self)
     }
-    /// Remove and get the last element in a list, or block until one is available
+    /// Removes and returns the last element in a list. Blocks until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -361,7 +361,7 @@ extension RedisConnection {
         let cmd = Cmd("BRPOP").arg(key).arg(timeout)
         return try await cmd.query(self)
     }
-    /// Remove and get the last element in a list, or block until one is available
+    /// Removes and returns the last element in a list. Blocks until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -374,7 +374,7 @@ extension RedisConnection {
         let cmd = Cmd("BRPOP").arg(key).arg(timeout)
         try await cmd.exec(self)
     }
-    /// Pop an element from a list, push it to another list and return it; or block until one is available
+    /// Pops an element from a list, pushes it to another list and returns it. Block until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -389,7 +389,7 @@ extension RedisConnection {
         let cmd = Cmd("BRPOPLPUSH").arg(source).arg(destination).arg(timeout)
         return try await cmd.query(self)
     }
-    /// Pop an element from a list, push it to another list and return it; or block until one is available
+    /// Pops an element from a list, pushes it to another list and returns it. Block until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -402,7 +402,7 @@ extension RedisConnection {
         let cmd = Cmd("BRPOPLPUSH").arg(source).arg(destination).arg(timeout)
         try await cmd.exec(self)
     }
-    /// Remove and return members with scores in a sorted set or block until one is available
+    /// Removes and returns a member by score from one or more sorted sets. Blocks until a member is available otherwise. Deletes the sorted set if the last element was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -416,7 +416,7 @@ extension RedisConnection {
             count)
         return try await cmd.query(self)
     }
-    /// Remove and return members with scores in a sorted set or block until one is available
+    /// Removes and returns a member by score from one or more sorted sets. Blocks until a member is available otherwise. Deletes the sorted set if the last element was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -430,7 +430,7 @@ extension RedisConnection {
             count)
         try await cmd.exec(self)
     }
-    /// Remove and return the member with the highest score from one or more sorted sets, or block until one is available
+    /// Removes and returns the member with the highest score from one or more sorted sets. Blocks until a member available otherwise.  Deletes the sorted set if the last element was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -443,7 +443,7 @@ extension RedisConnection {
         let cmd = Cmd("BZPOPMAX").arg(key).arg(timeout)
         return try await cmd.query(self)
     }
-    /// Remove and return the member with the highest score from one or more sorted sets, or block until one is available
+    /// Removes and returns the member with the highest score from one or more sorted sets. Blocks until a member available otherwise.  Deletes the sorted set if the last element was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -456,7 +456,7 @@ extension RedisConnection {
         let cmd = Cmd("BZPOPMAX").arg(key).arg(timeout)
         try await cmd.exec(self)
     }
-    /// Remove and return the member with the lowest score from one or more sorted sets, or block until one is available
+    /// Removes and returns the member with the lowest score from one or more sorted sets. Blocks until a member is available otherwise. Deletes the sorted set if the last element was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -469,7 +469,7 @@ extension RedisConnection {
         let cmd = Cmd("BZPOPMIN").arg(key).arg(timeout)
         return try await cmd.query(self)
     }
-    /// Remove and return the member with the lowest score from one or more sorted sets, or block until one is available
+    /// Removes and returns the member with the lowest score from one or more sorted sets. Blocks until a member is available otherwise. Deletes the sorted set if the last element was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -482,7 +482,7 @@ extension RedisConnection {
         let cmd = Cmd("BZPOPMIN").arg(key).arg(timeout)
         try await cmd.exec(self)
     }
-    /// A container for client connection commands
+    /// A container for client connection commands.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -493,7 +493,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT")
         return try await cmd.query(self)
     }
-    /// A container for client connection commands
+    /// A container for client connection commands.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -504,7 +504,7 @@ extension RedisConnection {
         let cmd = Cmd("CLIENT")
         try await cmd.exec(self)
     }
-    /// A container for cluster commands
+    /// A container for Redis Cluster commands.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -515,7 +515,7 @@ extension RedisConnection {
         let cmd = Cmd("CLUSTER")
         return try await cmd.query(self)
     }
-    /// A container for cluster commands
+    /// A container for Redis Cluster commands.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -526,7 +526,7 @@ extension RedisConnection {
         let cmd = Cmd("CLUSTER")
         try await cmd.exec(self)
     }
-    /// Get array of Redis command details
+    /// Returns detailed information about all commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -537,7 +537,7 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND")
         return try await cmd.query(self)
     }
-    /// Get array of Redis command details
+    /// Returns detailed information about all commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -548,7 +548,7 @@ extension RedisConnection {
         let cmd = Cmd("COMMAND")
         try await cmd.exec(self)
     }
-    /// A container for server configuration commands
+    /// A container for server configuration commands.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -559,7 +559,7 @@ extension RedisConnection {
         let cmd = Cmd("CONFIG")
         return try await cmd.query(self)
     }
-    /// A container for server configuration commands
+    /// A container for server configuration commands.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -570,7 +570,7 @@ extension RedisConnection {
         let cmd = Cmd("CONFIG")
         try await cmd.exec(self)
     }
-    /// Copy a key
+    /// Copies the value of a key to a new key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -584,7 +584,7 @@ extension RedisConnection {
             .arg(options)
         return try await cmd.query(self)
     }
-    /// Copy a key
+    /// Copies the value of a key to a new key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -598,7 +598,7 @@ extension RedisConnection {
             .arg(options)
         try await cmd.exec(self)
     }
-    /// Return the number of keys in the selected database
+    /// Returns the number of keys in the database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -609,7 +609,7 @@ extension RedisConnection {
         let cmd = Cmd("DBSIZE")
         return try await cmd.query(self)
     }
-    /// Return the number of keys in the selected database
+    /// Returns the number of keys in the database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -620,7 +620,7 @@ extension RedisConnection {
         let cmd = Cmd("DBSIZE")
         try await cmd.exec(self)
     }
-    /// A container for debugging commands
+    /// A container for debugging commands.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -631,7 +631,7 @@ extension RedisConnection {
         let cmd = Cmd("DEBUG")
         return try await cmd.query(self)
     }
-    /// A container for debugging commands
+    /// A container for debugging commands.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -642,7 +642,7 @@ extension RedisConnection {
         let cmd = Cmd("DEBUG")
         try await cmd.exec(self)
     }
-    /// Decrement the integer value of a key by one
+    /// Decrements the integer value of a key by one. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -653,7 +653,7 @@ extension RedisConnection {
         let cmd = Cmd("DECR").arg(key)
         return try await cmd.query(self)
     }
-    /// Decrement the integer value of a key by one
+    /// Decrements the integer value of a key by one. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -664,7 +664,7 @@ extension RedisConnection {
         let cmd = Cmd("DECR").arg(key)
         try await cmd.exec(self)
     }
-    /// Decrement the integer value of a key by the given number
+    /// Decrements a number from the integer value of a key. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -675,7 +675,7 @@ extension RedisConnection {
         let cmd = Cmd("DECRBY").arg(key).arg(decrement)
         return try await cmd.query(self)
     }
-    /// Decrement the integer value of a key by the given number
+    /// Decrements a number from the integer value of a key. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -686,7 +686,7 @@ extension RedisConnection {
         let cmd = Cmd("DECRBY").arg(key).arg(decrement)
         try await cmd.exec(self)
     }
-    /// Delete a key
+    /// Deletes one or more keys.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -697,7 +697,7 @@ extension RedisConnection {
         let cmd = Cmd("DEL").arg(key)
         return try await cmd.query(self)
     }
-    /// Delete a key
+    /// Deletes one or more keys.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -708,7 +708,7 @@ extension RedisConnection {
         let cmd = Cmd("DEL").arg(key)
         try await cmd.exec(self)
     }
-    /// Discard all commands issued after MULTI
+    /// Discards a transaction.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -719,7 +719,7 @@ extension RedisConnection {
         let cmd = Cmd("DISCARD")
         return try await cmd.query(self)
     }
-    /// Discard all commands issued after MULTI
+    /// Discards a transaction.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -730,7 +730,7 @@ extension RedisConnection {
         let cmd = Cmd("DISCARD")
         try await cmd.exec(self)
     }
-    /// Return a serialized version of the value stored at the specified key.
+    /// Returns a serialized representation of the value stored at a key.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -741,7 +741,7 @@ extension RedisConnection {
         let cmd = Cmd("DUMP").arg(key)
         return try await cmd.query(self)
     }
-    /// Return a serialized version of the value stored at the specified key.
+    /// Returns a serialized representation of the value stored at a key.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -752,7 +752,7 @@ extension RedisConnection {
         let cmd = Cmd("DUMP").arg(key)
         try await cmd.exec(self)
     }
-    /// Echo the given string
+    /// Returns the given string.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -763,7 +763,7 @@ extension RedisConnection {
         let cmd = Cmd("ECHO").arg(message)
         return try await cmd.query(self)
     }
-    /// Echo the given string
+    /// Returns the given string.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -774,7 +774,7 @@ extension RedisConnection {
         let cmd = Cmd("ECHO").arg(message)
         try await cmd.exec(self)
     }
-    /// Execute a Lua script server side
+    /// Executes a server-side Lua script.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -787,7 +787,7 @@ extension RedisConnection {
         let cmd = Cmd("EVAL").arg(script).arg(numkeys).arg(key).arg(arg)
         return try await cmd.query(self)
     }
-    /// Execute a Lua script server side
+    /// Executes a server-side Lua script.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -798,7 +798,7 @@ extension RedisConnection {
         let cmd = Cmd("EVAL").arg(script).arg(numkeys).arg(key).arg(arg)
         try await cmd.exec(self)
     }
-    /// Execute a Lua script server side
+    /// Executes a server-side Lua script by SHA1 digest.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -811,7 +811,7 @@ extension RedisConnection {
         let cmd = Cmd("EVALSHA").arg(sha1).arg(numkeys).arg(key).arg(arg)
         return try await cmd.query(self)
     }
-    /// Execute a Lua script server side
+    /// Executes a server-side Lua script by SHA1 digest.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -822,7 +822,7 @@ extension RedisConnection {
         let cmd = Cmd("EVALSHA").arg(sha1).arg(numkeys).arg(key).arg(arg)
         try await cmd.exec(self)
     }
-    /// Execute a read-only Lua script server side
+    /// Executes a read-only server-side Lua script by SHA1 digest.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -835,7 +835,7 @@ extension RedisConnection {
         let cmd = Cmd("EVALSHA_RO").arg(sha1).arg(numkeys).arg(key).arg(arg)
         return try await cmd.query(self)
     }
-    /// Execute a read-only Lua script server side
+    /// Executes a read-only server-side Lua script by SHA1 digest.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -846,7 +846,7 @@ extension RedisConnection {
         let cmd = Cmd("EVALSHA_RO").arg(sha1).arg(numkeys).arg(key).arg(arg)
         try await cmd.exec(self)
     }
-    /// Execute a read-only Lua script server side
+    /// Executes a read-only server-side Lua script.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -859,7 +859,7 @@ extension RedisConnection {
         let cmd = Cmd("EVAL_RO").arg(script).arg(numkeys).arg(key).arg(arg)
         return try await cmd.query(self)
     }
-    /// Execute a read-only Lua script server side
+    /// Executes a read-only server-side Lua script.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -870,7 +870,7 @@ extension RedisConnection {
         let cmd = Cmd("EVAL_RO").arg(script).arg(numkeys).arg(key).arg(arg)
         try await cmd.exec(self)
     }
-    /// Execute all commands issued after MULTI
+    /// Executes all commands in a transaction.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -881,7 +881,7 @@ extension RedisConnection {
         let cmd = Cmd("EXEC")
         return try await cmd.query(self)
     }
-    /// Execute all commands issued after MULTI
+    /// Executes all commands in a transaction.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -892,7 +892,7 @@ extension RedisConnection {
         let cmd = Cmd("EXEC")
         try await cmd.exec(self)
     }
-    /// Determine if a key exists
+    /// Determines whether one or more keys exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -905,7 +905,7 @@ extension RedisConnection {
         let cmd = Cmd("EXISTS").arg(key)
         return try await cmd.query(self)
     }
-    /// Determine if a key exists
+    /// Determines whether one or more keys exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -918,7 +918,7 @@ extension RedisConnection {
         let cmd = Cmd("EXISTS").arg(key)
         try await cmd.exec(self)
     }
-    /// Set a key's time to live in seconds
+    /// Sets the expiration time of a key in seconds.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -933,7 +933,7 @@ extension RedisConnection {
         let cmd = Cmd("EXPIRE").arg(key).arg(seconds).arg(condition)
         return try await cmd.query(self)
     }
-    /// Set a key's time to live in seconds
+    /// Sets the expiration time of a key in seconds.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -946,7 +946,7 @@ extension RedisConnection {
         let cmd = Cmd("EXPIRE").arg(key).arg(seconds).arg(condition)
         try await cmd.exec(self)
     }
-    /// Set the expiration for a key as a UNIX timestamp
+    /// Sets the expiration time of a key to a Unix timestamp.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -961,7 +961,7 @@ extension RedisConnection {
         let cmd = Cmd("EXPIREAT").arg(key).arg(unixTimeSeconds).arg(condition)
         return try await cmd.query(self)
     }
-    /// Set the expiration for a key as a UNIX timestamp
+    /// Sets the expiration time of a key to a Unix timestamp.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -974,7 +974,7 @@ extension RedisConnection {
         let cmd = Cmd("EXPIREAT").arg(key).arg(unixTimeSeconds).arg(condition)
         try await cmd.exec(self)
     }
-    /// Get the expiration Unix timestamp for a key
+    /// Returns the expiration time of a key as a Unix timestamp.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -985,7 +985,7 @@ extension RedisConnection {
         let cmd = Cmd("EXPIRETIME").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the expiration Unix timestamp for a key
+    /// Returns the expiration time of a key as a Unix timestamp.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -996,7 +996,7 @@ extension RedisConnection {
         let cmd = Cmd("EXPIRETIME").arg(key)
         try await cmd.exec(self)
     }
-    /// Start a coordinated failover between this server and one of its replicas.
+    /// Starts a coordinated failover from a server to one of its replicas.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1011,7 +1011,7 @@ extension RedisConnection {
         ).arg(milliseconds).arg(options)
         return try await cmd.query(self)
     }
-    /// Start a coordinated failover between this server and one of its replicas.
+    /// Starts a coordinated failover from a server to one of its replicas.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1026,7 +1026,7 @@ extension RedisConnection {
         ).arg(milliseconds).arg(options)
         try await cmd.exec(self)
     }
-    /// Invoke a function
+    /// Invokes a function.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -1039,7 +1039,7 @@ extension RedisConnection {
         let cmd = Cmd("FCALL").arg(function).arg(numkeys).arg(key).arg(arg)
         return try await cmd.query(self)
     }
-    /// Invoke a function
+    /// Invokes a function.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -1050,7 +1050,7 @@ extension RedisConnection {
         let cmd = Cmd("FCALL").arg(function).arg(numkeys).arg(key).arg(arg)
         try await cmd.exec(self)
     }
-    /// Invoke a read-only function
+    /// Invokes a read-only function.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -1063,7 +1063,7 @@ extension RedisConnection {
         let cmd = Cmd("FCALL_RO").arg(function).arg(numkeys).arg(key).arg(arg)
         return try await cmd.query(self)
     }
-    /// Invoke a read-only function
+    /// Invokes a read-only function.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -1074,7 +1074,7 @@ extension RedisConnection {
         let cmd = Cmd("FCALL_RO").arg(function).arg(numkeys).arg(key).arg(arg)
         try await cmd.exec(self)
     }
-    /// Remove all keys from all databases
+    /// Removes all keys from all databases.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -1084,11 +1084,11 @@ extension RedisConnection {
     /// - 6.2.0, Added the `SYNC` flushing mode modifier.
     /// ## Documentation
     /// view the docs for [FLUSHALL](https://redis.io/commands/flushall)
-    public func flushall<T: FromRedisValue>(_ async: FlushallAsync? = nil) async throws -> T {
-        let cmd = Cmd("FLUSHALL").arg(async)
+    public func flushall<T: FromRedisValue>(_ flushType: FlushallFlushtype? = nil) async throws -> T {
+        let cmd = Cmd("FLUSHALL").arg(flushType)
         return try await cmd.query(self)
     }
-    /// Remove all keys from all databases
+    /// Removes all keys from all databases.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -1098,11 +1098,11 @@ extension RedisConnection {
     /// - 6.2.0, Added the `SYNC` flushing mode modifier.
     /// ## Documentation
     /// view the docs for [FLUSHALL](https://redis.io/commands/flushall)
-    public func flushall(_ async: FlushallAsync? = nil) async throws {
-        let cmd = Cmd("FLUSHALL").arg(async)
+    public func flushall(_ flushType: FlushallFlushtype? = nil) async throws {
+        let cmd = Cmd("FLUSHALL").arg(flushType)
         try await cmd.exec(self)
     }
-    /// Remove all keys from the current database
+    /// Remove all keys from the current database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -1112,11 +1112,11 @@ extension RedisConnection {
     /// - 6.2.0, Added the `SYNC` flushing mode modifier.
     /// ## Documentation
     /// view the docs for [FLUSHDB](https://redis.io/commands/flushdb)
-    public func flushdb<T: FromRedisValue>(_ async: FlushdbAsync? = nil) async throws -> T {
-        let cmd = Cmd("FLUSHDB").arg(async)
+    public func flushdb<T: FromRedisValue>(_ flushType: FlushdbFlushtype? = nil) async throws -> T {
+        let cmd = Cmd("FLUSHDB").arg(flushType)
         return try await cmd.query(self)
     }
-    /// Remove all keys from the current database
+    /// Remove all keys from the current database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -1126,11 +1126,11 @@ extension RedisConnection {
     /// - 6.2.0, Added the `SYNC` flushing mode modifier.
     /// ## Documentation
     /// view the docs for [FLUSHDB](https://redis.io/commands/flushdb)
-    public func flushdb(_ async: FlushdbAsync? = nil) async throws {
-        let cmd = Cmd("FLUSHDB").arg(async)
+    public func flushdb(_ flushType: FlushdbFlushtype? = nil) async throws {
+        let cmd = Cmd("FLUSHDB").arg(flushType)
         try await cmd.exec(self)
     }
-    /// A container for function commands
+    /// A container for function commands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -1141,7 +1141,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION")
         return try await cmd.query(self)
     }
-    /// A container for function commands
+    /// A container for function commands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -1152,7 +1152,7 @@ extension RedisConnection {
         let cmd = Cmd("FUNCTION")
         try await cmd.exec(self)
     }
-    /// Add one or more geospatial items in the geospatial index represented using a sorted set
+    /// Adds one or more members to a geospatial index. The key is created if it doesn't exist.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -1162,13 +1162,12 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [GEOADD](https://redis.io/commands/geoadd)
     public func geoadd<T: FromRedisValue>(
-        _ key: String, _ condition: GeoaddCondition? = nil, _ longitudeLatitudeMember: GeoaddLongitudelatitudemember...,
-        options: GeoaddOptions? = nil
+        _ key: String, _ condition: GeoaddCondition? = nil, _ data: GeoaddData..., options: GeoaddOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("GEOADD").arg(key).arg(condition).arg(longitudeLatitudeMember).arg(options)
+        let cmd = Cmd("GEOADD").arg(key).arg(condition).arg(data).arg(options)
         return try await cmd.query(self)
     }
-    /// Add one or more geospatial items in the geospatial index represented using a sorted set
+    /// Adds one or more members to a geospatial index. The key is created if it doesn't exist.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -1178,17 +1177,16 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [GEOADD](https://redis.io/commands/geoadd)
     public func geoadd(
-        _ key: String, _ condition: GeoaddCondition? = nil, _ longitudeLatitudeMember: GeoaddLongitudelatitudemember...,
-        options: GeoaddOptions? = nil
+        _ key: String, _ condition: GeoaddCondition? = nil, _ data: GeoaddData..., options: GeoaddOptions? = nil
     ) async throws {
-        let cmd = Cmd("GEOADD").arg(key).arg(condition).arg(longitudeLatitudeMember).arg(options)
+        let cmd = Cmd("GEOADD").arg(key).arg(condition).arg(data).arg(options)
         try await cmd.exec(self)
     }
-    /// Returns the distance between two members of a geospatial index
+    /// Returns the distance between two members of a geospatial index.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
-    /// O(log(N))
+    /// O(1)
     /// ## Documentation
     /// view the docs for [GEODIST](https://redis.io/commands/geodist)
     public func geodist<T: FromRedisValue>(
@@ -1197,62 +1195,62 @@ extension RedisConnection {
         let cmd = Cmd("GEODIST").arg(key).arg(member1).arg(member2).arg(unit)
         return try await cmd.query(self)
     }
-    /// Returns the distance between two members of a geospatial index
+    /// Returns the distance between two members of a geospatial index.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
-    /// O(log(N))
+    /// O(1)
     /// ## Documentation
     /// view the docs for [GEODIST](https://redis.io/commands/geodist)
     public func geodist(_ key: String, _ member1: String, _ member2: String, _ unit: GeodistUnit? = nil) async throws {
         let cmd = Cmd("GEODIST").arg(key).arg(member1).arg(member2).arg(unit)
         try await cmd.exec(self)
     }
-    /// Returns members of a geospatial index as standard geohash strings
+    /// Returns members from a geospatial index as geohash strings.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
-    /// O(log(N)) for each member requested, where N is the number of elements in the sorted set.
+    /// O(1) for each member requested.
     /// ## Documentation
     /// view the docs for [GEOHASH](https://redis.io/commands/geohash)
     public func geohash<T: FromRedisValue>(_ key: String, _ member: String...) async throws -> T {
         let cmd = Cmd("GEOHASH").arg(key).arg(member)
         return try await cmd.query(self)
     }
-    /// Returns members of a geospatial index as standard geohash strings
+    /// Returns members from a geospatial index as geohash strings.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
-    /// O(log(N)) for each member requested, where N is the number of elements in the sorted set.
+    /// O(1) for each member requested.
     /// ## Documentation
     /// view the docs for [GEOHASH](https://redis.io/commands/geohash)
     public func geohash(_ key: String, _ member: String...) async throws {
         let cmd = Cmd("GEOHASH").arg(key).arg(member)
         try await cmd.exec(self)
     }
-    /// Returns longitude and latitude of members of a geospatial index
+    /// Returns the longitude and latitude of members from a geospatial index.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
-    /// O(N) where N is the number of members requested.
+    /// O(1) for each member requested.
     /// ## Documentation
     /// view the docs for [GEOPOS](https://redis.io/commands/geopos)
     public func geopos<T: FromRedisValue>(_ key: String, _ member: String...) async throws -> T {
         let cmd = Cmd("GEOPOS").arg(key).arg(member)
         return try await cmd.query(self)
     }
-    /// Returns longitude and latitude of members of a geospatial index
+    /// Returns the longitude and latitude of members from a geospatial index.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
-    /// O(N) where N is the number of members requested.
+    /// O(1) for each member requested.
     /// ## Documentation
     /// view the docs for [GEOPOS](https://redis.io/commands/geopos)
     public func geopos(_ key: String, _ member: String...) async throws {
         let cmd = Cmd("GEOPOS").arg(key).arg(member)
         try await cmd.exec(self)
     }
-    /// Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point
+    /// Queries a geospatial index for members within a distance from a coordinate, optionally stores the result.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -1264,15 +1262,15 @@ extension RedisConnection {
     /// view the docs for [GEORADIUS](https://redis.io/commands/georadius)
     public func georadius<T: FromRedisValue>(
         _ key: String, _ longitude: Double, _ latitude: Double, _ radius: Double, _ unit: GeoradiusUnit,
-        _ count: GeoradiusCount? = nil, _ order: GeoradiusOrder? = nil, _ STORE: String? = nil,
-        _ STOREDIST: String? = nil, _ options: GeoradiusOptions? = nil
+        _ countBlock: GeoradiusCountblock? = nil, _ order: GeoradiusOrder? = nil, _ store: GeoradiusStore? = nil,
+        _ options: GeoradiusOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("GEORADIUS").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(count).arg(order)
-            .arg((STORE != nil) ? "STORE" : nil).arg(STORE).arg((STOREDIST != nil) ? "STOREDIST" : nil).arg(STOREDIST)
-            .arg(options)
+        let cmd = Cmd("GEORADIUS").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(countBlock).arg(
+            order
+        ).arg(store).arg(options)
         return try await cmd.query(self)
     }
-    /// Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point
+    /// Queries a geospatial index for members within a distance from a coordinate, optionally stores the result.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -1284,15 +1282,15 @@ extension RedisConnection {
     /// view the docs for [GEORADIUS](https://redis.io/commands/georadius)
     public func georadius(
         _ key: String, _ longitude: Double, _ latitude: Double, _ radius: Double, _ unit: GeoradiusUnit,
-        _ count: GeoradiusCount? = nil, _ order: GeoradiusOrder? = nil, _ STORE: String? = nil,
-        _ STOREDIST: String? = nil, _ options: GeoradiusOptions? = nil
+        _ countBlock: GeoradiusCountblock? = nil, _ order: GeoradiusOrder? = nil, _ store: GeoradiusStore? = nil,
+        _ options: GeoradiusOptions? = nil
     ) async throws {
-        let cmd = Cmd("GEORADIUS").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(count).arg(order)
-            .arg((STORE != nil) ? "STORE" : nil).arg(STORE).arg((STOREDIST != nil) ? "STOREDIST" : nil).arg(STOREDIST)
-            .arg(options)
+        let cmd = Cmd("GEORADIUS").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(countBlock).arg(
+            order
+        ).arg(store).arg(options)
         try await cmd.exec(self)
     }
-    /// Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member
+    /// Queries a geospatial index for members within a distance from a member, optionally stores the result.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -1303,15 +1301,15 @@ extension RedisConnection {
     /// view the docs for [GEORADIUSBYMEMBER](https://redis.io/commands/georadiusbymember)
     public func georadiusbymember<T: FromRedisValue>(
         _ key: String, _ member: String, _ radius: Double, _ unit: GeoradiusbymemberUnit,
-        _ count: GeoradiusbymemberCount? = nil, _ order: GeoradiusbymemberOrder? = nil, _ STORE: String? = nil,
-        _ STOREDIST: String? = nil, _ options: GeoradiusbymemberOptions? = nil
+        _ countBlock: GeoradiusbymemberCountblock? = nil, _ order: GeoradiusbymemberOrder? = nil,
+        _ store: GeoradiusbymemberStore? = nil, _ options: GeoradiusbymemberOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("GEORADIUSBYMEMBER").arg(key).arg(member).arg(radius).arg(unit).arg(count).arg(order).arg(
-            (STORE != nil) ? "STORE" : nil
-        ).arg(STORE).arg((STOREDIST != nil) ? "STOREDIST" : nil).arg(STOREDIST).arg(options)
+        let cmd = Cmd("GEORADIUSBYMEMBER").arg(key).arg(member).arg(radius).arg(unit).arg(countBlock).arg(order).arg(
+            store
+        ).arg(options)
         return try await cmd.query(self)
     }
-    /// Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member
+    /// Queries a geospatial index for members within a distance from a member, optionally stores the result.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -1322,15 +1320,15 @@ extension RedisConnection {
     /// view the docs for [GEORADIUSBYMEMBER](https://redis.io/commands/georadiusbymember)
     public func georadiusbymember(
         _ key: String, _ member: String, _ radius: Double, _ unit: GeoradiusbymemberUnit,
-        _ count: GeoradiusbymemberCount? = nil, _ order: GeoradiusbymemberOrder? = nil, _ STORE: String? = nil,
-        _ STOREDIST: String? = nil, _ options: GeoradiusbymemberOptions? = nil
+        _ countBlock: GeoradiusbymemberCountblock? = nil, _ order: GeoradiusbymemberOrder? = nil,
+        _ store: GeoradiusbymemberStore? = nil, _ options: GeoradiusbymemberOptions? = nil
     ) async throws {
-        let cmd = Cmd("GEORADIUSBYMEMBER").arg(key).arg(member).arg(radius).arg(unit).arg(count).arg(order).arg(
-            (STORE != nil) ? "STORE" : nil
-        ).arg(STORE).arg((STOREDIST != nil) ? "STOREDIST" : nil).arg(STOREDIST).arg(options)
+        let cmd = Cmd("GEORADIUSBYMEMBER").arg(key).arg(member).arg(radius).arg(unit).arg(countBlock).arg(order).arg(
+            store
+        ).arg(options)
         try await cmd.exec(self)
     }
-    /// A read-only variant for GEORADIUSBYMEMBER
+    /// Returns members from a geospatial index that are within a distance from a member.
     /// ## Available since
     /// 3.2.10
     /// ## Time complexity
@@ -1339,14 +1337,14 @@ extension RedisConnection {
     /// view the docs for [GEORADIUSBYMEMBER_RO](https://redis.io/commands/georadiusbymember-ro)
     public func georadiusbymember_ro<T: FromRedisValue>(
         _ key: String, _ member: String, _ radius: Double, _ unit: GeoradiusbymemberRoUnit,
-        _ count: GeoradiusbymemberRoCount? = nil, _ order: GeoradiusbymemberRoOrder? = nil,
+        _ countBlock: GeoradiusbymemberRoCountblock? = nil, _ order: GeoradiusbymemberRoOrder? = nil,
         _ options: GeoradiusbymemberRoOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("GEORADIUSBYMEMBER_RO").arg(key).arg(member).arg(radius).arg(unit).arg(count).arg(order).arg(
+        let cmd = Cmd("GEORADIUSBYMEMBER_RO").arg(key).arg(member).arg(radius).arg(unit).arg(countBlock).arg(order).arg(
             options)
         return try await cmd.query(self)
     }
-    /// A read-only variant for GEORADIUSBYMEMBER
+    /// Returns members from a geospatial index that are within a distance from a member.
     /// ## Available since
     /// 3.2.10
     /// ## Time complexity
@@ -1355,14 +1353,14 @@ extension RedisConnection {
     /// view the docs for [GEORADIUSBYMEMBER_RO](https://redis.io/commands/georadiusbymember-ro)
     public func georadiusbymember_ro(
         _ key: String, _ member: String, _ radius: Double, _ unit: GeoradiusbymemberRoUnit,
-        _ count: GeoradiusbymemberRoCount? = nil, _ order: GeoradiusbymemberRoOrder? = nil,
+        _ countBlock: GeoradiusbymemberRoCountblock? = nil, _ order: GeoradiusbymemberRoOrder? = nil,
         _ options: GeoradiusbymemberRoOptions? = nil
     ) async throws {
-        let cmd = Cmd("GEORADIUSBYMEMBER_RO").arg(key).arg(member).arg(radius).arg(unit).arg(count).arg(order).arg(
+        let cmd = Cmd("GEORADIUSBYMEMBER_RO").arg(key).arg(member).arg(radius).arg(unit).arg(countBlock).arg(order).arg(
             options)
         try await cmd.exec(self)
     }
-    /// A read-only variant for GEORADIUS
+    /// Returns members from a geospatial index that are within a distance from a coordinate.
     /// ## Available since
     /// 3.2.10
     /// ## Time complexity
@@ -1373,13 +1371,15 @@ extension RedisConnection {
     /// view the docs for [GEORADIUS_RO](https://redis.io/commands/georadius-ro)
     public func georadius_ro<T: FromRedisValue>(
         _ key: String, _ longitude: Double, _ latitude: Double, _ radius: Double, _ unit: GeoradiusRoUnit,
-        _ count: GeoradiusRoCount? = nil, _ order: GeoradiusRoOrder? = nil, _ options: GeoradiusRoOptions? = nil
+        _ countBlock: GeoradiusRoCountblock? = nil, _ order: GeoradiusRoOrder? = nil,
+        _ options: GeoradiusRoOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("GEORADIUS_RO").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(count).arg(order)
-            .arg(options)
+        let cmd = Cmd("GEORADIUS_RO").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(countBlock).arg(
+            order
+        ).arg(options)
         return try await cmd.query(self)
     }
-    /// A read-only variant for GEORADIUS
+    /// Returns members from a geospatial index that are within a distance from a coordinate.
     /// ## Available since
     /// 3.2.10
     /// ## Time complexity
@@ -1390,13 +1390,15 @@ extension RedisConnection {
     /// view the docs for [GEORADIUS_RO](https://redis.io/commands/georadius-ro)
     public func georadius_ro(
         _ key: String, _ longitude: Double, _ latitude: Double, _ radius: Double, _ unit: GeoradiusRoUnit,
-        _ count: GeoradiusRoCount? = nil, _ order: GeoradiusRoOrder? = nil, _ options: GeoradiusRoOptions? = nil
+        _ countBlock: GeoradiusRoCountblock? = nil, _ order: GeoradiusRoOrder? = nil,
+        _ options: GeoradiusRoOptions? = nil
     ) async throws {
-        let cmd = Cmd("GEORADIUS_RO").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(count).arg(order)
-            .arg(options)
+        let cmd = Cmd("GEORADIUS_RO").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(countBlock).arg(
+            order
+        ).arg(options)
         try await cmd.exec(self)
     }
-    /// Query a sorted set representing a geospatial index to fetch members inside an area of a box or a circle.
+    /// Queries a geospatial index for members inside an area of a box or a circle.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1407,12 +1409,12 @@ extension RedisConnection {
     /// view the docs for [GEOSEARCH](https://redis.io/commands/geosearch)
     public func geosearch<T: FromRedisValue>(
         _ key: String, _ from: GeosearchFrom, _ by: GeosearchBy, _ order: GeosearchOrder? = nil,
-        _ count: GeosearchCount? = nil, _ options: GeosearchOptions? = nil
+        _ countBlock: GeosearchCountblock? = nil, _ options: GeosearchOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("GEOSEARCH").arg(key).arg(from).arg(by).arg(order).arg(count).arg(options)
+        let cmd = Cmd("GEOSEARCH").arg(key).arg(from).arg(by).arg(order).arg(countBlock).arg(options)
         return try await cmd.query(self)
     }
-    /// Query a sorted set representing a geospatial index to fetch members inside an area of a box or a circle.
+    /// Queries a geospatial index for members inside an area of a box or a circle.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1423,12 +1425,12 @@ extension RedisConnection {
     /// view the docs for [GEOSEARCH](https://redis.io/commands/geosearch)
     public func geosearch(
         _ key: String, _ from: GeosearchFrom, _ by: GeosearchBy, _ order: GeosearchOrder? = nil,
-        _ count: GeosearchCount? = nil, _ options: GeosearchOptions? = nil
+        _ countBlock: GeosearchCountblock? = nil, _ options: GeosearchOptions? = nil
     ) async throws {
-        let cmd = Cmd("GEOSEARCH").arg(key).arg(from).arg(by).arg(order).arg(count).arg(options)
+        let cmd = Cmd("GEOSEARCH").arg(key).arg(from).arg(by).arg(order).arg(countBlock).arg(options)
         try await cmd.exec(self)
     }
-    /// Query a sorted set representing a geospatial index to fetch members inside an area of a box or a circle, and store the result in another key.
+    /// Queries a geospatial index for members inside an area of a box or a circle, optionally stores the result.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1439,14 +1441,14 @@ extension RedisConnection {
     /// view the docs for [GEOSEARCHSTORE](https://redis.io/commands/geosearchstore)
     public func geosearchstore<T: FromRedisValue>(
         _ destination: String, _ source: String, _ from: GeosearchstoreFrom, _ by: GeosearchstoreBy,
-        _ order: GeosearchstoreOrder? = nil, _ count: GeosearchstoreCount? = nil,
+        _ order: GeosearchstoreOrder? = nil, _ countBlock: GeosearchstoreCountblock? = nil,
         _ options: GeosearchstoreOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("GEOSEARCHSTORE").arg(destination).arg(source).arg(from).arg(by).arg(order).arg(count).arg(
+        let cmd = Cmd("GEOSEARCHSTORE").arg(destination).arg(source).arg(from).arg(by).arg(order).arg(countBlock).arg(
             options)
         return try await cmd.query(self)
     }
-    /// Query a sorted set representing a geospatial index to fetch members inside an area of a box or a circle, and store the result in another key.
+    /// Queries a geospatial index for members inside an area of a box or a circle, optionally stores the result.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1457,14 +1459,14 @@ extension RedisConnection {
     /// view the docs for [GEOSEARCHSTORE](https://redis.io/commands/geosearchstore)
     public func geosearchstore(
         _ destination: String, _ source: String, _ from: GeosearchstoreFrom, _ by: GeosearchstoreBy,
-        _ order: GeosearchstoreOrder? = nil, _ count: GeosearchstoreCount? = nil,
+        _ order: GeosearchstoreOrder? = nil, _ countBlock: GeosearchstoreCountblock? = nil,
         _ options: GeosearchstoreOptions? = nil
     ) async throws {
-        let cmd = Cmd("GEOSEARCHSTORE").arg(destination).arg(source).arg(from).arg(by).arg(order).arg(count).arg(
+        let cmd = Cmd("GEOSEARCHSTORE").arg(destination).arg(source).arg(from).arg(by).arg(order).arg(countBlock).arg(
             options)
         try await cmd.exec(self)
     }
-    /// Get the value of a key
+    /// Returns the string value of a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -1475,7 +1477,7 @@ extension RedisConnection {
         let cmd = Cmd("GET").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the value of a key
+    /// Returns the string value of a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -1486,7 +1488,7 @@ extension RedisConnection {
         let cmd = Cmd("GET").arg(key)
         try await cmd.exec(self)
     }
-    /// Returns the bit value at offset in the string value stored at key
+    /// Returns a bit value by offset.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -1497,7 +1499,7 @@ extension RedisConnection {
         let cmd = Cmd("GETBIT").arg(key).arg(offset)
         return try await cmd.query(self)
     }
-    /// Returns the bit value at offset in the string value stored at key
+    /// Returns a bit value by offset.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -1508,7 +1510,7 @@ extension RedisConnection {
         let cmd = Cmd("GETBIT").arg(key).arg(offset)
         try await cmd.exec(self)
     }
-    /// Get the value of a key and delete the key
+    /// Returns the string value of a key after deleting the key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1519,7 +1521,7 @@ extension RedisConnection {
         let cmd = Cmd("GETDEL").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the value of a key and delete the key
+    /// Returns the string value of a key after deleting the key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1530,7 +1532,7 @@ extension RedisConnection {
         let cmd = Cmd("GETDEL").arg(key)
         try await cmd.exec(self)
     }
-    /// Get the value of a key and optionally set its expiration
+    /// Returns the string value of a key after setting its expiration time.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1541,7 +1543,7 @@ extension RedisConnection {
         let cmd = Cmd("GETEX").arg(key).arg(expiration)
         return try await cmd.query(self)
     }
-    /// Get the value of a key and optionally set its expiration
+    /// Returns the string value of a key after setting its expiration time.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1552,7 +1554,7 @@ extension RedisConnection {
         let cmd = Cmd("GETEX").arg(key).arg(expiration)
         try await cmd.exec(self)
     }
-    /// Get a substring of the string stored at a key
+    /// Returns a substring of the string stored at a key.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -1563,7 +1565,7 @@ extension RedisConnection {
         let cmd = Cmd("GETRANGE").arg(key).arg(start).arg(end)
         return try await cmd.query(self)
     }
-    /// Get a substring of the string stored at a key
+    /// Returns a substring of the string stored at a key.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -1574,7 +1576,7 @@ extension RedisConnection {
         let cmd = Cmd("GETRANGE").arg(key).arg(start).arg(end)
         try await cmd.exec(self)
     }
-    /// Set the string value of a key and return its old value
+    /// Returns the previous string value of a key after setting it to a new value.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -1585,7 +1587,7 @@ extension RedisConnection {
         let cmd = Cmd("GETSET").arg(key).arg(value)
         return try await cmd.query(self)
     }
-    /// Set the string value of a key and return its old value
+    /// Returns the previous string value of a key after setting it to a new value.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -1596,7 +1598,7 @@ extension RedisConnection {
         let cmd = Cmd("GETSET").arg(key).arg(value)
         try await cmd.exec(self)
     }
-    /// Delete one or more hash fields
+    /// Deletes one or more fields and their values from a hash. Deletes the hash if no fields remain.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1609,7 +1611,7 @@ extension RedisConnection {
         let cmd = Cmd("HDEL").arg(key).arg(field)
         return try await cmd.query(self)
     }
-    /// Delete one or more hash fields
+    /// Deletes one or more fields and their values from a hash. Deletes the hash if no fields remain.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1622,7 +1624,7 @@ extension RedisConnection {
         let cmd = Cmd("HDEL").arg(key).arg(field)
         try await cmd.exec(self)
     }
-    /// Handshake with Redis
+    /// Handshakes with the Redis server.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -1635,7 +1637,7 @@ extension RedisConnection {
         let cmd = Cmd("HELLO").arg(arguments)
         return try await cmd.query(self)
     }
-    /// Handshake with Redis
+    /// Handshakes with the Redis server.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -1648,7 +1650,7 @@ extension RedisConnection {
         let cmd = Cmd("HELLO").arg(arguments)
         try await cmd.exec(self)
     }
-    /// Determine if a hash field exists
+    /// Determines whether a field exists in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1659,7 +1661,7 @@ extension RedisConnection {
         let cmd = Cmd("HEXISTS").arg(key).arg(field)
         return try await cmd.query(self)
     }
-    /// Determine if a hash field exists
+    /// Determines whether a field exists in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1670,7 +1672,7 @@ extension RedisConnection {
         let cmd = Cmd("HEXISTS").arg(key).arg(field)
         try await cmd.exec(self)
     }
-    /// Get the value of a hash field
+    /// Returns the value of a field in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1681,7 +1683,7 @@ extension RedisConnection {
         let cmd = Cmd("HGET").arg(key).arg(field)
         return try await cmd.query(self)
     }
-    /// Get the value of a hash field
+    /// Returns the value of a field in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1692,7 +1694,7 @@ extension RedisConnection {
         let cmd = Cmd("HGET").arg(key).arg(field)
         try await cmd.exec(self)
     }
-    /// Get all the fields and values in a hash
+    /// Returns all fields and values in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1703,7 +1705,7 @@ extension RedisConnection {
         let cmd = Cmd("HGETALL").arg(key)
         return try await cmd.query(self)
     }
-    /// Get all the fields and values in a hash
+    /// Returns all fields and values in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1714,7 +1716,7 @@ extension RedisConnection {
         let cmd = Cmd("HGETALL").arg(key)
         try await cmd.exec(self)
     }
-    /// Increment the integer value of a hash field by the given number
+    /// Increments the integer value of a field in a hash by a number. Uses 0 as initial value if the field doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1725,7 +1727,7 @@ extension RedisConnection {
         let cmd = Cmd("HINCRBY").arg(key).arg(field).arg(increment)
         return try await cmd.query(self)
     }
-    /// Increment the integer value of a hash field by the given number
+    /// Increments the integer value of a field in a hash by a number. Uses 0 as initial value if the field doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1736,7 +1738,7 @@ extension RedisConnection {
         let cmd = Cmd("HINCRBY").arg(key).arg(field).arg(increment)
         try await cmd.exec(self)
     }
-    /// Increment the float value of a hash field by the given amount
+    /// Increments the floating point value of a field by a number. Uses 0 as initial value if the field doesn't exist.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -1747,7 +1749,7 @@ extension RedisConnection {
         let cmd = Cmd("HINCRBYFLOAT").arg(key).arg(field).arg(increment)
         return try await cmd.query(self)
     }
-    /// Increment the float value of a hash field by the given amount
+    /// Increments the floating point value of a field by a number. Uses 0 as initial value if the field doesn't exist.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -1758,7 +1760,7 @@ extension RedisConnection {
         let cmd = Cmd("HINCRBYFLOAT").arg(key).arg(field).arg(increment)
         try await cmd.exec(self)
     }
-    /// Get all the fields in a hash
+    /// Returns all fields in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1769,7 +1771,7 @@ extension RedisConnection {
         let cmd = Cmd("HKEYS").arg(key)
         return try await cmd.query(self)
     }
-    /// Get all the fields in a hash
+    /// Returns all fields in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1780,7 +1782,7 @@ extension RedisConnection {
         let cmd = Cmd("HKEYS").arg(key)
         try await cmd.exec(self)
     }
-    /// Get the number of fields in a hash
+    /// Returns the number of fields in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1791,7 +1793,7 @@ extension RedisConnection {
         let cmd = Cmd("HLEN").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the number of fields in a hash
+    /// Returns the number of fields in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1802,7 +1804,7 @@ extension RedisConnection {
         let cmd = Cmd("HLEN").arg(key)
         try await cmd.exec(self)
     }
-    /// Get the values of all the given hash fields
+    /// Returns the values of all fields in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1813,7 +1815,7 @@ extension RedisConnection {
         let cmd = Cmd("HMGET").arg(key).arg(field)
         return try await cmd.query(self)
     }
-    /// Get the values of all the given hash fields
+    /// Returns the values of all fields in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1824,29 +1826,29 @@ extension RedisConnection {
         let cmd = Cmd("HMGET").arg(key).arg(field)
         try await cmd.exec(self)
     }
-    /// Set multiple hash fields to multiple values
+    /// Sets the values of multiple fields.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
     /// O(N) where N is the number of fields being set.
     /// ## Documentation
     /// view the docs for [HMSET](https://redis.io/commands/hmset)
-    public func hmset<T: FromRedisValue>(_ key: String, _ fieldValue: HmsetFieldvalue...) async throws -> T {
-        let cmd = Cmd("HMSET").arg(key).arg(fieldValue)
+    public func hmset<T: FromRedisValue>(_ key: String, _ data: HmsetData...) async throws -> T {
+        let cmd = Cmd("HMSET").arg(key).arg(data)
         return try await cmd.query(self)
     }
-    /// Set multiple hash fields to multiple values
+    /// Sets the values of multiple fields.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
     /// O(N) where N is the number of fields being set.
     /// ## Documentation
     /// view the docs for [HMSET](https://redis.io/commands/hmset)
-    public func hmset(_ key: String, _ fieldValue: HmsetFieldvalue...) async throws {
-        let cmd = Cmd("HMSET").arg(key).arg(fieldValue)
+    public func hmset(_ key: String, _ data: HmsetData...) async throws {
+        let cmd = Cmd("HMSET").arg(key).arg(data)
         try await cmd.exec(self)
     }
-    /// Get one or multiple random fields from a hash
+    /// Returns one or more random fields from a hash.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1857,7 +1859,7 @@ extension RedisConnection {
         let cmd = Cmd("HRANDFIELD").arg(key).arg(options)
         return try await cmd.query(self)
     }
-    /// Get one or multiple random fields from a hash
+    /// Returns one or more random fields from a hash.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -1868,11 +1870,11 @@ extension RedisConnection {
         let cmd = Cmd("HRANDFIELD").arg(key).arg(options)
         try await cmd.exec(self)
     }
-    /// Incrementally iterate hash fields and associated values
+    /// Iterates over fields and values of a hash.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection..
+    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
     /// ## Documentation
     /// view the docs for [HSCAN](https://redis.io/commands/hscan)
     public func hscan<T: FromRedisValue>(_ key: String, _ cursor: Int, _ pattern: String? = nil, _ count: Int? = nil)
@@ -1883,11 +1885,11 @@ extension RedisConnection {
         ).arg(count)
         return try await cmd.query(self)
     }
-    /// Incrementally iterate hash fields and associated values
+    /// Iterates over fields and values of a hash.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection..
+    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
     /// ## Documentation
     /// view the docs for [HSCAN](https://redis.io/commands/hscan)
     public func hscan(_ key: String, _ cursor: Int, _ pattern: String? = nil, _ count: Int? = nil) async throws {
@@ -1896,7 +1898,7 @@ extension RedisConnection {
         ).arg(count)
         try await cmd.exec(self)
     }
-    /// Set the string value of a hash field
+    /// Creates or modifies the value of a field in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1905,11 +1907,11 @@ extension RedisConnection {
     /// - 4.0.0, Accepts multiple `field` and `value` arguments.
     /// ## Documentation
     /// view the docs for [HSET](https://redis.io/commands/hset)
-    public func hset<T: FromRedisValue>(_ key: String, _ fieldValue: HsetFieldvalue...) async throws -> T {
-        let cmd = Cmd("HSET").arg(key).arg(fieldValue)
+    public func hset<T: FromRedisValue>(_ key: String, _ data: HsetData...) async throws -> T {
+        let cmd = Cmd("HSET").arg(key).arg(data)
         return try await cmd.query(self)
     }
-    /// Set the string value of a hash field
+    /// Creates or modifies the value of a field in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1918,11 +1920,11 @@ extension RedisConnection {
     /// - 4.0.0, Accepts multiple `field` and `value` arguments.
     /// ## Documentation
     /// view the docs for [HSET](https://redis.io/commands/hset)
-    public func hset(_ key: String, _ fieldValue: HsetFieldvalue...) async throws {
-        let cmd = Cmd("HSET").arg(key).arg(fieldValue)
+    public func hset(_ key: String, _ data: HsetData...) async throws {
+        let cmd = Cmd("HSET").arg(key).arg(data)
         try await cmd.exec(self)
     }
-    /// Set the value of a hash field, only if the field does not exist
+    /// Sets the value of a field in a hash only when the field doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1933,7 +1935,7 @@ extension RedisConnection {
         let cmd = Cmd("HSETNX").arg(key).arg(field).arg(value)
         return try await cmd.query(self)
     }
-    /// Set the value of a hash field, only if the field does not exist
+    /// Sets the value of a field in a hash only when the field doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1944,7 +1946,7 @@ extension RedisConnection {
         let cmd = Cmd("HSETNX").arg(key).arg(field).arg(value)
         try await cmd.exec(self)
     }
-    /// Get the length of the value of a hash field
+    /// Returns the length of the value of a field.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -1955,7 +1957,7 @@ extension RedisConnection {
         let cmd = Cmd("HSTRLEN").arg(key).arg(field)
         return try await cmd.query(self)
     }
-    /// Get the length of the value of a hash field
+    /// Returns the length of the value of a field.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -1966,7 +1968,7 @@ extension RedisConnection {
         let cmd = Cmd("HSTRLEN").arg(key).arg(field)
         try await cmd.exec(self)
     }
-    /// Get all the values in a hash
+    /// Returns all values in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1977,7 +1979,7 @@ extension RedisConnection {
         let cmd = Cmd("HVALS").arg(key)
         return try await cmd.query(self)
     }
-    /// Get all the values in a hash
+    /// Returns all values in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -1988,7 +1990,7 @@ extension RedisConnection {
         let cmd = Cmd("HVALS").arg(key)
         try await cmd.exec(self)
     }
-    /// Increment the integer value of a key by one
+    /// Increments the integer value of a key by one. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -1999,7 +2001,7 @@ extension RedisConnection {
         let cmd = Cmd("INCR").arg(key)
         return try await cmd.query(self)
     }
-    /// Increment the integer value of a key by one
+    /// Increments the integer value of a key by one. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2010,7 +2012,7 @@ extension RedisConnection {
         let cmd = Cmd("INCR").arg(key)
         try await cmd.exec(self)
     }
-    /// Increment the integer value of a key by the given amount
+    /// Increments the integer value of a key by a number. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2021,7 +2023,7 @@ extension RedisConnection {
         let cmd = Cmd("INCRBY").arg(key).arg(increment)
         return try await cmd.query(self)
     }
-    /// Increment the integer value of a key by the given amount
+    /// Increments the integer value of a key by a number. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2032,7 +2034,7 @@ extension RedisConnection {
         let cmd = Cmd("INCRBY").arg(key).arg(increment)
         try await cmd.exec(self)
     }
-    /// Increment the float value of a key by the given amount
+    /// Increment the floating point value of a key by a number. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -2043,7 +2045,7 @@ extension RedisConnection {
         let cmd = Cmd("INCRBYFLOAT").arg(key).arg(increment)
         return try await cmd.query(self)
     }
-    /// Increment the float value of a key by the given amount
+    /// Increment the floating point value of a key by a number. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -2054,7 +2056,7 @@ extension RedisConnection {
         let cmd = Cmd("INCRBYFLOAT").arg(key).arg(increment)
         try await cmd.exec(self)
     }
-    /// Get information and statistics about the server
+    /// Returns information and statistics about the server.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2067,7 +2069,7 @@ extension RedisConnection {
         let cmd = Cmd("INFO").arg(section)
         return try await cmd.query(self)
     }
-    /// Get information and statistics about the server
+    /// Returns information and statistics about the server.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2080,7 +2082,7 @@ extension RedisConnection {
         let cmd = Cmd("INFO").arg(section)
         try await cmd.exec(self)
     }
-    /// Find all keys matching the given pattern
+    /// Returns all key names that match a pattern.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2091,7 +2093,7 @@ extension RedisConnection {
         let cmd = Cmd("KEYS").arg(pattern)
         return try await cmd.query(self)
     }
-    /// Find all keys matching the given pattern
+    /// Returns all key names that match a pattern.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2102,7 +2104,7 @@ extension RedisConnection {
         let cmd = Cmd("KEYS").arg(pattern)
         try await cmd.exec(self)
     }
-    /// Get the UNIX time stamp of the last successful save to disk
+    /// Returns the Unix timestamp of the last successful save to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2113,7 +2115,7 @@ extension RedisConnection {
         let cmd = Cmd("LASTSAVE")
         return try await cmd.query(self)
     }
-    /// Get the UNIX time stamp of the last successful save to disk
+    /// Returns the Unix timestamp of the last successful save to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2124,7 +2126,7 @@ extension RedisConnection {
         let cmd = Cmd("LASTSAVE")
         try await cmd.exec(self)
     }
-    /// A container for latency diagnostics commands
+    /// A container for latency diagnostics commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -2135,7 +2137,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY")
         return try await cmd.query(self)
     }
-    /// A container for latency diagnostics commands
+    /// A container for latency diagnostics commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -2146,7 +2148,7 @@ extension RedisConnection {
         let cmd = Cmd("LATENCY")
         try await cmd.exec(self)
     }
-    /// Find longest common substring
+    /// Finds the longest common substring.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -2154,27 +2156,27 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [LCS](https://redis.io/commands/lcs)
     public func lcs<T: FromRedisValue>(
-        _ key1: String, _ key2: String, _ MINMATCHLEN: Int? = nil, _ options: LcsOptions? = nil
+        _ key1: String, _ key2: String, _ minMatchLen: Int? = nil, _ options: LcsOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("LCS").arg(key1).arg(key2).arg((MINMATCHLEN != nil) ? "MINMATCHLEN" : nil).arg(MINMATCHLEN).arg(
+        let cmd = Cmd("LCS").arg(key1).arg(key2).arg((minMatchLen != nil) ? "MINMATCHLEN" : nil).arg(minMatchLen).arg(
             options)
         return try await cmd.query(self)
     }
-    /// Find longest common substring
+    /// Finds the longest common substring.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N*M) where N and M are the lengths of s1 and s2, respectively
     /// ## Documentation
     /// view the docs for [LCS](https://redis.io/commands/lcs)
-    public func lcs(_ key1: String, _ key2: String, _ MINMATCHLEN: Int? = nil, _ options: LcsOptions? = nil)
+    public func lcs(_ key1: String, _ key2: String, _ minMatchLen: Int? = nil, _ options: LcsOptions? = nil)
         async throws
     {
-        let cmd = Cmd("LCS").arg(key1).arg(key2).arg((MINMATCHLEN != nil) ? "MINMATCHLEN" : nil).arg(MINMATCHLEN).arg(
+        let cmd = Cmd("LCS").arg(key1).arg(key2).arg((minMatchLen != nil) ? "MINMATCHLEN" : nil).arg(minMatchLen).arg(
             options)
         try await cmd.exec(self)
     }
-    /// Get an element from a list by its index
+    /// Returns an element from a list by its index.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2185,7 +2187,7 @@ extension RedisConnection {
         let cmd = Cmd("LINDEX").arg(key).arg(index)
         return try await cmd.query(self)
     }
-    /// Get an element from a list by its index
+    /// Returns an element from a list by its index.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2196,7 +2198,7 @@ extension RedisConnection {
         let cmd = Cmd("LINDEX").arg(key).arg(index)
         try await cmd.exec(self)
     }
-    /// Insert an element before or after another element in a list
+    /// Inserts an element before or after another element in a list.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -2209,7 +2211,7 @@ extension RedisConnection {
         let cmd = Cmd("LINSERT").arg(key).arg(rWhere).arg(pivot).arg(element)
         return try await cmd.query(self)
     }
-    /// Insert an element before or after another element in a list
+    /// Inserts an element before or after another element in a list.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -2220,7 +2222,7 @@ extension RedisConnection {
         let cmd = Cmd("LINSERT").arg(key).arg(rWhere).arg(pivot).arg(element)
         try await cmd.exec(self)
     }
-    /// Get the length of a list
+    /// Returns the length of a list.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2231,7 +2233,7 @@ extension RedisConnection {
         let cmd = Cmd("LLEN").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the length of a list
+    /// Returns the length of a list.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2242,7 +2244,7 @@ extension RedisConnection {
         let cmd = Cmd("LLEN").arg(key)
         try await cmd.exec(self)
     }
-    /// Pop an element from a list, push it to another list and return it
+    /// Returns an element after popping it from one list and pushing it to another. Deletes the list if the last element was moved.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -2255,7 +2257,7 @@ extension RedisConnection {
         let cmd = Cmd("LMOVE").arg(source).arg(destination).arg(wherefrom).arg(whereto)
         return try await cmd.query(self)
     }
-    /// Pop an element from a list, push it to another list and return it
+    /// Returns an element after popping it from one list and pushing it to another. Deletes the list if the last element was moved.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -2268,7 +2270,7 @@ extension RedisConnection {
         let cmd = Cmd("LMOVE").arg(source).arg(destination).arg(wherefrom).arg(whereto)
         try await cmd.exec(self)
     }
-    /// Pop elements from a list
+    /// Returns multiple elements from a list after removing them. Deletes the list if the last element was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -2281,7 +2283,7 @@ extension RedisConnection {
         let cmd = Cmd("LMPOP").arg(numkeys).arg(key).arg(rWhere).arg((count != nil) ? "COUNT" : nil).arg(count)
         return try await cmd.query(self)
     }
-    /// Pop elements from a list
+    /// Returns multiple elements from a list after removing them. Deletes the list if the last element was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -2292,7 +2294,7 @@ extension RedisConnection {
         let cmd = Cmd("LMPOP").arg(numkeys).arg(key).arg(rWhere).arg((count != nil) ? "COUNT" : nil).arg(count)
         try await cmd.exec(self)
     }
-    /// Display some computer art and the Redis version
+    /// Displays computer art and the Redis version
     /// ## Available since
     /// 5.0.0
     /// ## Documentation
@@ -2301,7 +2303,7 @@ extension RedisConnection {
         let cmd = Cmd("LOLWUT").arg((version != nil) ? "VERSION" : nil).arg(version)
         return try await cmd.query(self)
     }
-    /// Display some computer art and the Redis version
+    /// Displays computer art and the Redis version
     /// ## Available since
     /// 5.0.0
     /// ## Documentation
@@ -2310,7 +2312,7 @@ extension RedisConnection {
         let cmd = Cmd("LOLWUT").arg((version != nil) ? "VERSION" : nil).arg(version)
         try await cmd.exec(self)
     }
-    /// Remove and get the first elements in a list
+    /// Returns the first elements in a list after removing it. Deletes the list if the last element was popped.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2323,7 +2325,7 @@ extension RedisConnection {
         let cmd = Cmd("LPOP").arg(key).arg(count)
         return try await cmd.query(self)
     }
-    /// Remove and get the first elements in a list
+    /// Returns the first elements in a list after removing it. Deletes the list if the last element was popped.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2336,7 +2338,7 @@ extension RedisConnection {
         let cmd = Cmd("LPOP").arg(key).arg(count)
         try await cmd.exec(self)
     }
-    /// Return the index of matching elements on a list
+    /// Returns the index of matching elements in a list.
     /// ## Available since
     /// 6.0.6
     /// ## Time complexity
@@ -2351,7 +2353,7 @@ extension RedisConnection {
         ).arg(numMatches).arg((len != nil) ? "MAXLEN" : nil).arg(len)
         return try await cmd.query(self)
     }
-    /// Return the index of matching elements on a list
+    /// Returns the index of matching elements in a list.
     /// ## Available since
     /// 6.0.6
     /// ## Time complexity
@@ -2366,7 +2368,7 @@ extension RedisConnection {
         ).arg(numMatches).arg((len != nil) ? "MAXLEN" : nil).arg(len)
         try await cmd.exec(self)
     }
-    /// Prepend one or multiple elements to a list
+    /// Prepends one or more elements to a list. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2379,7 +2381,7 @@ extension RedisConnection {
         let cmd = Cmd("LPUSH").arg(key).arg(element)
         return try await cmd.query(self)
     }
-    /// Prepend one or multiple elements to a list
+    /// Prepends one or more elements to a list. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2392,7 +2394,7 @@ extension RedisConnection {
         let cmd = Cmd("LPUSH").arg(key).arg(element)
         try await cmd.exec(self)
     }
-    /// Prepend an element to a list, only if the list exists
+    /// Prepends one or more elements to a list only when the list exists.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -2405,7 +2407,7 @@ extension RedisConnection {
         let cmd = Cmd("LPUSHX").arg(key).arg(element)
         return try await cmd.query(self)
     }
-    /// Prepend an element to a list, only if the list exists
+    /// Prepends one or more elements to a list only when the list exists.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -2418,7 +2420,7 @@ extension RedisConnection {
         let cmd = Cmd("LPUSHX").arg(key).arg(element)
         try await cmd.exec(self)
     }
-    /// Get a range of elements from a list
+    /// Returns a range of elements from a list.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2429,7 +2431,7 @@ extension RedisConnection {
         let cmd = Cmd("LRANGE").arg(key).arg(start).arg(stop)
         return try await cmd.query(self)
     }
-    /// Get a range of elements from a list
+    /// Returns a range of elements from a list.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2440,7 +2442,7 @@ extension RedisConnection {
         let cmd = Cmd("LRANGE").arg(key).arg(start).arg(stop)
         try await cmd.exec(self)
     }
-    /// Remove elements from a list
+    /// Removes elements from a list. Deletes the list if the last element was removed.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2451,7 +2453,7 @@ extension RedisConnection {
         let cmd = Cmd("LREM").arg(key).arg(count).arg(element)
         return try await cmd.query(self)
     }
-    /// Remove elements from a list
+    /// Removes elements from a list. Deletes the list if the last element was removed.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2462,7 +2464,7 @@ extension RedisConnection {
         let cmd = Cmd("LREM").arg(key).arg(count).arg(element)
         try await cmd.exec(self)
     }
-    /// Set the value of an element in a list by its index
+    /// Sets the value of an element in a list by its index.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2473,7 +2475,7 @@ extension RedisConnection {
         let cmd = Cmd("LSET").arg(key).arg(index).arg(element)
         return try await cmd.query(self)
     }
-    /// Set the value of an element in a list by its index
+    /// Sets the value of an element in a list by its index.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2484,7 +2486,7 @@ extension RedisConnection {
         let cmd = Cmd("LSET").arg(key).arg(index).arg(element)
         try await cmd.exec(self)
     }
-    /// Trim a list to the specified range
+    /// Removes elements from both ends a list. Deletes the list if all elements were trimmed.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2495,7 +2497,7 @@ extension RedisConnection {
         let cmd = Cmd("LTRIM").arg(key).arg(start).arg(stop)
         return try await cmd.query(self)
     }
-    /// Trim a list to the specified range
+    /// Removes elements from both ends a list. Deletes the list if all elements were trimmed.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2506,7 +2508,7 @@ extension RedisConnection {
         let cmd = Cmd("LTRIM").arg(key).arg(start).arg(stop)
         try await cmd.exec(self)
     }
-    /// A container for memory diagnostics commands
+    /// A container for memory diagnostics commands.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -2517,7 +2519,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY")
         return try await cmd.query(self)
     }
-    /// A container for memory diagnostics commands
+    /// A container for memory diagnostics commands.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -2528,7 +2530,7 @@ extension RedisConnection {
         let cmd = Cmd("MEMORY")
         try await cmd.exec(self)
     }
-    /// Get the values of all the given keys
+    /// Atomically returns the string values of one or more keys.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2539,7 +2541,7 @@ extension RedisConnection {
         let cmd = Cmd("MGET").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the values of all the given keys
+    /// Atomically returns the string values of one or more keys.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2550,7 +2552,7 @@ extension RedisConnection {
         let cmd = Cmd("MGET").arg(key)
         try await cmd.exec(self)
     }
-    /// Atomically transfer a key from a Redis instance to another one.
+    /// Atomically transfers a key from one Redis instance to another.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -2563,15 +2565,15 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [MIGRATE](https://redis.io/commands/migrate)
     public func migrate<T: FromRedisValue>(
-        _ host: String, _ port: Int, _ keyOrEmptyString: MigrateKeyoremptystring, _ destinationDb: Int, _ timeout: Int,
-        _ authentication: MigrateAuthentication? = nil, _ key: String..., options: MigrateOptions? = nil
+        _ host: String, _ port: Int, _ keySelector: MigrateKeyselector, _ destinationDb: Int, _ timeout: Int,
+        _ authentication: MigrateAuthentication? = nil, _ keys: String..., options: MigrateOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("MIGRATE").arg(host).arg(port).arg(keyOrEmptyString).arg(destinationDb).arg(timeout).arg(
+        let cmd = Cmd("MIGRATE").arg(host).arg(port).arg(keySelector).arg(destinationDb).arg(timeout).arg(
             authentication
-        ).arg((!key.isEmpty) ? "KEYS" : nil).arg(key).arg(options)
+        ).arg((!keys.isEmpty) ? "KEYS" : nil).arg(keys).arg(options)
         return try await cmd.query(self)
     }
-    /// Atomically transfer a key from a Redis instance to another one.
+    /// Atomically transfers a key from one Redis instance to another.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -2584,15 +2586,15 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [MIGRATE](https://redis.io/commands/migrate)
     public func migrate(
-        _ host: String, _ port: Int, _ keyOrEmptyString: MigrateKeyoremptystring, _ destinationDb: Int, _ timeout: Int,
-        _ authentication: MigrateAuthentication? = nil, _ key: String..., options: MigrateOptions? = nil
+        _ host: String, _ port: Int, _ keySelector: MigrateKeyselector, _ destinationDb: Int, _ timeout: Int,
+        _ authentication: MigrateAuthentication? = nil, _ keys: String..., options: MigrateOptions? = nil
     ) async throws {
-        let cmd = Cmd("MIGRATE").arg(host).arg(port).arg(keyOrEmptyString).arg(destinationDb).arg(timeout).arg(
+        let cmd = Cmd("MIGRATE").arg(host).arg(port).arg(keySelector).arg(destinationDb).arg(timeout).arg(
             authentication
-        ).arg((!key.isEmpty) ? "KEYS" : nil).arg(key).arg(options)
+        ).arg((!keys.isEmpty) ? "KEYS" : nil).arg(keys).arg(options)
         try await cmd.exec(self)
     }
-    /// A container for module commands
+    /// A container for module commands.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -2603,7 +2605,7 @@ extension RedisConnection {
         let cmd = Cmd("MODULE")
         return try await cmd.query(self)
     }
-    /// A container for module commands
+    /// A container for module commands.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -2614,7 +2616,7 @@ extension RedisConnection {
         let cmd = Cmd("MODULE")
         try await cmd.exec(self)
     }
-    /// Listen for all requests received by the server in real time
+    /// Listens for all requests received by the server in real-time.
     /// ## Available since
     /// 1.0.0
     /// ## Documentation
@@ -2623,7 +2625,7 @@ extension RedisConnection {
         let cmd = Cmd("MONITOR")
         return try await cmd.query(self)
     }
-    /// Listen for all requests received by the server in real time
+    /// Listens for all requests received by the server in real-time.
     /// ## Available since
     /// 1.0.0
     /// ## Documentation
@@ -2632,7 +2634,7 @@ extension RedisConnection {
         let cmd = Cmd("MONITOR")
         try await cmd.exec(self)
     }
-    /// Move a key to another database
+    /// Moves a key to another database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2643,7 +2645,7 @@ extension RedisConnection {
         let cmd = Cmd("MOVE").arg(key).arg(db)
         return try await cmd.query(self)
     }
-    /// Move a key to another database
+    /// Moves a key to another database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2654,51 +2656,51 @@ extension RedisConnection {
         let cmd = Cmd("MOVE").arg(key).arg(db)
         try await cmd.exec(self)
     }
-    /// Set multiple keys to multiple values
+    /// Atomically creates or modifies the string values of one or more keys.
     /// ## Available since
     /// 1.0.1
     /// ## Time complexity
     /// O(N) where N is the number of keys to set.
     /// ## Documentation
     /// view the docs for [MSET](https://redis.io/commands/mset)
-    public func mset<T: FromRedisValue>(_ keyValue: MsetKeyvalue...) async throws -> T {
-        let cmd = Cmd("MSET").arg(keyValue)
+    public func mset<T: FromRedisValue>(_ data: MsetData...) async throws -> T {
+        let cmd = Cmd("MSET").arg(data)
         return try await cmd.query(self)
     }
-    /// Set multiple keys to multiple values
+    /// Atomically creates or modifies the string values of one or more keys.
     /// ## Available since
     /// 1.0.1
     /// ## Time complexity
     /// O(N) where N is the number of keys to set.
     /// ## Documentation
     /// view the docs for [MSET](https://redis.io/commands/mset)
-    public func mset(_ keyValue: MsetKeyvalue...) async throws {
-        let cmd = Cmd("MSET").arg(keyValue)
+    public func mset(_ data: MsetData...) async throws {
+        let cmd = Cmd("MSET").arg(data)
         try await cmd.exec(self)
     }
-    /// Set multiple keys to multiple values, only if none of the keys exist
+    /// Atomically modifies the string values of one or more keys only when all keys don't exist.
     /// ## Available since
     /// 1.0.1
     /// ## Time complexity
     /// O(N) where N is the number of keys to set.
     /// ## Documentation
     /// view the docs for [MSETNX](https://redis.io/commands/msetnx)
-    public func msetnx<T: FromRedisValue>(_ keyValue: MsetnxKeyvalue...) async throws -> T {
-        let cmd = Cmd("MSETNX").arg(keyValue)
+    public func msetnx<T: FromRedisValue>(_ data: MsetnxData...) async throws -> T {
+        let cmd = Cmd("MSETNX").arg(data)
         return try await cmd.query(self)
     }
-    /// Set multiple keys to multiple values, only if none of the keys exist
+    /// Atomically modifies the string values of one or more keys only when all keys don't exist.
     /// ## Available since
     /// 1.0.1
     /// ## Time complexity
     /// O(N) where N is the number of keys to set.
     /// ## Documentation
     /// view the docs for [MSETNX](https://redis.io/commands/msetnx)
-    public func msetnx(_ keyValue: MsetnxKeyvalue...) async throws {
-        let cmd = Cmd("MSETNX").arg(keyValue)
+    public func msetnx(_ data: MsetnxData...) async throws {
+        let cmd = Cmd("MSETNX").arg(data)
         try await cmd.exec(self)
     }
-    /// Mark the start of a transaction block
+    /// Starts a transaction.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -2709,7 +2711,7 @@ extension RedisConnection {
         let cmd = Cmd("MULTI")
         return try await cmd.query(self)
     }
-    /// Mark the start of a transaction block
+    /// Starts a transaction.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -2720,7 +2722,7 @@ extension RedisConnection {
         let cmd = Cmd("MULTI")
         try await cmd.exec(self)
     }
-    /// A container for object introspection commands
+    /// A container for object introspection commands.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -2731,7 +2733,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT")
         return try await cmd.query(self)
     }
-    /// A container for object introspection commands
+    /// A container for object introspection commands.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -2742,7 +2744,7 @@ extension RedisConnection {
         let cmd = Cmd("OBJECT")
         try await cmd.exec(self)
     }
-    /// Remove the expiration from a key
+    /// Removes the expiration time of a key.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -2753,7 +2755,7 @@ extension RedisConnection {
         let cmd = Cmd("PERSIST").arg(key)
         return try await cmd.query(self)
     }
-    /// Remove the expiration from a key
+    /// Removes the expiration time of a key.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -2764,7 +2766,7 @@ extension RedisConnection {
         let cmd = Cmd("PERSIST").arg(key)
         try await cmd.exec(self)
     }
-    /// Set a key's time to live in milliseconds
+    /// Sets the expiration time of a key in milliseconds.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -2779,7 +2781,7 @@ extension RedisConnection {
         let cmd = Cmd("PEXPIRE").arg(key).arg(milliseconds).arg(condition)
         return try await cmd.query(self)
     }
-    /// Set a key's time to live in milliseconds
+    /// Sets the expiration time of a key in milliseconds.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -2792,7 +2794,7 @@ extension RedisConnection {
         let cmd = Cmd("PEXPIRE").arg(key).arg(milliseconds).arg(condition)
         try await cmd.exec(self)
     }
-    /// Set the expiration for a key as a UNIX timestamp specified in milliseconds
+    /// Sets the expiration time of a key to a Unix milliseconds timestamp.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -2807,7 +2809,7 @@ extension RedisConnection {
         let cmd = Cmd("PEXPIREAT").arg(key).arg(unixTimeMilliseconds).arg(condition)
         return try await cmd.query(self)
     }
-    /// Set the expiration for a key as a UNIX timestamp specified in milliseconds
+    /// Sets the expiration time of a key to a Unix milliseconds timestamp.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -2822,7 +2824,7 @@ extension RedisConnection {
         let cmd = Cmd("PEXPIREAT").arg(key).arg(unixTimeMilliseconds).arg(condition)
         try await cmd.exec(self)
     }
-    /// Get the expiration Unix timestamp for a key in milliseconds
+    /// Returns the expiration time of a key as a Unix milliseconds timestamp.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -2833,7 +2835,7 @@ extension RedisConnection {
         let cmd = Cmd("PEXPIRETIME").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the expiration Unix timestamp for a key in milliseconds
+    /// Returns the expiration time of a key as a Unix milliseconds timestamp.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -2844,7 +2846,7 @@ extension RedisConnection {
         let cmd = Cmd("PEXPIRETIME").arg(key)
         try await cmd.exec(self)
     }
-    /// Adds the specified elements to the specified HyperLogLog.
+    /// Adds elements to a HyperLogLog key. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -2855,7 +2857,7 @@ extension RedisConnection {
         let cmd = Cmd("PFADD").arg(key).arg(element)
         return try await cmd.query(self)
     }
-    /// Adds the specified elements to the specified HyperLogLog.
+    /// Adds elements to a HyperLogLog key. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -2866,7 +2868,7 @@ extension RedisConnection {
         let cmd = Cmd("PFADD").arg(key).arg(element)
         try await cmd.exec(self)
     }
-    /// Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
+    /// Returns the approximated cardinality of the set(s) observed by the HyperLogLog key(s).
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -2877,7 +2879,7 @@ extension RedisConnection {
         let cmd = Cmd("PFCOUNT").arg(key)
         return try await cmd.query(self)
     }
-    /// Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
+    /// Returns the approximated cardinality of the set(s) observed by the HyperLogLog key(s).
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -2888,7 +2890,7 @@ extension RedisConnection {
         let cmd = Cmd("PFCOUNT").arg(key)
         try await cmd.exec(self)
     }
-    /// Internal commands for debugging HyperLogLog values
+    /// Internal commands for debugging HyperLogLog values.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -2899,7 +2901,7 @@ extension RedisConnection {
         let cmd = Cmd("PFDEBUG").arg(subcommand).arg(key)
         return try await cmd.query(self)
     }
-    /// Internal commands for debugging HyperLogLog values
+    /// Internal commands for debugging HyperLogLog values.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -2910,7 +2912,7 @@ extension RedisConnection {
         let cmd = Cmd("PFDEBUG").arg(subcommand).arg(key)
         try await cmd.exec(self)
     }
-    /// Merge N different HyperLogLogs into a single one.
+    /// Merges one or more HyperLogLog values into a single key.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -2921,7 +2923,7 @@ extension RedisConnection {
         let cmd = Cmd("PFMERGE").arg(destkey).arg(sourcekey)
         return try await cmd.query(self)
     }
-    /// Merge N different HyperLogLogs into a single one.
+    /// Merges one or more HyperLogLog values into a single key.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -2932,7 +2934,7 @@ extension RedisConnection {
         let cmd = Cmd("PFMERGE").arg(destkey).arg(sourcekey)
         try await cmd.exec(self)
     }
-    /// An internal command for testing HyperLogLog values
+    /// An internal command for testing HyperLogLog values.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -2943,7 +2945,7 @@ extension RedisConnection {
         let cmd = Cmd("PFSELFTEST")
         return try await cmd.query(self)
     }
-    /// An internal command for testing HyperLogLog values
+    /// An internal command for testing HyperLogLog values.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -2954,7 +2956,7 @@ extension RedisConnection {
         let cmd = Cmd("PFSELFTEST")
         try await cmd.exec(self)
     }
-    /// Ping the server
+    /// Returns the server's liveliness response.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2965,7 +2967,7 @@ extension RedisConnection {
         let cmd = Cmd("PING").arg(message)
         return try await cmd.query(self)
     }
-    /// Ping the server
+    /// Returns the server's liveliness response.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -2976,7 +2978,7 @@ extension RedisConnection {
         let cmd = Cmd("PING").arg(message)
         try await cmd.exec(self)
     }
-    /// Set the value and expiration in milliseconds of a key
+    /// Sets both string value and expiration time in milliseconds of a key. The key is created if it doesn't exist.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -2987,7 +2989,7 @@ extension RedisConnection {
         let cmd = Cmd("PSETEX").arg(key).arg(milliseconds).arg(value)
         return try await cmd.query(self)
     }
-    /// Set the value and expiration in milliseconds of a key
+    /// Sets both string value and expiration time in milliseconds of a key. The key is created if it doesn't exist.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -2998,7 +3000,7 @@ extension RedisConnection {
         let cmd = Cmd("PSETEX").arg(key).arg(milliseconds).arg(value)
         try await cmd.exec(self)
     }
-    /// Internal command used for replication
+    /// An internal command used in replication.
     /// ## Available since
     /// 2.8.0
     /// ## Documentation
@@ -3007,7 +3009,7 @@ extension RedisConnection {
         let cmd = Cmd("PSYNC").arg(replicationid).arg(offset)
         return try await cmd.query(self)
     }
-    /// Internal command used for replication
+    /// An internal command used in replication.
     /// ## Available since
     /// 2.8.0
     /// ## Documentation
@@ -3016,7 +3018,7 @@ extension RedisConnection {
         let cmd = Cmd("PSYNC").arg(replicationid).arg(offset)
         try await cmd.exec(self)
     }
-    /// Get the time to live for a key in milliseconds
+    /// Returns the expiration time in milliseconds of a key.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -3029,7 +3031,7 @@ extension RedisConnection {
         let cmd = Cmd("PTTL").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the time to live for a key in milliseconds
+    /// Returns the expiration time in milliseconds of a key.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -3042,7 +3044,7 @@ extension RedisConnection {
         let cmd = Cmd("PTTL").arg(key)
         try await cmd.exec(self)
     }
-    /// Post a message to a channel
+    /// Posts a message to a channel.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -3053,7 +3055,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBLISH").arg(channel).arg(message)
         return try await cmd.query(self)
     }
-    /// Post a message to a channel
+    /// Posts a message to a channel.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -3064,7 +3066,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBLISH").arg(channel).arg(message)
         try await cmd.exec(self)
     }
-    /// A container for Pub/Sub commands
+    /// A container for Pub/Sub commands.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -3075,7 +3077,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB")
         return try await cmd.query(self)
     }
-    /// A container for Pub/Sub commands
+    /// A container for Pub/Sub commands.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -3086,7 +3088,7 @@ extension RedisConnection {
         let cmd = Cmd("PUBSUB")
         try await cmd.exec(self)
     }
-    /// Close the connection
+    /// Closes the connection.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3097,7 +3099,7 @@ extension RedisConnection {
         let cmd = Cmd("QUIT")
         return try await cmd.query(self)
     }
-    /// Close the connection
+    /// Closes the connection.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3108,7 +3110,7 @@ extension RedisConnection {
         let cmd = Cmd("QUIT")
         try await cmd.exec(self)
     }
-    /// Return a random key from the keyspace
+    /// Returns a random key name from the database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3119,7 +3121,7 @@ extension RedisConnection {
         let cmd = Cmd("RANDOMKEY")
         return try await cmd.query(self)
     }
-    /// Return a random key from the keyspace
+    /// Returns a random key name from the database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3130,7 +3132,7 @@ extension RedisConnection {
         let cmd = Cmd("RANDOMKEY")
         try await cmd.exec(self)
     }
-    /// Enables read queries for a connection to a cluster replica node
+    /// Enables read-only queries for a connection to a Redis Cluster replica node.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -3141,7 +3143,7 @@ extension RedisConnection {
         let cmd = Cmd("READONLY")
         return try await cmd.query(self)
     }
-    /// Enables read queries for a connection to a cluster replica node
+    /// Enables read-only queries for a connection to a Redis Cluster replica node.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -3152,7 +3154,7 @@ extension RedisConnection {
         let cmd = Cmd("READONLY")
         try await cmd.exec(self)
     }
-    /// Disables read queries for a connection to a cluster replica node
+    /// Enables read-write queries for a connection to a Reids Cluster replica node.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -3163,7 +3165,7 @@ extension RedisConnection {
         let cmd = Cmd("READWRITE")
         return try await cmd.query(self)
     }
-    /// Disables read queries for a connection to a cluster replica node
+    /// Enables read-write queries for a connection to a Reids Cluster replica node.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -3174,7 +3176,7 @@ extension RedisConnection {
         let cmd = Cmd("READWRITE")
         try await cmd.exec(self)
     }
-    /// Rename a key
+    /// Renames a key and overwrites the destination.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3185,7 +3187,7 @@ extension RedisConnection {
         let cmd = Cmd("RENAME").arg(key).arg(newkey)
         return try await cmd.query(self)
     }
-    /// Rename a key
+    /// Renames a key and overwrites the destination.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3196,7 +3198,7 @@ extension RedisConnection {
         let cmd = Cmd("RENAME").arg(key).arg(newkey)
         try await cmd.exec(self)
     }
-    /// Rename a key, only if the new key does not exist
+    /// Renames a key only when the target key name doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3209,7 +3211,7 @@ extension RedisConnection {
         let cmd = Cmd("RENAMENX").arg(key).arg(newkey)
         return try await cmd.query(self)
     }
-    /// Rename a key, only if the new key does not exist
+    /// Renames a key only when the target key name doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3222,7 +3224,7 @@ extension RedisConnection {
         let cmd = Cmd("RENAMENX").arg(key).arg(newkey)
         try await cmd.exec(self)
     }
-    /// An internal command for configuring the replication stream
+    /// An internal command for configuring the replication stream.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -3233,7 +3235,7 @@ extension RedisConnection {
         let cmd = Cmd("REPLCONF")
         return try await cmd.query(self)
     }
-    /// An internal command for configuring the replication stream
+    /// An internal command for configuring the replication stream.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -3244,7 +3246,7 @@ extension RedisConnection {
         let cmd = Cmd("REPLCONF")
         try await cmd.exec(self)
     }
-    /// Make the server a replica of another instance, or promote it as master.
+    /// Configures a server as replica of another, or promotes it to a master.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -3255,7 +3257,7 @@ extension RedisConnection {
         let cmd = Cmd("REPLICAOF").arg(host).arg(port)
         return try await cmd.query(self)
     }
-    /// Make the server a replica of another instance, or promote it as master.
+    /// Configures a server as replica of another, or promotes it to a master.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -3266,7 +3268,7 @@ extension RedisConnection {
         let cmd = Cmd("REPLICAOF").arg(host).arg(port)
         try await cmd.exec(self)
     }
-    /// Reset the connection
+    /// Resets the connection.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -3277,7 +3279,7 @@ extension RedisConnection {
         let cmd = Cmd("RESET")
         return try await cmd.query(self)
     }
-    /// Reset the connection
+    /// Resets the connection.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -3288,7 +3290,7 @@ extension RedisConnection {
         let cmd = Cmd("RESET")
         try await cmd.exec(self)
     }
-    /// Create a key using the provided serialized value, previously obtained using DUMP.
+    /// Creates a key from the serialized representation of a value.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -3308,7 +3310,7 @@ extension RedisConnection {
         ).arg((frequency != nil) ? "FREQ" : nil).arg(frequency).arg(options)
         return try await cmd.query(self)
     }
-    /// Create a key using the provided serialized value, previously obtained using DUMP.
+    /// Creates a key from the serialized representation of a value.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -3328,7 +3330,7 @@ extension RedisConnection {
         ).arg((frequency != nil) ? "FREQ" : nil).arg(frequency).arg(options)
         try await cmd.exec(self)
     }
-    /// An internal command for migrating keys in a cluster
+    /// An internal command for migrating keys in a cluster.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -3347,7 +3349,7 @@ extension RedisConnection {
             .arg(seconds).arg((frequency != nil) ? "FREQ" : nil).arg(frequency).arg(options)
         return try await cmd.query(self)
     }
-    /// An internal command for migrating keys in a cluster
+    /// An internal command for migrating keys in a cluster.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -3366,7 +3368,7 @@ extension RedisConnection {
             .arg(seconds).arg((frequency != nil) ? "FREQ" : nil).arg(frequency).arg(options)
         try await cmd.exec(self)
     }
-    /// Return the role of the instance in the context of replication
+    /// Returns the replication role.
     /// ## Available since
     /// 2.8.12
     /// ## Time complexity
@@ -3377,7 +3379,7 @@ extension RedisConnection {
         let cmd = Cmd("ROLE")
         return try await cmd.query(self)
     }
-    /// Return the role of the instance in the context of replication
+    /// Returns the replication role.
     /// ## Available since
     /// 2.8.12
     /// ## Time complexity
@@ -3388,7 +3390,7 @@ extension RedisConnection {
         let cmd = Cmd("ROLE")
         try await cmd.exec(self)
     }
-    /// Remove and get the last elements in a list
+    /// Returns and removes the last elements of a list. Deletes the list if the last element was popped.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3401,7 +3403,7 @@ extension RedisConnection {
         let cmd = Cmd("RPOP").arg(key).arg(count)
         return try await cmd.query(self)
     }
-    /// Remove and get the last elements in a list
+    /// Returns and removes the last elements of a list. Deletes the list if the last element was popped.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3414,7 +3416,7 @@ extension RedisConnection {
         let cmd = Cmd("RPOP").arg(key).arg(count)
         try await cmd.exec(self)
     }
-    /// Remove the last element in a list, prepend it to another list and return it
+    /// Returns the last element of a list after removing and pushing it to another list. Deletes the list if the last element was popped.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -3425,7 +3427,7 @@ extension RedisConnection {
         let cmd = Cmd("RPOPLPUSH").arg(source).arg(destination)
         return try await cmd.query(self)
     }
-    /// Remove the last element in a list, prepend it to another list and return it
+    /// Returns the last element of a list after removing and pushing it to another list. Deletes the list if the last element was popped.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -3436,7 +3438,7 @@ extension RedisConnection {
         let cmd = Cmd("RPOPLPUSH").arg(source).arg(destination)
         try await cmd.exec(self)
     }
-    /// Append one or multiple elements to a list
+    /// Appends one or more elements to a list. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3449,7 +3451,7 @@ extension RedisConnection {
         let cmd = Cmd("RPUSH").arg(key).arg(element)
         return try await cmd.query(self)
     }
-    /// Append one or multiple elements to a list
+    /// Appends one or more elements to a list. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3462,7 +3464,7 @@ extension RedisConnection {
         let cmd = Cmd("RPUSH").arg(key).arg(element)
         try await cmd.exec(self)
     }
-    /// Append an element to a list, only if the list exists
+    /// Appends an element to a list only when the list exists.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -3475,7 +3477,7 @@ extension RedisConnection {
         let cmd = Cmd("RPUSHX").arg(key).arg(element)
         return try await cmd.query(self)
     }
-    /// Append an element to a list, only if the list exists
+    /// Appends an element to a list only when the list exists.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -3488,7 +3490,7 @@ extension RedisConnection {
         let cmd = Cmd("RPUSHX").arg(key).arg(element)
         try await cmd.exec(self)
     }
-    /// Add one or more members to a set
+    /// Adds one or more members to a set. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3501,7 +3503,7 @@ extension RedisConnection {
         let cmd = Cmd("SADD").arg(key).arg(member)
         return try await cmd.query(self)
     }
-    /// Add one or more members to a set
+    /// Adds one or more members to a set. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3514,7 +3516,7 @@ extension RedisConnection {
         let cmd = Cmd("SADD").arg(key).arg(member)
         try await cmd.exec(self)
     }
-    /// Synchronously save the dataset to disk
+    /// Synchronously saves the database(s) to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3525,7 +3527,7 @@ extension RedisConnection {
         let cmd = Cmd("SAVE")
         return try await cmd.query(self)
     }
-    /// Synchronously save the dataset to disk
+    /// Synchronously saves the database(s) to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3536,7 +3538,7 @@ extension RedisConnection {
         let cmd = Cmd("SAVE")
         try await cmd.exec(self)
     }
-    /// Incrementally iterate the keys space
+    /// Iterates over the key names in the database.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -3553,7 +3555,7 @@ extension RedisConnection {
         ).arg(count).arg((type != nil) ? "TYPE" : nil).arg(type)
         return try await cmd.query(self)
     }
-    /// Incrementally iterate the keys space
+    /// Iterates over the key names in the database.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -3568,7 +3570,7 @@ extension RedisConnection {
         ).arg(count).arg((type != nil) ? "TYPE" : nil).arg(type)
         try await cmd.exec(self)
     }
-    /// Get the number of members in a set
+    /// Returns the number of members in a set.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3579,7 +3581,7 @@ extension RedisConnection {
         let cmd = Cmd("SCARD").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the number of members in a set
+    /// Returns the number of members in a set.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3590,7 +3592,7 @@ extension RedisConnection {
         let cmd = Cmd("SCARD").arg(key)
         try await cmd.exec(self)
     }
-    /// A container for Lua scripts management commands
+    /// A container for Lua scripts management commands.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -3601,7 +3603,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT")
         return try await cmd.query(self)
     }
-    /// A container for Lua scripts management commands
+    /// A container for Lua scripts management commands.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -3612,7 +3614,7 @@ extension RedisConnection {
         let cmd = Cmd("SCRIPT")
         try await cmd.exec(self)
     }
-    /// Subtract multiple sets
+    /// Returns the difference of multiple sets.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3623,7 +3625,7 @@ extension RedisConnection {
         let cmd = Cmd("SDIFF").arg(key)
         return try await cmd.query(self)
     }
-    /// Subtract multiple sets
+    /// Returns the difference of multiple sets.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3634,7 +3636,7 @@ extension RedisConnection {
         let cmd = Cmd("SDIFF").arg(key)
         try await cmd.exec(self)
     }
-    /// Subtract multiple sets and store the resulting set in a key
+    /// Stores the difference of multiple sets in a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3645,7 +3647,7 @@ extension RedisConnection {
         let cmd = Cmd("SDIFFSTORE").arg(destination).arg(key)
         return try await cmd.query(self)
     }
-    /// Subtract multiple sets and store the resulting set in a key
+    /// Stores the difference of multiple sets in a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3656,7 +3658,7 @@ extension RedisConnection {
         let cmd = Cmd("SDIFFSTORE").arg(destination).arg(key)
         try await cmd.exec(self)
     }
-    /// Change the selected database for the current connection
+    /// Changes the selected database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3667,7 +3669,7 @@ extension RedisConnection {
         let cmd = Cmd("SELECT").arg(index)
         return try await cmd.query(self)
     }
-    /// Change the selected database for the current connection
+    /// Changes the selected database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3678,7 +3680,7 @@ extension RedisConnection {
         let cmd = Cmd("SELECT").arg(index)
         try await cmd.exec(self)
     }
-    /// A container for Sentinel commands
+    /// A container for Redis Sentinel commands.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -3689,7 +3691,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL")
         return try await cmd.query(self)
     }
-    /// A container for Sentinel commands
+    /// A container for Redis Sentinel commands.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -3700,7 +3702,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL")
         try await cmd.exec(self)
     }
-    /// Set the string value of a key
+    /// Sets the string value of a key, ignoring its type. The key is created if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3719,7 +3721,7 @@ extension RedisConnection {
         let cmd = Cmd("SET").arg(key).arg(value).arg(condition).arg(expiration).arg(options)
         return try await cmd.query(self)
     }
-    /// Set the string value of a key
+    /// Sets the string value of a key, ignoring its type. The key is created if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3738,7 +3740,7 @@ extension RedisConnection {
         let cmd = Cmd("SET").arg(key).arg(value).arg(condition).arg(expiration).arg(options)
         try await cmd.exec(self)
     }
-    /// Sets or clears the bit at offset in the string value stored at key
+    /// Sets or clears the bit at offset of the string value. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -3749,7 +3751,7 @@ extension RedisConnection {
         let cmd = Cmd("SETBIT").arg(key).arg(offset).arg(value)
         return try await cmd.query(self)
     }
-    /// Sets or clears the bit at offset in the string value stored at key
+    /// Sets or clears the bit at offset of the string value. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -3760,7 +3762,7 @@ extension RedisConnection {
         let cmd = Cmd("SETBIT").arg(key).arg(offset).arg(value)
         try await cmd.exec(self)
     }
-    /// Set the value and expiration of a key
+    /// Sets the string value and expiration time of a key. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -3771,7 +3773,7 @@ extension RedisConnection {
         let cmd = Cmd("SETEX").arg(key).arg(seconds).arg(value)
         return try await cmd.query(self)
     }
-    /// Set the value and expiration of a key
+    /// Sets the string value and expiration time of a key. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -3782,7 +3784,7 @@ extension RedisConnection {
         let cmd = Cmd("SETEX").arg(key).arg(seconds).arg(value)
         try await cmd.exec(self)
     }
-    /// Set the value of a key, only if the key does not exist
+    /// Set the string value of a key only when the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3793,7 +3795,7 @@ extension RedisConnection {
         let cmd = Cmd("SETNX").arg(key).arg(value)
         return try await cmd.query(self)
     }
-    /// Set the value of a key, only if the key does not exist
+    /// Set the string value of a key only when the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3804,7 +3806,7 @@ extension RedisConnection {
         let cmd = Cmd("SETNX").arg(key).arg(value)
         try await cmd.exec(self)
     }
-    /// Overwrite part of a string at key starting at the specified offset
+    /// Overwrites a part of a string value with another by an offset. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -3815,7 +3817,7 @@ extension RedisConnection {
         let cmd = Cmd("SETRANGE").arg(key).arg(offset).arg(value)
         return try await cmd.query(self)
     }
-    /// Overwrite part of a string at key starting at the specified offset
+    /// Overwrites a part of a string value with another by an offset. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -3826,7 +3828,7 @@ extension RedisConnection {
         let cmd = Cmd("SETRANGE").arg(key).arg(offset).arg(value)
         try await cmd.exec(self)
     }
-    /// Synchronously save the dataset to disk and then shut down the server
+    /// Synchronously saves the database(s) to disk and shuts down the Redis server.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3835,13 +3837,13 @@ extension RedisConnection {
     /// - 7.0.0, Added the `NOW`, `FORCE` and `ABORT` modifiers.
     /// ## Documentation
     /// view the docs for [SHUTDOWN](https://redis.io/commands/shutdown)
-    public func shutdown<T: FromRedisValue>(_ nosaveSave: ShutdownNosavesave? = nil, _ options: ShutdownOptions? = nil)
-        async throws -> T
-    {
-        let cmd = Cmd("SHUTDOWN").arg(nosaveSave).arg(options)
+    public func shutdown<T: FromRedisValue>(
+        _ saveSelector: ShutdownSaveselector? = nil, _ options: ShutdownOptions? = nil
+    ) async throws -> T {
+        let cmd = Cmd("SHUTDOWN").arg(saveSelector).arg(options)
         return try await cmd.query(self)
     }
-    /// Synchronously save the dataset to disk and then shut down the server
+    /// Synchronously saves the database(s) to disk and shuts down the Redis server.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3850,11 +3852,11 @@ extension RedisConnection {
     /// - 7.0.0, Added the `NOW`, `FORCE` and `ABORT` modifiers.
     /// ## Documentation
     /// view the docs for [SHUTDOWN](https://redis.io/commands/shutdown)
-    public func shutdown(_ nosaveSave: ShutdownNosavesave? = nil, _ options: ShutdownOptions? = nil) async throws {
-        let cmd = Cmd("SHUTDOWN").arg(nosaveSave).arg(options)
+    public func shutdown(_ saveSelector: ShutdownSaveselector? = nil, _ options: ShutdownOptions? = nil) async throws {
+        let cmd = Cmd("SHUTDOWN").arg(saveSelector).arg(options)
         try await cmd.exec(self)
     }
-    /// Intersect multiple sets
+    /// Returns the intersect of multiple sets.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3865,7 +3867,7 @@ extension RedisConnection {
         let cmd = Cmd("SINTER").arg(key)
         return try await cmd.query(self)
     }
-    /// Intersect multiple sets
+    /// Returns the intersect of multiple sets.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3876,7 +3878,7 @@ extension RedisConnection {
         let cmd = Cmd("SINTER").arg(key)
         try await cmd.exec(self)
     }
-    /// Intersect multiple sets and return the cardinality of the result
+    /// Returns the number of members of the intersect of multiple sets.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -3887,7 +3889,7 @@ extension RedisConnection {
         let cmd = Cmd("SINTERCARD").arg(numkeys).arg(key).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         return try await cmd.query(self)
     }
-    /// Intersect multiple sets and return the cardinality of the result
+    /// Returns the number of members of the intersect of multiple sets.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -3898,7 +3900,7 @@ extension RedisConnection {
         let cmd = Cmd("SINTERCARD").arg(numkeys).arg(key).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         try await cmd.exec(self)
     }
-    /// Intersect multiple sets and store the resulting set in a key
+    /// Stores the intersect of multiple sets in a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3909,7 +3911,7 @@ extension RedisConnection {
         let cmd = Cmd("SINTERSTORE").arg(destination).arg(key)
         return try await cmd.query(self)
     }
-    /// Intersect multiple sets and store the resulting set in a key
+    /// Stores the intersect of multiple sets in a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3920,7 +3922,7 @@ extension RedisConnection {
         let cmd = Cmd("SINTERSTORE").arg(destination).arg(key)
         try await cmd.exec(self)
     }
-    /// Determine if a given value is a member of a set
+    /// Determines whether a member belongs to a set.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3931,7 +3933,7 @@ extension RedisConnection {
         let cmd = Cmd("SISMEMBER").arg(key).arg(member)
         return try await cmd.query(self)
     }
-    /// Determine if a given value is a member of a set
+    /// Determines whether a member belongs to a set.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3942,7 +3944,7 @@ extension RedisConnection {
         let cmd = Cmd("SISMEMBER").arg(key).arg(member)
         try await cmd.exec(self)
     }
-    /// Make the server a replica of another instance, or promote it as master.
+    /// Sets a Redis server as a replica of another, or promotes it to being a master.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3953,7 +3955,7 @@ extension RedisConnection {
         let cmd = Cmd("SLAVEOF").arg(host).arg(port)
         return try await cmd.query(self)
     }
-    /// Make the server a replica of another instance, or promote it as master.
+    /// Sets a Redis server as a replica of another, or promotes it to being a master.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3964,7 +3966,7 @@ extension RedisConnection {
         let cmd = Cmd("SLAVEOF").arg(host).arg(port)
         try await cmd.exec(self)
     }
-    /// A container for slow log commands
+    /// A container for slow log commands.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -3975,7 +3977,7 @@ extension RedisConnection {
         let cmd = Cmd("SLOWLOG")
         return try await cmd.query(self)
     }
-    /// A container for slow log commands
+    /// A container for slow log commands.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -3986,7 +3988,7 @@ extension RedisConnection {
         let cmd = Cmd("SLOWLOG")
         try await cmd.exec(self)
     }
-    /// Get all the members in a set
+    /// Returns all members of a set.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -3997,7 +3999,7 @@ extension RedisConnection {
         let cmd = Cmd("SMEMBERS").arg(key)
         return try await cmd.query(self)
     }
-    /// Get all the members in a set
+    /// Returns all members of a set.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4008,7 +4010,7 @@ extension RedisConnection {
         let cmd = Cmd("SMEMBERS").arg(key)
         try await cmd.exec(self)
     }
-    /// Returns the membership associated with the given elements for a set
+    /// Determines whether multiple members belong to a set.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -4019,7 +4021,7 @@ extension RedisConnection {
         let cmd = Cmd("SMISMEMBER").arg(key).arg(member)
         return try await cmd.query(self)
     }
-    /// Returns the membership associated with the given elements for a set
+    /// Determines whether multiple members belong to a set.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -4030,7 +4032,7 @@ extension RedisConnection {
         let cmd = Cmd("SMISMEMBER").arg(key).arg(member)
         try await cmd.exec(self)
     }
-    /// Move a member from one set to another
+    /// Moves a member from one set to another.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4041,7 +4043,7 @@ extension RedisConnection {
         let cmd = Cmd("SMOVE").arg(source).arg(destination).arg(member)
         return try await cmd.query(self)
     }
-    /// Move a member from one set to another
+    /// Moves a member from one set to another.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4052,7 +4054,7 @@ extension RedisConnection {
         let cmd = Cmd("SMOVE").arg(source).arg(destination).arg(member)
         try await cmd.exec(self)
     }
-    /// Sort the elements in a list, set or sorted set
+    /// Sorts the elements in a list, a set, or a sorted set, optionally storing the result.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4060,17 +4062,17 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [SORT](https://redis.io/commands/sort)
     public func sort<T: FromRedisValue>(
-        _ key: String, _ pattern: String? = nil, _ offsetCount: SortOffsetcount? = nil, _ GET: String...,
+        _ key: String, _ byPattern: String? = nil, _ limit: SortLimit? = nil, _ getPattern: String...,
         order: SortOrder? = nil, _ destination: String? = nil, _ options: SortOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("SORT").arg(key).arg((pattern != nil) ? "BY" : nil).arg(pattern).arg(
-            (offsetCount != nil) ? "LIMIT" : nil
-        ).arg(offsetCount).arg((!GET.isEmpty) ? "GET" : nil).arg(GET).arg(order).arg(
+        let cmd = Cmd("SORT").arg(key).arg((byPattern != nil) ? "BY" : nil).arg(byPattern).arg(
+            (limit != nil) ? "LIMIT" : nil
+        ).arg(limit).arg((!getPattern.isEmpty) ? "GET" : nil).arg(getPattern).arg(order).arg(
             (destination != nil) ? "STORE" : nil
         ).arg(destination).arg(options)
         return try await cmd.query(self)
     }
-    /// Sort the elements in a list, set or sorted set
+    /// Sorts the elements in a list, a set, or a sorted set, optionally storing the result.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4078,17 +4080,17 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [SORT](https://redis.io/commands/sort)
     public func sort(
-        _ key: String, _ pattern: String? = nil, _ offsetCount: SortOffsetcount? = nil, _ GET: String...,
+        _ key: String, _ byPattern: String? = nil, _ limit: SortLimit? = nil, _ getPattern: String...,
         order: SortOrder? = nil, _ destination: String? = nil, _ options: SortOptions? = nil
     ) async throws {
-        let cmd = Cmd("SORT").arg(key).arg((pattern != nil) ? "BY" : nil).arg(pattern).arg(
-            (offsetCount != nil) ? "LIMIT" : nil
-        ).arg(offsetCount).arg((!GET.isEmpty) ? "GET" : nil).arg(GET).arg(order).arg(
+        let cmd = Cmd("SORT").arg(key).arg((byPattern != nil) ? "BY" : nil).arg(byPattern).arg(
+            (limit != nil) ? "LIMIT" : nil
+        ).arg(limit).arg((!getPattern.isEmpty) ? "GET" : nil).arg(getPattern).arg(order).arg(
             (destination != nil) ? "STORE" : nil
         ).arg(destination).arg(options)
         try await cmd.exec(self)
     }
-    /// Sort the elements in a list, set or sorted set. Read-only variant of SORT.
+    /// Returns the sorted elements of a list, a set, or a sorted set.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -4096,15 +4098,15 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [SORT_RO](https://redis.io/commands/sort-ro)
     public func sort_ro<T: FromRedisValue>(
-        _ key: String, _ pattern: String? = nil, _ offsetCount: SortRoOffsetcount? = nil, _ GET: String...,
+        _ key: String, _ byPattern: String? = nil, _ limit: SortRoLimit? = nil, _ getPattern: String...,
         order: SortRoOrder? = nil, _ options: SortRoOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("SORT_RO").arg(key).arg((pattern != nil) ? "BY" : nil).arg(pattern).arg(
-            (offsetCount != nil) ? "LIMIT" : nil
-        ).arg(offsetCount).arg((!GET.isEmpty) ? "GET" : nil).arg(GET).arg(order).arg(options)
+        let cmd = Cmd("SORT_RO").arg(key).arg((byPattern != nil) ? "BY" : nil).arg(byPattern).arg(
+            (limit != nil) ? "LIMIT" : nil
+        ).arg(limit).arg((!getPattern.isEmpty) ? "GET" : nil).arg(getPattern).arg(order).arg(options)
         return try await cmd.query(self)
     }
-    /// Sort the elements in a list, set or sorted set. Read-only variant of SORT.
+    /// Returns the sorted elements of a list, a set, or a sorted set.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -4112,15 +4114,15 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [SORT_RO](https://redis.io/commands/sort-ro)
     public func sort_ro(
-        _ key: String, _ pattern: String? = nil, _ offsetCount: SortRoOffsetcount? = nil, _ GET: String...,
+        _ key: String, _ byPattern: String? = nil, _ limit: SortRoLimit? = nil, _ getPattern: String...,
         order: SortRoOrder? = nil, _ options: SortRoOptions? = nil
     ) async throws {
-        let cmd = Cmd("SORT_RO").arg(key).arg((pattern != nil) ? "BY" : nil).arg(pattern).arg(
-            (offsetCount != nil) ? "LIMIT" : nil
-        ).arg(offsetCount).arg((!GET.isEmpty) ? "GET" : nil).arg(GET).arg(order).arg(options)
+        let cmd = Cmd("SORT_RO").arg(key).arg((byPattern != nil) ? "BY" : nil).arg(byPattern).arg(
+            (limit != nil) ? "LIMIT" : nil
+        ).arg(limit).arg((!getPattern.isEmpty) ? "GET" : nil).arg(getPattern).arg(order).arg(options)
         try await cmd.exec(self)
     }
-    /// Remove and return one or multiple random members from a set
+    /// Returns one or more random members from a set after removing them. Deletes the set if the last member was popped.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4133,7 +4135,7 @@ extension RedisConnection {
         let cmd = Cmd("SPOP").arg(key).arg(count)
         return try await cmd.query(self)
     }
-    /// Remove and return one or multiple random members from a set
+    /// Returns one or more random members from a set after removing them. Deletes the set if the last member was popped.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4194,7 +4196,7 @@ extension RedisConnection {
         let cmd = Cmd("SRANDMEMBER").arg(key).arg(count)
         try await cmd.exec(self)
     }
-    /// Remove one or more members from a set
+    /// Removes one or more members from a set. Deletes the set if the last member was removed.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4207,7 +4209,7 @@ extension RedisConnection {
         let cmd = Cmd("SREM").arg(key).arg(member)
         return try await cmd.query(self)
     }
-    /// Remove one or more members from a set
+    /// Removes one or more members from a set. Deletes the set if the last member was removed.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4220,11 +4222,11 @@ extension RedisConnection {
         let cmd = Cmd("SREM").arg(key).arg(member)
         try await cmd.exec(self)
     }
-    /// Incrementally iterate Set elements
+    /// Iterates over members of a set.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection..
+    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
     /// ## Documentation
     /// view the docs for [SSCAN](https://redis.io/commands/sscan)
     public func sscan<T: FromRedisValue>(_ key: String, _ cursor: Int, _ pattern: String? = nil, _ count: Int? = nil)
@@ -4235,11 +4237,11 @@ extension RedisConnection {
         ).arg(count)
         return try await cmd.query(self)
     }
-    /// Incrementally iterate Set elements
+    /// Iterates over members of a set.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection..
+    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
     /// ## Documentation
     /// view the docs for [SSCAN](https://redis.io/commands/sscan)
     public func sscan(_ key: String, _ cursor: Int, _ pattern: String? = nil, _ count: Int? = nil) async throws {
@@ -4248,7 +4250,7 @@ extension RedisConnection {
         ).arg(count)
         try await cmd.exec(self)
     }
-    /// Get the length of the value stored in a key
+    /// Returns the length of a string value.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -4259,7 +4261,7 @@ extension RedisConnection {
         let cmd = Cmd("STRLEN").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the length of the value stored in a key
+    /// Returns the length of a string value.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -4270,7 +4272,7 @@ extension RedisConnection {
         let cmd = Cmd("STRLEN").arg(key)
         try await cmd.exec(self)
     }
-    /// Get a substring of the string stored at a key
+    /// Returns a substring from a string value.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4281,7 +4283,7 @@ extension RedisConnection {
         let cmd = Cmd("SUBSTR").arg(key).arg(start).arg(end)
         return try await cmd.query(self)
     }
-    /// Get a substring of the string stored at a key
+    /// Returns a substring from a string value.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4292,7 +4294,7 @@ extension RedisConnection {
         let cmd = Cmd("SUBSTR").arg(key).arg(start).arg(end)
         try await cmd.exec(self)
     }
-    /// Add multiple sets
+    /// Returns the union of multiple sets.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4303,7 +4305,7 @@ extension RedisConnection {
         let cmd = Cmd("SUNION").arg(key)
         return try await cmd.query(self)
     }
-    /// Add multiple sets
+    /// Returns the union of multiple sets.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4314,7 +4316,7 @@ extension RedisConnection {
         let cmd = Cmd("SUNION").arg(key)
         try await cmd.exec(self)
     }
-    /// Add multiple sets and store the resulting set in a key
+    /// Stores the union of multiple sets in a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4325,7 +4327,7 @@ extension RedisConnection {
         let cmd = Cmd("SUNIONSTORE").arg(destination).arg(key)
         return try await cmd.query(self)
     }
-    /// Add multiple sets and store the resulting set in a key
+    /// Stores the union of multiple sets in a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4336,7 +4338,7 @@ extension RedisConnection {
         let cmd = Cmd("SUNIONSTORE").arg(destination).arg(key)
         try await cmd.exec(self)
     }
-    /// Swaps two Redis databases
+    /// Swaps two Redis databases.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -4347,7 +4349,7 @@ extension RedisConnection {
         let cmd = Cmd("SWAPDB").arg(index1).arg(index2)
         return try await cmd.query(self)
     }
-    /// Swaps two Redis databases
+    /// Swaps two Redis databases.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -4358,7 +4360,7 @@ extension RedisConnection {
         let cmd = Cmd("SWAPDB").arg(index1).arg(index2)
         try await cmd.exec(self)
     }
-    /// Internal command used for replication
+    /// An internal command used in replication.
     /// ## Available since
     /// 1.0.0
     /// ## Documentation
@@ -4367,7 +4369,7 @@ extension RedisConnection {
         let cmd = Cmd("SYNC")
         return try await cmd.query(self)
     }
-    /// Internal command used for replication
+    /// An internal command used in replication.
     /// ## Available since
     /// 1.0.0
     /// ## Documentation
@@ -4376,7 +4378,7 @@ extension RedisConnection {
         let cmd = Cmd("SYNC")
         try await cmd.exec(self)
     }
-    /// Return the current server time
+    /// Returns the server time.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -4387,7 +4389,7 @@ extension RedisConnection {
         let cmd = Cmd("TIME")
         return try await cmd.query(self)
     }
-    /// Return the current server time
+    /// Returns the server time.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -4398,7 +4400,7 @@ extension RedisConnection {
         let cmd = Cmd("TIME")
         try await cmd.exec(self)
     }
-    /// Alters the last access time of a key(s). Returns the number of existing keys specified.
+    /// Returns the number of existing keys out of those specified after updating the time they were last accessed.
     /// ## Available since
     /// 3.2.1
     /// ## Time complexity
@@ -4409,7 +4411,7 @@ extension RedisConnection {
         let cmd = Cmd("TOUCH").arg(key)
         return try await cmd.query(self)
     }
-    /// Alters the last access time of a key(s). Returns the number of existing keys specified.
+    /// Returns the number of existing keys out of those specified after updating the time they were last accessed.
     /// ## Available since
     /// 3.2.1
     /// ## Time complexity
@@ -4420,7 +4422,7 @@ extension RedisConnection {
         let cmd = Cmd("TOUCH").arg(key)
         try await cmd.exec(self)
     }
-    /// Get the time to live for a key in seconds
+    /// Returns the expiration time in seconds of a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4433,7 +4435,7 @@ extension RedisConnection {
         let cmd = Cmd("TTL").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the time to live for a key in seconds
+    /// Returns the expiration time in seconds of a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4446,7 +4448,7 @@ extension RedisConnection {
         let cmd = Cmd("TTL").arg(key)
         try await cmd.exec(self)
     }
-    /// Determine the type stored at key
+    /// Determines the type of value stored at a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4457,7 +4459,7 @@ extension RedisConnection {
         let cmd = Cmd("TYPE").arg(key)
         return try await cmd.query(self)
     }
-    /// Determine the type stored at key
+    /// Determines the type of value stored at a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -4468,7 +4470,7 @@ extension RedisConnection {
         let cmd = Cmd("TYPE").arg(key)
         try await cmd.exec(self)
     }
-    /// Delete a key asynchronously in another thread. Otherwise it is just as DEL, but non blocking.
+    /// Asynchronously deletes one or more keys.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -4479,7 +4481,7 @@ extension RedisConnection {
         let cmd = Cmd("UNLINK").arg(key)
         return try await cmd.query(self)
     }
-    /// Delete a key asynchronously in another thread. Otherwise it is just as DEL, but non blocking.
+    /// Asynchronously deletes one or more keys.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -4490,7 +4492,7 @@ extension RedisConnection {
         let cmd = Cmd("UNLINK").arg(key)
         try await cmd.exec(self)
     }
-    /// Forget about all watched keys
+    /// Forgets about watched keys of a transaction.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -4501,7 +4503,7 @@ extension RedisConnection {
         let cmd = Cmd("UNWATCH")
         return try await cmd.query(self)
     }
-    /// Forget about all watched keys
+    /// Forgets about watched keys of a transaction.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -4512,7 +4514,7 @@ extension RedisConnection {
         let cmd = Cmd("UNWATCH")
         try await cmd.exec(self)
     }
-    /// Wait for the synchronous replication of all the write commands sent in the context of the current connection
+    /// Blocks until the asynchronous replication of all preceding write commands sent by the connection is completed.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -4523,7 +4525,7 @@ extension RedisConnection {
         let cmd = Cmd("WAIT").arg(numreplicas).arg(timeout)
         return try await cmd.query(self)
     }
-    /// Wait for the synchronous replication of all the write commands sent in the context of the current connection
+    /// Blocks until the asynchronous replication of all preceding write commands sent by the connection is completed.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -4534,7 +4536,29 @@ extension RedisConnection {
         let cmd = Cmd("WAIT").arg(numreplicas).arg(timeout)
         try await cmd.exec(self)
     }
-    /// Watch the given keys to determine execution of the MULTI/EXEC block
+    /// Blocks until all of the preceding write commands sent by the connection are written to the append-only file of the master and/or replicas.
+    /// ## Available since
+    /// 7.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [WAITAOF](https://redis.io/commands/waitaof)
+    public func waitaof<T: FromRedisValue>(_ numlocal: Int, _ numreplicas: Int, _ timeout: Int) async throws -> T {
+        let cmd = Cmd("WAITAOF").arg(numlocal).arg(numreplicas).arg(timeout)
+        return try await cmd.query(self)
+    }
+    /// Blocks until all of the preceding write commands sent by the connection are written to the append-only file of the master and/or replicas.
+    /// ## Available since
+    /// 7.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [WAITAOF](https://redis.io/commands/waitaof)
+    public func waitaof(_ numlocal: Int, _ numreplicas: Int, _ timeout: Int) async throws {
+        let cmd = Cmd("WAITAOF").arg(numlocal).arg(numreplicas).arg(timeout)
+        try await cmd.exec(self)
+    }
+    /// Monitors changes to keys to determine the execution of a transaction.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -4545,7 +4569,7 @@ extension RedisConnection {
         let cmd = Cmd("WATCH").arg(key)
         return try await cmd.query(self)
     }
-    /// Watch the given keys to determine execution of the MULTI/EXEC block
+    /// Monitors changes to keys to determine the execution of a transaction.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -4556,7 +4580,7 @@ extension RedisConnection {
         let cmd = Cmd("WATCH").arg(key)
         try await cmd.exec(self)
     }
-    /// Marks a pending message as correctly processed, effectively removing it from the pending entries list of the consumer group. Return value of the command is the number of messages successfully acknowledged, that is, the IDs we were actually able to resolve in the PEL.
+    /// Returns the number of messages that were successfully acknowledged by the consumer group member of a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4567,7 +4591,7 @@ extension RedisConnection {
         let cmd = Cmd("XACK").arg(key).arg(group).arg(id)
         return try await cmd.query(self)
     }
-    /// Marks a pending message as correctly processed, effectively removing it from the pending entries list of the consumer group. Return value of the command is the number of messages successfully acknowledged, that is, the IDs we were actually able to resolve in the PEL.
+    /// Returns the number of messages that were successfully acknowledged by the consumer group member of a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4578,7 +4602,7 @@ extension RedisConnection {
         let cmd = Cmd("XACK").arg(key).arg(group).arg(id)
         try await cmd.exec(self)
     }
-    /// Appends a new entry to a stream
+    /// Appends a new message to a stream. Creates the key if it doesn't exist.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4589,13 +4613,13 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [XADD](https://redis.io/commands/xadd)
     public func xadd<T: FromRedisValue>(
-        _ key: String, _ trim: XaddTrim? = nil, _ idOrAuto: XaddIdorauto, _ fieldValue: XaddFieldvalue...,
+        _ key: String, _ trim: XaddTrim? = nil, _ idSelector: XaddIdselector, _ data: XaddData...,
         options: XaddOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("XADD").arg(key).arg(trim).arg(idOrAuto).arg(fieldValue).arg(options)
+        let cmd = Cmd("XADD").arg(key).arg(trim).arg(idSelector).arg(data).arg(options)
         return try await cmd.query(self)
     }
-    /// Appends a new entry to a stream
+    /// Appends a new message to a stream. Creates the key if it doesn't exist.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4606,13 +4630,13 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [XADD](https://redis.io/commands/xadd)
     public func xadd(
-        _ key: String, _ trim: XaddTrim? = nil, _ idOrAuto: XaddIdorauto, _ fieldValue: XaddFieldvalue...,
+        _ key: String, _ trim: XaddTrim? = nil, _ idSelector: XaddIdselector, _ data: XaddData...,
         options: XaddOptions? = nil
     ) async throws {
-        let cmd = Cmd("XADD").arg(key).arg(trim).arg(idOrAuto).arg(fieldValue).arg(options)
+        let cmd = Cmd("XADD").arg(key).arg(trim).arg(idSelector).arg(data).arg(options)
         try await cmd.exec(self)
     }
-    /// Changes (or acquires) ownership of messages in a consumer group, as if the messages were delivered to the specified consumer.
+    /// Changes, or acquires, ownership of messages in a consumer group, as if the messages were delivered to as consumer group member.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -4630,7 +4654,7 @@ extension RedisConnection {
         ).arg(count).arg(options)
         return try await cmd.query(self)
     }
-    /// Changes (or acquires) ownership of messages in a consumer group, as if the messages were delivered to the specified consumer.
+    /// Changes, or acquires, ownership of messages in a consumer group, as if the messages were delivered to as consumer group member.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -4648,7 +4672,7 @@ extension RedisConnection {
         ).arg(count).arg(options)
         try await cmd.exec(self)
     }
-    /// Changes (or acquires) ownership of a message in a consumer group, as if the message was delivered to the specified consumer.
+    /// Changes, or acquires, ownership of a message in a consumer group, as if the message was delivered a consumer group member.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4657,17 +4681,17 @@ extension RedisConnection {
     /// view the docs for [XCLAIM](https://redis.io/commands/xclaim)
     public func xclaim<T: FromRedisValue>(
         _ key: String, _ group: String, _ consumer: String, _ minIdleTime: String, _ id: String..., ms: Int? = nil,
-        _ unixTimeMilliseconds: Int64? = nil, _ count: Int? = nil, _ LASTID: String? = nil,
+        _ unixTimeMilliseconds: Int64? = nil, _ count: Int? = nil, _ lastid: String? = nil,
         _ options: XclaimOptions? = nil
     ) async throws -> T {
         let cmd = Cmd("XCLAIM").arg(key).arg(group).arg(consumer).arg(minIdleTime).arg(id).arg(
             (ms != nil) ? "IDLE" : nil
         ).arg(ms).arg((unixTimeMilliseconds != nil) ? "TIME" : nil).arg(unixTimeMilliseconds).arg(
             (count != nil) ? "RETRYCOUNT" : nil
-        ).arg(count).arg((LASTID != nil) ? "LASTID" : nil).arg(LASTID).arg(options)
+        ).arg(count).arg((lastid != nil) ? "LASTID" : nil).arg(lastid).arg(options)
         return try await cmd.query(self)
     }
-    /// Changes (or acquires) ownership of a message in a consumer group, as if the message was delivered to the specified consumer.
+    /// Changes, or acquires, ownership of a message in a consumer group, as if the message was delivered a consumer group member.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4676,17 +4700,17 @@ extension RedisConnection {
     /// view the docs for [XCLAIM](https://redis.io/commands/xclaim)
     public func xclaim(
         _ key: String, _ group: String, _ consumer: String, _ minIdleTime: String, _ id: String..., ms: Int? = nil,
-        _ unixTimeMilliseconds: Int64? = nil, _ count: Int? = nil, _ LASTID: String? = nil,
+        _ unixTimeMilliseconds: Int64? = nil, _ count: Int? = nil, _ lastid: String? = nil,
         _ options: XclaimOptions? = nil
     ) async throws {
         let cmd = Cmd("XCLAIM").arg(key).arg(group).arg(consumer).arg(minIdleTime).arg(id).arg(
             (ms != nil) ? "IDLE" : nil
         ).arg(ms).arg((unixTimeMilliseconds != nil) ? "TIME" : nil).arg(unixTimeMilliseconds).arg(
             (count != nil) ? "RETRYCOUNT" : nil
-        ).arg(count).arg((LASTID != nil) ? "LASTID" : nil).arg(LASTID).arg(options)
+        ).arg(count).arg((lastid != nil) ? "LASTID" : nil).arg(lastid).arg(options)
         try await cmd.exec(self)
     }
-    /// Removes the specified entries from the stream. Returns the number of items actually deleted, that may be different from the number of IDs passed in case certain IDs do not exist.
+    /// Returns the number of messages after removing them from a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4697,7 +4721,7 @@ extension RedisConnection {
         let cmd = Cmd("XDEL").arg(key).arg(id)
         return try await cmd.query(self)
     }
-    /// Removes the specified entries from the stream. Returns the number of items actually deleted, that may be different from the number of IDs passed in case certain IDs do not exist.
+    /// Returns the number of messages after removing them from a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4708,7 +4732,7 @@ extension RedisConnection {
         let cmd = Cmd("XDEL").arg(key).arg(id)
         try await cmd.exec(self)
     }
-    /// A container for consumer groups commands
+    /// A container for consumer groups commands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4719,7 +4743,7 @@ extension RedisConnection {
         let cmd = Cmd("XGROUP")
         return try await cmd.query(self)
     }
-    /// A container for consumer groups commands
+    /// A container for consumer groups commands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4730,7 +4754,7 @@ extension RedisConnection {
         let cmd = Cmd("XGROUP")
         try await cmd.exec(self)
     }
-    /// A container for stream introspection commands
+    /// A container for stream introspection commands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4741,7 +4765,7 @@ extension RedisConnection {
         let cmd = Cmd("XINFO")
         return try await cmd.query(self)
     }
-    /// A container for stream introspection commands
+    /// A container for stream introspection commands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4752,7 +4776,7 @@ extension RedisConnection {
         let cmd = Cmd("XINFO")
         try await cmd.exec(self)
     }
-    /// Return the number of entries in a stream
+    /// Return the number of messages in a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4763,7 +4787,7 @@ extension RedisConnection {
         let cmd = Cmd("XLEN").arg(key)
         return try await cmd.query(self)
     }
-    /// Return the number of entries in a stream
+    /// Return the number of messages in a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4774,7 +4798,7 @@ extension RedisConnection {
         let cmd = Cmd("XLEN").arg(key)
         try await cmd.exec(self)
     }
-    /// Return information and entries from a stream consumer group pending entries list, that are messages fetched but never acknowledged.
+    /// Returns the information and entries from a stream consumer group's pending entries list.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4789,7 +4813,7 @@ extension RedisConnection {
         let cmd = Cmd("XPENDING").arg(key).arg(group).arg(filters)
         return try await cmd.query(self)
     }
-    /// Return information and entries from a stream consumer group pending entries list, that are messages fetched but never acknowledged.
+    /// Returns the information and entries from a stream consumer group's pending entries list.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4802,7 +4826,7 @@ extension RedisConnection {
         let cmd = Cmd("XPENDING").arg(key).arg(group).arg(filters)
         try await cmd.exec(self)
     }
-    /// Return a range of elements in a stream, with IDs matching the specified IDs interval
+    /// Returns the messages from a stream within a range of IDs.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4817,7 +4841,7 @@ extension RedisConnection {
         let cmd = Cmd("XRANGE").arg(key).arg(start).arg(end).arg((count != nil) ? "COUNT" : nil).arg(count)
         return try await cmd.query(self)
     }
-    /// Return a range of elements in a stream, with IDs matching the specified IDs interval
+    /// Returns the messages from a stream within a range of IDs.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4830,11 +4854,9 @@ extension RedisConnection {
         let cmd = Cmd("XRANGE").arg(key).arg(start).arg(end).arg((count != nil) ? "COUNT" : nil).arg(count)
         try await cmd.exec(self)
     }
-    /// Return never seen elements in multiple streams, with IDs greater than the ones reported by the caller for each stream. Can block.
+    /// Returns messages from multiple streams with IDs greater than the ones requested. Blocks until a message is available otherwise.
     /// ## Available since
     /// 5.0.0
-    /// ## Time complexity
-    /// For each stream mentioned: O(N) with N being the number of elements being returned, it means that XREAD-ing with a fixed COUNT is O(1). Note that when the BLOCK option is used, XADD will pay O(M) time in order to serve the M clients blocked on the stream getting new data.
     /// ## Documentation
     /// view the docs for [XREAD](https://redis.io/commands/xread)
     public func xread<T: FromRedisValue>(_ count: Int? = nil, _ milliseconds: Int? = nil, _ streams: XreadStreams)
@@ -4844,11 +4866,9 @@ extension RedisConnection {
             .arg(milliseconds).arg("STREAMS").arg(streams)
         return try await cmd.query(self)
     }
-    /// Return never seen elements in multiple streams, with IDs greater than the ones reported by the caller for each stream. Can block.
+    /// Returns messages from multiple streams with IDs greater than the ones requested. Blocks until a message is available otherwise.
     /// ## Available since
     /// 5.0.0
-    /// ## Time complexity
-    /// For each stream mentioned: O(N) with N being the number of elements being returned, it means that XREAD-ing with a fixed COUNT is O(1). Note that when the BLOCK option is used, XADD will pay O(M) time in order to serve the M clients blocked on the stream getting new data.
     /// ## Documentation
     /// view the docs for [XREAD](https://redis.io/commands/xread)
     public func xread(_ count: Int? = nil, _ milliseconds: Int? = nil, _ streams: XreadStreams) async throws {
@@ -4856,7 +4876,7 @@ extension RedisConnection {
             .arg(milliseconds).arg("STREAMS").arg(streams)
         try await cmd.exec(self)
     }
-    /// Return new entries from a stream using a consumer group, or access the history of the pending entries for a given consumer. Can block.
+    /// Returns new or historical messages from a stream for a consumer in a group. Blocks until a message is available otherwise.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4864,15 +4884,15 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [XREADGROUP](https://redis.io/commands/xreadgroup)
     public func xreadgroup<T: FromRedisValue>(
-        _ groupConsumer: XreadgroupGroupconsumer, _ count: Int? = nil, _ milliseconds: Int? = nil,
+        _ groupBlock: XreadgroupGroupblock, _ count: Int? = nil, _ milliseconds: Int? = nil,
         _ streams: XreadgroupStreams, _ options: XreadgroupOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("XREADGROUP").arg("GROUP").arg(groupConsumer).arg((count != nil) ? "COUNT" : nil).arg(count).arg(
+        let cmd = Cmd("XREADGROUP").arg("GROUP").arg(groupBlock).arg((count != nil) ? "COUNT" : nil).arg(count).arg(
             (milliseconds != nil) ? "BLOCK" : nil
         ).arg(milliseconds).arg("STREAMS").arg(streams).arg(options)
         return try await cmd.query(self)
     }
-    /// Return new entries from a stream using a consumer group, or access the history of the pending entries for a given consumer. Can block.
+    /// Returns new or historical messages from a stream for a consumer in a group. Blocks until a message is available otherwise.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4880,15 +4900,15 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [XREADGROUP](https://redis.io/commands/xreadgroup)
     public func xreadgroup(
-        _ groupConsumer: XreadgroupGroupconsumer, _ count: Int? = nil, _ milliseconds: Int? = nil,
+        _ groupBlock: XreadgroupGroupblock, _ count: Int? = nil, _ milliseconds: Int? = nil,
         _ streams: XreadgroupStreams, _ options: XreadgroupOptions? = nil
     ) async throws {
-        let cmd = Cmd("XREADGROUP").arg("GROUP").arg(groupConsumer).arg((count != nil) ? "COUNT" : nil).arg(count).arg(
+        let cmd = Cmd("XREADGROUP").arg("GROUP").arg(groupBlock).arg((count != nil) ? "COUNT" : nil).arg(count).arg(
             (milliseconds != nil) ? "BLOCK" : nil
         ).arg(milliseconds).arg("STREAMS").arg(streams).arg(options)
         try await cmd.exec(self)
     }
-    /// Return a range of elements in a stream, with IDs matching the specified IDs interval, in reverse order (from greater to smaller IDs) compared to XRANGE
+    /// Returns the messages from a stream within a range of IDs in reverse order.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4903,7 +4923,7 @@ extension RedisConnection {
         let cmd = Cmd("XREVRANGE").arg(key).arg(end).arg(start).arg((count != nil) ? "COUNT" : nil).arg(count)
         return try await cmd.query(self)
     }
-    /// Return a range of elements in a stream, with IDs matching the specified IDs interval, in reverse order (from greater to smaller IDs) compared to XRANGE
+    /// Returns the messages from a stream within a range of IDs in reverse order.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4916,7 +4936,7 @@ extension RedisConnection {
         let cmd = Cmd("XREVRANGE").arg(key).arg(end).arg(start).arg((count != nil) ? "COUNT" : nil).arg(count)
         try await cmd.exec(self)
     }
-    /// An internal command for replicating stream values
+    /// An internal command for replicating stream values.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4926,13 +4946,13 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [XSETID](https://redis.io/commands/xsetid)
     public func xsetid<T: FromRedisValue>(
-        _ key: String, _ lastId: String, _ entriesAdded: Int? = nil, _ maxDeletedEntryId: String? = nil
+        _ key: String, _ lastId: String, _ entriesAdded: Int? = nil, _ maxDeletedId: String? = nil
     ) async throws -> T {
         let cmd = Cmd("XSETID").arg(key).arg(lastId).arg((entriesAdded != nil) ? "ENTRIESADDED" : nil).arg(entriesAdded)
-            .arg((maxDeletedEntryId != nil) ? "MAXDELETEDID" : nil).arg(maxDeletedEntryId)
+            .arg((maxDeletedId != nil) ? "MAXDELETEDID" : nil).arg(maxDeletedId)
         return try await cmd.query(self)
     }
-    /// An internal command for replicating stream values
+    /// An internal command for replicating stream values.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4941,14 +4961,14 @@ extension RedisConnection {
     /// - 7.0.0, Added the `entries_added` and `max_deleted_entry_id` arguments.
     /// ## Documentation
     /// view the docs for [XSETID](https://redis.io/commands/xsetid)
-    public func xsetid(_ key: String, _ lastId: String, _ entriesAdded: Int? = nil, _ maxDeletedEntryId: String? = nil)
+    public func xsetid(_ key: String, _ lastId: String, _ entriesAdded: Int? = nil, _ maxDeletedId: String? = nil)
         async throws
     {
         let cmd = Cmd("XSETID").arg(key).arg(lastId).arg((entriesAdded != nil) ? "ENTRIESADDED" : nil).arg(entriesAdded)
-            .arg((maxDeletedEntryId != nil) ? "MAXDELETEDID" : nil).arg(maxDeletedEntryId)
+            .arg((maxDeletedId != nil) ? "MAXDELETEDID" : nil).arg(maxDeletedId)
         try await cmd.exec(self)
     }
-    /// Trims the stream to (approximately if '~' is passed) a certain size
+    /// Deletes messages from the beginning of a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4961,7 +4981,7 @@ extension RedisConnection {
         let cmd = Cmd("XTRIM").arg(key).arg(trim)
         return try await cmd.query(self)
     }
-    /// Trims the stream to (approximately if '~' is passed) a certain size
+    /// Deletes messages from the beginning of a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -4974,7 +4994,7 @@ extension RedisConnection {
         let cmd = Cmd("XTRIM").arg(key).arg(trim)
         try await cmd.exec(self)
     }
-    /// Add one or more members to a sorted set, or update its score if it already exists
+    /// Adds one or more members to a sorted set, or updates their scores. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -4986,13 +5006,13 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [ZADD](https://redis.io/commands/zadd)
     public func zadd<T: FromRedisValue>(
-        _ key: String, _ condition: ZaddCondition? = nil, _ comparison: ZaddComparison? = nil,
-        _ scoreMember: ZaddScoremember..., options: ZaddOptions? = nil
+        _ key: String, _ condition: ZaddCondition? = nil, _ comparison: ZaddComparison? = nil, _ data: ZaddData...,
+        options: ZaddOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("ZADD").arg(key).arg(condition).arg(comparison).arg(scoreMember).arg(options)
+        let cmd = Cmd("ZADD").arg(key).arg(condition).arg(comparison).arg(data).arg(options)
         return try await cmd.query(self)
     }
-    /// Add one or more members to a sorted set, or update its score if it already exists
+    /// Adds one or more members to a sorted set, or updates their scores. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5004,13 +5024,13 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [ZADD](https://redis.io/commands/zadd)
     public func zadd(
-        _ key: String, _ condition: ZaddCondition? = nil, _ comparison: ZaddComparison? = nil,
-        _ scoreMember: ZaddScoremember..., options: ZaddOptions? = nil
+        _ key: String, _ condition: ZaddCondition? = nil, _ comparison: ZaddComparison? = nil, _ data: ZaddData...,
+        options: ZaddOptions? = nil
     ) async throws {
-        let cmd = Cmd("ZADD").arg(key).arg(condition).arg(comparison).arg(scoreMember).arg(options)
+        let cmd = Cmd("ZADD").arg(key).arg(condition).arg(comparison).arg(data).arg(options)
         try await cmd.exec(self)
     }
-    /// Get the number of members in a sorted set
+    /// Returns the number of members in a sorted set.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5021,7 +5041,7 @@ extension RedisConnection {
         let cmd = Cmd("ZCARD").arg(key)
         return try await cmd.query(self)
     }
-    /// Get the number of members in a sorted set
+    /// Returns the number of members in a sorted set.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5032,7 +5052,7 @@ extension RedisConnection {
         let cmd = Cmd("ZCARD").arg(key)
         try await cmd.exec(self)
     }
-    /// Count the members in a sorted set with scores within the given values
+    /// Returns the count of members in a sorted set that have scores within a range.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5043,7 +5063,7 @@ extension RedisConnection {
         let cmd = Cmd("ZCOUNT").arg(key).arg(min).arg(max)
         return try await cmd.query(self)
     }
-    /// Count the members in a sorted set with scores within the given values
+    /// Returns the count of members in a sorted set that have scores within a range.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5054,7 +5074,7 @@ extension RedisConnection {
         let cmd = Cmd("ZCOUNT").arg(key).arg(min).arg(max)
         try await cmd.exec(self)
     }
-    /// Subtract multiple sorted sets
+    /// Returns the difference between multiple sorted sets.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5067,7 +5087,7 @@ extension RedisConnection {
         let cmd = Cmd("ZDIFF").arg(numkeys).arg(key).arg(options)
         return try await cmd.query(self)
     }
-    /// Subtract multiple sorted sets
+    /// Returns the difference between multiple sorted sets.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5078,7 +5098,7 @@ extension RedisConnection {
         let cmd = Cmd("ZDIFF").arg(numkeys).arg(key).arg(options)
         try await cmd.exec(self)
     }
-    /// Subtract multiple sorted sets and store the resulting sorted set in a new key
+    /// Stores the difference of multiple sorted sets in a key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5090,7 +5110,7 @@ extension RedisConnection {
         let cmd = Cmd("ZDIFFSTORE").arg(destination).arg(numkeys).arg(key)
         return try await cmd.query(self)
     }
-    /// Subtract multiple sorted sets and store the resulting sorted set in a new key
+    /// Stores the difference of multiple sorted sets in a key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5101,7 +5121,7 @@ extension RedisConnection {
         let cmd = Cmd("ZDIFFSTORE").arg(destination).arg(numkeys).arg(key)
         try await cmd.exec(self)
     }
-    /// Increment the score of a member in a sorted set
+    /// Increments the score of a member in a sorted set.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5112,7 +5132,7 @@ extension RedisConnection {
         let cmd = Cmd("ZINCRBY").arg(key).arg(increment).arg(member)
         return try await cmd.query(self)
     }
-    /// Increment the score of a member in a sorted set
+    /// Increments the score of a member in a sorted set.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5123,7 +5143,7 @@ extension RedisConnection {
         let cmd = Cmd("ZINCRBY").arg(key).arg(increment).arg(member)
         try await cmd.exec(self)
     }
-    /// Intersect multiple sorted sets
+    /// Returns the intersect of multiple sorted sets.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5139,7 +5159,7 @@ extension RedisConnection {
         ).arg(aggregate).arg(options)
         return try await cmd.query(self)
     }
-    /// Intersect multiple sorted sets
+    /// Returns the intersect of multiple sorted sets.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5155,7 +5175,7 @@ extension RedisConnection {
         ).arg(aggregate).arg(options)
         try await cmd.exec(self)
     }
-    /// Intersect multiple sorted sets and return the cardinality of the result
+    /// Returns the number of members of the intersect of multiple sorted sets.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -5166,7 +5186,7 @@ extension RedisConnection {
         let cmd = Cmd("ZINTERCARD").arg(numkeys).arg(key).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         return try await cmd.query(self)
     }
-    /// Intersect multiple sorted sets and return the cardinality of the result
+    /// Returns the number of members of the intersect of multiple sorted sets.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -5177,7 +5197,7 @@ extension RedisConnection {
         let cmd = Cmd("ZINTERCARD").arg(numkeys).arg(key).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         try await cmd.exec(self)
     }
-    /// Intersect multiple sorted sets and store the resulting sorted set in a new key
+    /// Stores the intersect of multiple sorted sets in a key.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5191,7 +5211,7 @@ extension RedisConnection {
             .arg(weight).arg((aggregate != nil) ? "AGGREGATE" : nil).arg(aggregate)
         return try await cmd.query(self)
     }
-    /// Intersect multiple sorted sets and store the resulting sorted set in a new key
+    /// Stores the intersect of multiple sorted sets in a key.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5205,7 +5225,7 @@ extension RedisConnection {
             .arg(weight).arg((aggregate != nil) ? "AGGREGATE" : nil).arg(aggregate)
         try await cmd.exec(self)
     }
-    /// Count the number of members in a sorted set between a given lexicographical range
+    /// Returns the number of members in a sorted set within a lexicographical range.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -5216,7 +5236,7 @@ extension RedisConnection {
         let cmd = Cmd("ZLEXCOUNT").arg(key).arg(min).arg(max)
         return try await cmd.query(self)
     }
-    /// Count the number of members in a sorted set between a given lexicographical range
+    /// Returns the number of members in a sorted set within a lexicographical range.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -5227,7 +5247,7 @@ extension RedisConnection {
         let cmd = Cmd("ZLEXCOUNT").arg(key).arg(min).arg(max)
         try await cmd.exec(self)
     }
-    /// Remove and return members with scores in a sorted set
+    /// Returns the highest- or lowest-scoring members from one or more sorted sets after removing them. Deletes the sorted set if the last member was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -5240,7 +5260,7 @@ extension RedisConnection {
         let cmd = Cmd("ZMPOP").arg(numkeys).arg(key).arg(rWhere).arg((count != nil) ? "COUNT" : nil).arg(count)
         return try await cmd.query(self)
     }
-    /// Remove and return members with scores in a sorted set
+    /// Returns the highest- or lowest-scoring members from one or more sorted sets after removing them. Deletes the sorted set if the last member was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -5251,7 +5271,7 @@ extension RedisConnection {
         let cmd = Cmd("ZMPOP").arg(numkeys).arg(key).arg(rWhere).arg((count != nil) ? "COUNT" : nil).arg(count)
         try await cmd.exec(self)
     }
-    /// Get the score associated with the given members in a sorted set
+    /// Returns the score of one or more members in a sorted set.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5262,7 +5282,7 @@ extension RedisConnection {
         let cmd = Cmd("ZMSCORE").arg(key).arg(member)
         return try await cmd.query(self)
     }
-    /// Get the score associated with the given members in a sorted set
+    /// Returns the score of one or more members in a sorted set.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5273,7 +5293,7 @@ extension RedisConnection {
         let cmd = Cmd("ZMSCORE").arg(key).arg(member)
         try await cmd.exec(self)
     }
-    /// Remove and return members with the highest scores in a sorted set
+    /// Returns the highest-scoring members from a sorted set after removing them. Deletes the sorted set if the last member was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -5284,7 +5304,7 @@ extension RedisConnection {
         let cmd = Cmd("ZPOPMAX").arg(key).arg(count)
         return try await cmd.query(self)
     }
-    /// Remove and return members with the highest scores in a sorted set
+    /// Returns the highest-scoring members from a sorted set after removing them. Deletes the sorted set if the last member was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -5295,7 +5315,7 @@ extension RedisConnection {
         let cmd = Cmd("ZPOPMAX").arg(key).arg(count)
         try await cmd.exec(self)
     }
-    /// Remove and return members with the lowest scores in a sorted set
+    /// Returns the lowest-scoring members from a sorted set after removing them. Deletes the sorted set if the last member was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -5306,7 +5326,7 @@ extension RedisConnection {
         let cmd = Cmd("ZPOPMIN").arg(key).arg(count)
         return try await cmd.query(self)
     }
-    /// Remove and return members with the lowest scores in a sorted set
+    /// Returns the lowest-scoring members from a sorted set after removing them. Deletes the sorted set if the last member was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -5317,29 +5337,29 @@ extension RedisConnection {
         let cmd = Cmd("ZPOPMIN").arg(key).arg(count)
         try await cmd.exec(self)
     }
-    /// Get one or multiple random elements from a sorted set
+    /// Returns one or more random members from a sorted set.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
-    /// O(N) where N is the number of elements returned
+    /// O(N) where N is the number of members returned
     /// ## Documentation
     /// view the docs for [ZRANDMEMBER](https://redis.io/commands/zrandmember)
     public func zrandmember<T: FromRedisValue>(_ key: String, _ options: ZrandmemberOptions? = nil) async throws -> T {
         let cmd = Cmd("ZRANDMEMBER").arg(key).arg(options)
         return try await cmd.query(self)
     }
-    /// Get one or multiple random elements from a sorted set
+    /// Returns one or more random members from a sorted set.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
-    /// O(N) where N is the number of elements returned
+    /// O(N) where N is the number of members returned
     /// ## Documentation
     /// view the docs for [ZRANDMEMBER](https://redis.io/commands/zrandmember)
     public func zrandmember(_ key: String, _ options: ZrandmemberOptions? = nil) async throws {
         let cmd = Cmd("ZRANDMEMBER").arg(key).arg(options)
         try await cmd.exec(self)
     }
-    /// Return a range of members in a sorted set
+    /// Returns members in a sorted set within a range of indexes.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5349,15 +5369,14 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [ZRANGE](https://redis.io/commands/zrange)
     public func zrange<T: FromRedisValue>(
-        _ key: String, _ start: String, _ stop: String, _ sortby: ZrangeSortby? = nil,
-        _ offsetCount: ZrangeOffsetcount? = nil, _ options: ZrangeOptions? = nil
+        _ key: String, _ start: String, _ stop: String, _ sortby: ZrangeSortby? = nil, _ limit: ZrangeLimit? = nil,
+        _ options: ZrangeOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("ZRANGE").arg(key).arg(start).arg(stop).arg(sortby).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount
-        ).arg(options)
+        let cmd = Cmd("ZRANGE").arg(key).arg(start).arg(stop).arg(sortby).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
+            .arg(options)
         return try await cmd.query(self)
     }
-    /// Return a range of members in a sorted set
+    /// Returns members in a sorted set within a range of indexes.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5367,15 +5386,14 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [ZRANGE](https://redis.io/commands/zrange)
     public func zrange(
-        _ key: String, _ start: String, _ stop: String, _ sortby: ZrangeSortby? = nil,
-        _ offsetCount: ZrangeOffsetcount? = nil, _ options: ZrangeOptions? = nil
+        _ key: String, _ start: String, _ stop: String, _ sortby: ZrangeSortby? = nil, _ limit: ZrangeLimit? = nil,
+        _ options: ZrangeOptions? = nil
     ) async throws {
-        let cmd = Cmd("ZRANGE").arg(key).arg(start).arg(stop).arg(sortby).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount
-        ).arg(options)
+        let cmd = Cmd("ZRANGE").arg(key).arg(start).arg(stop).arg(sortby).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
+            .arg(options)
         try await cmd.exec(self)
     }
-    /// Return a range of members in a sorted set, by lexicographical range
+    /// Returns members in a sorted set within a lexicographical range.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -5383,27 +5401,24 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [ZRANGEBYLEX](https://redis.io/commands/zrangebylex)
     public func zrangebylex<T: FromRedisValue>(
-        _ key: String, _ min: String, _ max: String, _ offsetCount: ZrangebylexOffsetcount? = nil
+        _ key: String, _ min: String, _ max: String, _ limit: ZrangebylexLimit? = nil
     ) async throws -> T {
-        let cmd = Cmd("ZRANGEBYLEX").arg(key).arg(min).arg(max).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount)
+        let cmd = Cmd("ZRANGEBYLEX").arg(key).arg(min).arg(max).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         return try await cmd.query(self)
     }
-    /// Return a range of members in a sorted set, by lexicographical range
+    /// Returns members in a sorted set within a lexicographical range.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
     /// O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements being returned. If M is constant (e.g. always asking for the first 10 elements with LIMIT), you can consider it O(log(N)).
     /// ## Documentation
     /// view the docs for [ZRANGEBYLEX](https://redis.io/commands/zrangebylex)
-    public func zrangebylex(_ key: String, _ min: String, _ max: String, _ offsetCount: ZrangebylexOffsetcount? = nil)
-        async throws
+    public func zrangebylex(_ key: String, _ min: String, _ max: String, _ limit: ZrangebylexLimit? = nil) async throws
     {
-        let cmd = Cmd("ZRANGEBYLEX").arg(key).arg(min).arg(max).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount)
+        let cmd = Cmd("ZRANGEBYLEX").arg(key).arg(min).arg(max).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         try await cmd.exec(self)
     }
-    /// Return a range of members in a sorted set, by score
+    /// Returns members in a sorted set within a range of scores.
     /// ## Available since
     /// 1.0.5
     /// ## Time complexity
@@ -5413,15 +5428,14 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [ZRANGEBYSCORE](https://redis.io/commands/zrangebyscore)
     public func zrangebyscore<T: FromRedisValue>(
-        _ key: String, _ min: Double, _ max: Double, _ offsetCount: ZrangebyscoreOffsetcount? = nil,
+        _ key: String, _ min: Double, _ max: Double, _ limit: ZrangebyscoreLimit? = nil,
         _ options: ZrangebyscoreOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("ZRANGEBYSCORE").arg(key).arg(min).arg(max).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount
-        ).arg(options)
+        let cmd = Cmd("ZRANGEBYSCORE").arg(key).arg(min).arg(max).arg((limit != nil) ? "LIMIT" : nil).arg(limit).arg(
+            options)
         return try await cmd.query(self)
     }
-    /// Return a range of members in a sorted set, by score
+    /// Returns members in a sorted set within a range of scores.
     /// ## Available since
     /// 1.0.5
     /// ## Time complexity
@@ -5431,15 +5445,14 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [ZRANGEBYSCORE](https://redis.io/commands/zrangebyscore)
     public func zrangebyscore(
-        _ key: String, _ min: Double, _ max: Double, _ offsetCount: ZrangebyscoreOffsetcount? = nil,
+        _ key: String, _ min: Double, _ max: Double, _ limit: ZrangebyscoreLimit? = nil,
         _ options: ZrangebyscoreOptions? = nil
     ) async throws {
-        let cmd = Cmd("ZRANGEBYSCORE").arg(key).arg(min).arg(max).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount
-        ).arg(options)
+        let cmd = Cmd("ZRANGEBYSCORE").arg(key).arg(min).arg(max).arg((limit != nil) ? "LIMIT" : nil).arg(limit).arg(
+            options)
         try await cmd.exec(self)
     }
-    /// Store a range of members from sorted set into another key
+    /// Stores a range of members from sorted set in a key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5448,14 +5461,13 @@ extension RedisConnection {
     /// view the docs for [ZRANGESTORE](https://redis.io/commands/zrangestore)
     public func zrangestore<T: FromRedisValue>(
         _ dst: String, _ src: String, _ min: String, _ max: String, _ sortby: ZrangestoreSortby? = nil,
-        _ offsetCount: ZrangestoreOffsetcount? = nil, _ options: ZrangestoreOptions? = nil
+        _ limit: ZrangestoreLimit? = nil, _ options: ZrangestoreOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("ZRANGESTORE").arg(dst).arg(src).arg(min).arg(max).arg(sortby).arg(
-            (offsetCount != nil) ? "LIMIT" : nil
-        ).arg(offsetCount).arg(options)
+        let cmd = Cmd("ZRANGESTORE").arg(dst).arg(src).arg(min).arg(max).arg(sortby).arg((limit != nil) ? "LIMIT" : nil)
+            .arg(limit).arg(options)
         return try await cmd.query(self)
     }
-    /// Store a range of members from sorted set into another key
+    /// Stores a range of members from sorted set in a key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5464,36 +5476,41 @@ extension RedisConnection {
     /// view the docs for [ZRANGESTORE](https://redis.io/commands/zrangestore)
     public func zrangestore(
         _ dst: String, _ src: String, _ min: String, _ max: String, _ sortby: ZrangestoreSortby? = nil,
-        _ offsetCount: ZrangestoreOffsetcount? = nil, _ options: ZrangestoreOptions? = nil
+        _ limit: ZrangestoreLimit? = nil, _ options: ZrangestoreOptions? = nil
     ) async throws {
-        let cmd = Cmd("ZRANGESTORE").arg(dst).arg(src).arg(min).arg(max).arg(sortby).arg(
-            (offsetCount != nil) ? "LIMIT" : nil
-        ).arg(offsetCount).arg(options)
+        let cmd = Cmd("ZRANGESTORE").arg(dst).arg(src).arg(min).arg(max).arg(sortby).arg((limit != nil) ? "LIMIT" : nil)
+            .arg(limit).arg(options)
         try await cmd.exec(self)
     }
-    /// Determine the index of a member in a sorted set
+    /// Returns the index of a member in a sorted set ordered by ascending scores.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
     /// O(log(N))
+    /// ## History
+    /// - 7.2.0, Added the optional `WITHSCORE` argument.
     /// ## Documentation
     /// view the docs for [ZRANK](https://redis.io/commands/zrank)
-    public func zrank<T: FromRedisValue>(_ key: String, _ member: String) async throws -> T {
-        let cmd = Cmd("ZRANK").arg(key).arg(member)
+    public func zrank<T: FromRedisValue>(_ key: String, _ member: String, _ options: ZrankOptions? = nil) async throws
+        -> T
+    {
+        let cmd = Cmd("ZRANK").arg(key).arg(member).arg(options)
         return try await cmd.query(self)
     }
-    /// Determine the index of a member in a sorted set
+    /// Returns the index of a member in a sorted set ordered by ascending scores.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
     /// O(log(N))
+    /// ## History
+    /// - 7.2.0, Added the optional `WITHSCORE` argument.
     /// ## Documentation
     /// view the docs for [ZRANK](https://redis.io/commands/zrank)
-    public func zrank(_ key: String, _ member: String) async throws {
-        let cmd = Cmd("ZRANK").arg(key).arg(member)
+    public func zrank(_ key: String, _ member: String, _ options: ZrankOptions? = nil) async throws {
+        let cmd = Cmd("ZRANK").arg(key).arg(member).arg(options)
         try await cmd.exec(self)
     }
-    /// Remove one or more members from a sorted set
+    /// Removes one or more members from a sorted set. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5506,7 +5523,7 @@ extension RedisConnection {
         let cmd = Cmd("ZREM").arg(key).arg(member)
         return try await cmd.query(self)
     }
-    /// Remove one or more members from a sorted set
+    /// Removes one or more members from a sorted set. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5519,7 +5536,7 @@ extension RedisConnection {
         let cmd = Cmd("ZREM").arg(key).arg(member)
         try await cmd.exec(self)
     }
-    /// Remove all members in a sorted set between the given lexicographical range
+    /// Removes members in a sorted set within a lexicographical range. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -5530,7 +5547,7 @@ extension RedisConnection {
         let cmd = Cmd("ZREMRANGEBYLEX").arg(key).arg(min).arg(max)
         return try await cmd.query(self)
     }
-    /// Remove all members in a sorted set between the given lexicographical range
+    /// Removes members in a sorted set within a lexicographical range. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -5541,7 +5558,7 @@ extension RedisConnection {
         let cmd = Cmd("ZREMRANGEBYLEX").arg(key).arg(min).arg(max)
         try await cmd.exec(self)
     }
-    /// Remove all members in a sorted set within the given indexes
+    /// Removes members in a sorted set within a range of indexes. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5552,7 +5569,7 @@ extension RedisConnection {
         let cmd = Cmd("ZREMRANGEBYRANK").arg(key).arg(start).arg(stop)
         return try await cmd.query(self)
     }
-    /// Remove all members in a sorted set within the given indexes
+    /// Removes members in a sorted set within a range of indexes. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5563,7 +5580,7 @@ extension RedisConnection {
         let cmd = Cmd("ZREMRANGEBYRANK").arg(key).arg(start).arg(stop)
         try await cmd.exec(self)
     }
-    /// Remove all members in a sorted set within the given scores
+    /// Removes members in a sorted set within a range of scores. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5574,7 +5591,7 @@ extension RedisConnection {
         let cmd = Cmd("ZREMRANGEBYSCORE").arg(key).arg(min).arg(max)
         return try await cmd.query(self)
     }
-    /// Remove all members in a sorted set within the given scores
+    /// Removes members in a sorted set within a range of scores. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5585,7 +5602,7 @@ extension RedisConnection {
         let cmd = Cmd("ZREMRANGEBYSCORE").arg(key).arg(min).arg(max)
         try await cmd.exec(self)
     }
-    /// Return a range of members in a sorted set, by index, with scores ordered from high to low
+    /// Returns members in a sorted set within a range of indexes in reverse order.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5598,7 +5615,7 @@ extension RedisConnection {
         let cmd = Cmd("ZREVRANGE").arg(key).arg(start).arg(stop).arg(options)
         return try await cmd.query(self)
     }
-    /// Return a range of members in a sorted set, by index, with scores ordered from high to low
+    /// Returns members in a sorted set within a range of indexes in reverse order.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5609,7 +5626,7 @@ extension RedisConnection {
         let cmd = Cmd("ZREVRANGE").arg(key).arg(start).arg(stop).arg(options)
         try await cmd.exec(self)
     }
-    /// Return a range of members in a sorted set, by lexicographical range, ordered from higher to lower strings.
+    /// Returns members in a sorted set within a lexicographical range in reverse order.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -5617,27 +5634,25 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [ZREVRANGEBYLEX](https://redis.io/commands/zrevrangebylex)
     public func zrevrangebylex<T: FromRedisValue>(
-        _ key: String, _ max: String, _ min: String, _ offsetCount: ZrevrangebylexOffsetcount? = nil
+        _ key: String, _ max: String, _ min: String, _ limit: ZrevrangebylexLimit? = nil
     ) async throws -> T {
-        let cmd = Cmd("ZREVRANGEBYLEX").arg(key).arg(max).arg(min).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount)
+        let cmd = Cmd("ZREVRANGEBYLEX").arg(key).arg(max).arg(min).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         return try await cmd.query(self)
     }
-    /// Return a range of members in a sorted set, by lexicographical range, ordered from higher to lower strings.
+    /// Returns members in a sorted set within a lexicographical range in reverse order.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
     /// O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements being returned. If M is constant (e.g. always asking for the first 10 elements with LIMIT), you can consider it O(log(N)).
     /// ## Documentation
     /// view the docs for [ZREVRANGEBYLEX](https://redis.io/commands/zrevrangebylex)
-    public func zrevrangebylex(
-        _ key: String, _ max: String, _ min: String, _ offsetCount: ZrevrangebylexOffsetcount? = nil
-    ) async throws {
-        let cmd = Cmd("ZREVRANGEBYLEX").arg(key).arg(max).arg(min).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount)
+    public func zrevrangebylex(_ key: String, _ max: String, _ min: String, _ limit: ZrevrangebylexLimit? = nil)
+        async throws
+    {
+        let cmd = Cmd("ZREVRANGEBYLEX").arg(key).arg(max).arg(min).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         try await cmd.exec(self)
     }
-    /// Return a range of members in a sorted set, by score, with scores ordered from high to low
+    /// Returns members in a sorted set within a range of scores in reverse order.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -5647,15 +5662,14 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [ZREVRANGEBYSCORE](https://redis.io/commands/zrevrangebyscore)
     public func zrevrangebyscore<T: FromRedisValue>(
-        _ key: String, _ max: Double, _ min: Double, _ offsetCount: ZrevrangebyscoreOffsetcount? = nil,
+        _ key: String, _ max: Double, _ min: Double, _ limit: ZrevrangebyscoreLimit? = nil,
         _ options: ZrevrangebyscoreOptions? = nil
     ) async throws -> T {
-        let cmd = Cmd("ZREVRANGEBYSCORE").arg(key).arg(max).arg(min).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount
-        ).arg(options)
+        let cmd = Cmd("ZREVRANGEBYSCORE").arg(key).arg(max).arg(min).arg((limit != nil) ? "LIMIT" : nil).arg(limit).arg(
+            options)
         return try await cmd.query(self)
     }
-    /// Return a range of members in a sorted set, by score, with scores ordered from high to low
+    /// Returns members in a sorted set within a range of scores in reverse order.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -5665,41 +5679,46 @@ extension RedisConnection {
     /// ## Documentation
     /// view the docs for [ZREVRANGEBYSCORE](https://redis.io/commands/zrevrangebyscore)
     public func zrevrangebyscore(
-        _ key: String, _ max: Double, _ min: Double, _ offsetCount: ZrevrangebyscoreOffsetcount? = nil,
+        _ key: String, _ max: Double, _ min: Double, _ limit: ZrevrangebyscoreLimit? = nil,
         _ options: ZrevrangebyscoreOptions? = nil
     ) async throws {
-        let cmd = Cmd("ZREVRANGEBYSCORE").arg(key).arg(max).arg(min).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount
-        ).arg(options)
+        let cmd = Cmd("ZREVRANGEBYSCORE").arg(key).arg(max).arg(min).arg((limit != nil) ? "LIMIT" : nil).arg(limit).arg(
+            options)
         try await cmd.exec(self)
     }
-    /// Determine the index of a member in a sorted set, with scores ordered from high to low
+    /// Returns the index of a member in a sorted set ordered by descending scores.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
     /// O(log(N))
+    /// ## History
+    /// - 7.2.0, Added the optional `WITHSCORE` argument.
     /// ## Documentation
     /// view the docs for [ZREVRANK](https://redis.io/commands/zrevrank)
-    public func zrevrank<T: FromRedisValue>(_ key: String, _ member: String) async throws -> T {
-        let cmd = Cmd("ZREVRANK").arg(key).arg(member)
+    public func zrevrank<T: FromRedisValue>(_ key: String, _ member: String, _ options: ZrevrankOptions? = nil)
+        async throws -> T
+    {
+        let cmd = Cmd("ZREVRANK").arg(key).arg(member).arg(options)
         return try await cmd.query(self)
     }
-    /// Determine the index of a member in a sorted set, with scores ordered from high to low
+    /// Returns the index of a member in a sorted set ordered by descending scores.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
     /// O(log(N))
+    /// ## History
+    /// - 7.2.0, Added the optional `WITHSCORE` argument.
     /// ## Documentation
     /// view the docs for [ZREVRANK](https://redis.io/commands/zrevrank)
-    public func zrevrank(_ key: String, _ member: String) async throws {
-        let cmd = Cmd("ZREVRANK").arg(key).arg(member)
+    public func zrevrank(_ key: String, _ member: String, _ options: ZrevrankOptions? = nil) async throws {
+        let cmd = Cmd("ZREVRANK").arg(key).arg(member).arg(options)
         try await cmd.exec(self)
     }
-    /// Incrementally iterate sorted sets elements and associated scores
+    /// Iterates over members and scores of a sorted set.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection..
+    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
     /// ## Documentation
     /// view the docs for [ZSCAN](https://redis.io/commands/zscan)
     public func zscan<T: FromRedisValue>(_ key: String, _ cursor: Int, _ pattern: String? = nil, _ count: Int? = nil)
@@ -5710,11 +5729,11 @@ extension RedisConnection {
         ).arg(count)
         return try await cmd.query(self)
     }
-    /// Incrementally iterate sorted sets elements and associated scores
+    /// Iterates over members and scores of a sorted set.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection..
+    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
     /// ## Documentation
     /// view the docs for [ZSCAN](https://redis.io/commands/zscan)
     public func zscan(_ key: String, _ cursor: Int, _ pattern: String? = nil, _ count: Int? = nil) async throws {
@@ -5723,7 +5742,7 @@ extension RedisConnection {
         ).arg(count)
         try await cmd.exec(self)
     }
-    /// Get the score associated with the given member in a sorted set
+    /// Returns the score of a member in a sorted set.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5734,7 +5753,7 @@ extension RedisConnection {
         let cmd = Cmd("ZSCORE").arg(key).arg(member)
         return try await cmd.query(self)
     }
-    /// Get the score associated with the given member in a sorted set
+    /// Returns the score of a member in a sorted set.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -5745,7 +5764,7 @@ extension RedisConnection {
         let cmd = Cmd("ZSCORE").arg(key).arg(member)
         try await cmd.exec(self)
     }
-    /// Add multiple sorted sets
+    /// Returns the union of multiple sorted sets.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5761,7 +5780,7 @@ extension RedisConnection {
         ).arg(aggregate).arg(options)
         return try await cmd.query(self)
     }
-    /// Add multiple sorted sets
+    /// Returns the union of multiple sorted sets.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5777,7 +5796,7 @@ extension RedisConnection {
         ).arg(aggregate).arg(options)
         try await cmd.exec(self)
     }
-    /// Add multiple sorted sets and store the resulting sorted set in a new key
+    /// Stores the union of multiple sorted sets in a key.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5791,7 +5810,7 @@ extension RedisConnection {
             .arg(weight).arg((aggregate != nil) ? "AGGREGATE" : nil).arg(aggregate)
         return try await cmd.query(self)
     }
-    /// Add multiple sorted sets and store the resulting sorted set in a new key
+    /// Stores the union of multiple sorted sets in a key.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5807,7 +5826,7 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// A container for Access List Control commands
+    /// A container for Access List Control commands.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -5818,7 +5837,7 @@ extension RedisPipeline {
         let cmd = Cmd("ACL")
         return self.add_command(cmd)
     }
-    /// Append a value to a key
+    /// Appends a string to the value of a key. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5829,7 +5848,7 @@ extension RedisPipeline {
         let cmd = Cmd("APPEND").arg(key).arg(value)
         return self.add_command(cmd)
     }
-    /// Sent by cluster clients after an -ASK redirect
+    /// Signals that a cluster client is following an -ASK redirect.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -5840,7 +5859,7 @@ extension RedisPipeline {
         let cmd = Cmd("ASKING")
         return self.add_command(cmd)
     }
-    /// Authenticate to the server
+    /// Authenticates the connection.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -5853,7 +5872,7 @@ extension RedisPipeline {
         let cmd = Cmd("AUTH").arg(username).arg(password)
         return self.add_command(cmd)
     }
-    /// Asynchronously rewrite the append-only file
+    /// Asynchronously rewrites the append-only file to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -5864,7 +5883,7 @@ extension RedisPipeline {
         let cmd = Cmd("BGREWRITEAOF")
         return self.add_command(cmd)
     }
-    /// Asynchronously save the dataset to disk
+    /// Asynchronously saves the database(s) to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -5877,7 +5896,7 @@ extension RedisPipeline {
         let cmd = Cmd("BGSAVE").arg(options)
         return self.add_command(cmd)
     }
-    /// Count set bits in a string
+    /// Counts the number of set bits (population counting) in a string.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -5886,11 +5905,11 @@ extension RedisPipeline {
     /// - 7.0.0, Added the `BYTE|BIT` option.
     /// ## Documentation
     /// view the docs for [BITCOUNT](https://redis.io/commands/bitcount)
-    public func bitcount(_ key: String, _ index: BitcountIndex? = nil) -> Self {
-        let cmd = Cmd("BITCOUNT").arg(key).arg(index)
+    public func bitcount(_ key: String, _ range: BitcountRange? = nil) -> Self {
+        let cmd = Cmd("BITCOUNT").arg(key).arg(range)
         return self.add_command(cmd)
     }
-    /// Perform arbitrary bitfield integer operations on strings
+    /// Performs arbitrary bitfield integer operations on strings.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -5901,29 +5920,29 @@ extension RedisPipeline {
         let cmd = Cmd("BITFIELD").arg(key).arg(operation)
         return self.add_command(cmd)
     }
-    /// Perform arbitrary bitfield integer operations on strings. Read-only variant of BITFIELD
+    /// Performs arbitrary read-only bitfield integer operations on strings.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
     /// O(1) for each subcommand specified
     /// ## Documentation
     /// view the docs for [BITFIELD_RO](https://redis.io/commands/bitfield-ro)
-    public func bitfield_ro(_ key: String, _ encodingOffset: BitfieldRoEncodingoffset...) -> Self {
-        let cmd = Cmd("BITFIELD_RO").arg(key).arg((!encodingOffset.isEmpty) ? "GET" : nil).arg(encodingOffset)
+    public func bitfield_ro(_ key: String, _ getBlock: BitfieldRoGetblock...) -> Self {
+        let cmd = Cmd("BITFIELD_RO").arg(key).arg((!getBlock.isEmpty) ? "GET" : nil).arg(getBlock)
         return self.add_command(cmd)
     }
-    /// Perform bitwise operations between strings
+    /// Performs bitwise operations on multiple strings, and stores the result.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
     /// O(N)
     /// ## Documentation
     /// view the docs for [BITOP](https://redis.io/commands/bitop)
-    public func bitop(_ operation: String, _ destkey: String, _ key: String...) -> Self {
+    public func bitop(_ operation: BitopOperation, _ destkey: String, _ key: String...) -> Self {
         let cmd = Cmd("BITOP").arg(operation).arg(destkey).arg(key)
         return self.add_command(cmd)
     }
-    /// Find first bit set or clear in a string
+    /// Finds the first set (1) or clear (0) bit in a string.
     /// ## Available since
     /// 2.8.7
     /// ## Time complexity
@@ -5932,11 +5951,11 @@ extension RedisPipeline {
     /// - 7.0.0, Added the `BYTE|BIT` option.
     /// ## Documentation
     /// view the docs for [BITPOS](https://redis.io/commands/bitpos)
-    public func bitpos(_ key: String, _ bit: Int, _ index: BitposIndex? = nil) -> Self {
-        let cmd = Cmd("BITPOS").arg(key).arg(bit).arg(index)
+    public func bitpos(_ key: String, _ bit: Int, _ range: BitposRange? = nil) -> Self {
+        let cmd = Cmd("BITPOS").arg(key).arg(bit).arg(range)
         return self.add_command(cmd)
     }
-    /// Pop an element from a list, push it to another list and return it; or block until one is available
+    /// Pops an element from a list, pushes it to another list and returns it. Blocks until an element is available otherwise. Deletes the list if the last element was moved.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -5950,7 +5969,7 @@ extension RedisPipeline {
         let cmd = Cmd("BLMOVE").arg(source).arg(destination).arg(wherefrom).arg(whereto).arg(timeout)
         return self.add_command(cmd)
     }
-    /// Pop elements from a list, or block until one is available
+    /// Pops the first element from one of multiple lists. Blocks until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -5964,7 +5983,7 @@ extension RedisPipeline {
             count)
         return self.add_command(cmd)
     }
-    /// Remove and get the first element in a list, or block until one is available
+    /// Removes and returns the first element in a list. Blocks until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5977,7 +5996,7 @@ extension RedisPipeline {
         let cmd = Cmd("BLPOP").arg(key).arg(timeout)
         return self.add_command(cmd)
     }
-    /// Remove and get the last element in a list, or block until one is available
+    /// Removes and returns the last element in a list. Blocks until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -5990,7 +6009,7 @@ extension RedisPipeline {
         let cmd = Cmd("BRPOP").arg(key).arg(timeout)
         return self.add_command(cmd)
     }
-    /// Pop an element from a list, push it to another list and return it; or block until one is available
+    /// Pops an element from a list, pushes it to another list and returns it. Block until an element is available otherwise. Deletes the list if the last element was popped.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -6003,7 +6022,7 @@ extension RedisPipeline {
         let cmd = Cmd("BRPOPLPUSH").arg(source).arg(destination).arg(timeout)
         return self.add_command(cmd)
     }
-    /// Remove and return members with scores in a sorted set or block until one is available
+    /// Removes and returns a member by score from one or more sorted sets. Blocks until a member is available otherwise. Deletes the sorted set if the last element was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -6017,7 +6036,7 @@ extension RedisPipeline {
             count)
         return self.add_command(cmd)
     }
-    /// Remove and return the member with the highest score from one or more sorted sets, or block until one is available
+    /// Removes and returns the member with the highest score from one or more sorted sets. Blocks until a member available otherwise.  Deletes the sorted set if the last element was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -6030,7 +6049,7 @@ extension RedisPipeline {
         let cmd = Cmd("BZPOPMAX").arg(key).arg(timeout)
         return self.add_command(cmd)
     }
-    /// Remove and return the member with the lowest score from one or more sorted sets, or block until one is available
+    /// Removes and returns the member with the lowest score from one or more sorted sets. Blocks until a member is available otherwise. Deletes the sorted set if the last element was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -6043,7 +6062,7 @@ extension RedisPipeline {
         let cmd = Cmd("BZPOPMIN").arg(key).arg(timeout)
         return self.add_command(cmd)
     }
-    /// A container for client connection commands
+    /// A container for client connection commands.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -6054,7 +6073,7 @@ extension RedisPipeline {
         let cmd = Cmd("CLIENT")
         return self.add_command(cmd)
     }
-    /// A container for cluster commands
+    /// A container for Redis Cluster commands.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -6065,7 +6084,7 @@ extension RedisPipeline {
         let cmd = Cmd("CLUSTER")
         return self.add_command(cmd)
     }
-    /// Get array of Redis command details
+    /// Returns detailed information about all commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -6076,7 +6095,7 @@ extension RedisPipeline {
         let cmd = Cmd("COMMAND")
         return self.add_command(cmd)
     }
-    /// A container for server configuration commands
+    /// A container for server configuration commands.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6087,7 +6106,7 @@ extension RedisPipeline {
         let cmd = Cmd("CONFIG")
         return self.add_command(cmd)
     }
-    /// Copy a key
+    /// Copies the value of a key to a new key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -6101,7 +6120,7 @@ extension RedisPipeline {
             .arg(options)
         return self.add_command(cmd)
     }
-    /// Return the number of keys in the selected database
+    /// Returns the number of keys in the database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6112,7 +6131,7 @@ extension RedisPipeline {
         let cmd = Cmd("DBSIZE")
         return self.add_command(cmd)
     }
-    /// A container for debugging commands
+    /// A container for debugging commands.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6123,7 +6142,7 @@ extension RedisPipeline {
         let cmd = Cmd("DEBUG")
         return self.add_command(cmd)
     }
-    /// Decrement the integer value of a key by one
+    /// Decrements the integer value of a key by one. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6134,7 +6153,7 @@ extension RedisPipeline {
         let cmd = Cmd("DECR").arg(key)
         return self.add_command(cmd)
     }
-    /// Decrement the integer value of a key by the given number
+    /// Decrements a number from the integer value of a key. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6145,7 +6164,7 @@ extension RedisPipeline {
         let cmd = Cmd("DECRBY").arg(key).arg(decrement)
         return self.add_command(cmd)
     }
-    /// Delete a key
+    /// Deletes one or more keys.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6156,7 +6175,7 @@ extension RedisPipeline {
         let cmd = Cmd("DEL").arg(key)
         return self.add_command(cmd)
     }
-    /// Discard all commands issued after MULTI
+    /// Discards a transaction.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6167,7 +6186,7 @@ extension RedisPipeline {
         let cmd = Cmd("DISCARD")
         return self.add_command(cmd)
     }
-    /// Return a serialized version of the value stored at the specified key.
+    /// Returns a serialized representation of the value stored at a key.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -6178,7 +6197,7 @@ extension RedisPipeline {
         let cmd = Cmd("DUMP").arg(key)
         return self.add_command(cmd)
     }
-    /// Echo the given string
+    /// Returns the given string.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6189,7 +6208,7 @@ extension RedisPipeline {
         let cmd = Cmd("ECHO").arg(message)
         return self.add_command(cmd)
     }
-    /// Execute a Lua script server side
+    /// Executes a server-side Lua script.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -6200,7 +6219,7 @@ extension RedisPipeline {
         let cmd = Cmd("EVAL").arg(script).arg(numkeys).arg(key).arg(arg)
         return self.add_command(cmd)
     }
-    /// Execute a Lua script server side
+    /// Executes a server-side Lua script by SHA1 digest.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -6211,7 +6230,7 @@ extension RedisPipeline {
         let cmd = Cmd("EVALSHA").arg(sha1).arg(numkeys).arg(key).arg(arg)
         return self.add_command(cmd)
     }
-    /// Execute a read-only Lua script server side
+    /// Executes a read-only server-side Lua script by SHA1 digest.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -6222,7 +6241,7 @@ extension RedisPipeline {
         let cmd = Cmd("EVALSHA_RO").arg(sha1).arg(numkeys).arg(key).arg(arg)
         return self.add_command(cmd)
     }
-    /// Execute a read-only Lua script server side
+    /// Executes a read-only server-side Lua script.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -6233,7 +6252,7 @@ extension RedisPipeline {
         let cmd = Cmd("EVAL_RO").arg(script).arg(numkeys).arg(key).arg(arg)
         return self.add_command(cmd)
     }
-    /// Execute all commands issued after MULTI
+    /// Executes all commands in a transaction.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -6244,7 +6263,7 @@ extension RedisPipeline {
         let cmd = Cmd("EXEC")
         return self.add_command(cmd)
     }
-    /// Determine if a key exists
+    /// Determines whether one or more keys exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6257,7 +6276,7 @@ extension RedisPipeline {
         let cmd = Cmd("EXISTS").arg(key)
         return self.add_command(cmd)
     }
-    /// Set a key's time to live in seconds
+    /// Sets the expiration time of a key in seconds.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6270,7 +6289,7 @@ extension RedisPipeline {
         let cmd = Cmd("EXPIRE").arg(key).arg(seconds).arg(condition)
         return self.add_command(cmd)
     }
-    /// Set the expiration for a key as a UNIX timestamp
+    /// Sets the expiration time of a key to a Unix timestamp.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -6283,7 +6302,7 @@ extension RedisPipeline {
         let cmd = Cmd("EXPIREAT").arg(key).arg(unixTimeSeconds).arg(condition)
         return self.add_command(cmd)
     }
-    /// Get the expiration Unix timestamp for a key
+    /// Returns the expiration time of a key as a Unix timestamp.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -6294,7 +6313,7 @@ extension RedisPipeline {
         let cmd = Cmd("EXPIRETIME").arg(key)
         return self.add_command(cmd)
     }
-    /// Start a coordinated failover between this server and one of its replicas.
+    /// Starts a coordinated failover from a server to one of its replicas.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -6309,7 +6328,7 @@ extension RedisPipeline {
         ).arg(milliseconds).arg(options)
         return self.add_command(cmd)
     }
-    /// Invoke a function
+    /// Invokes a function.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -6320,7 +6339,7 @@ extension RedisPipeline {
         let cmd = Cmd("FCALL").arg(function).arg(numkeys).arg(key).arg(arg)
         return self.add_command(cmd)
     }
-    /// Invoke a read-only function
+    /// Invokes a read-only function.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -6331,7 +6350,7 @@ extension RedisPipeline {
         let cmd = Cmd("FCALL_RO").arg(function).arg(numkeys).arg(key).arg(arg)
         return self.add_command(cmd)
     }
-    /// Remove all keys from all databases
+    /// Removes all keys from all databases.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6341,11 +6360,11 @@ extension RedisPipeline {
     /// - 6.2.0, Added the `SYNC` flushing mode modifier.
     /// ## Documentation
     /// view the docs for [FLUSHALL](https://redis.io/commands/flushall)
-    public func flushall(_ async: FlushallAsync? = nil) -> Self {
-        let cmd = Cmd("FLUSHALL").arg(async)
+    public func flushall(_ flushType: FlushallFlushtype? = nil) -> Self {
+        let cmd = Cmd("FLUSHALL").arg(flushType)
         return self.add_command(cmd)
     }
-    /// Remove all keys from the current database
+    /// Remove all keys from the current database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6355,11 +6374,11 @@ extension RedisPipeline {
     /// - 6.2.0, Added the `SYNC` flushing mode modifier.
     /// ## Documentation
     /// view the docs for [FLUSHDB](https://redis.io/commands/flushdb)
-    public func flushdb(_ async: FlushdbAsync? = nil) -> Self {
-        let cmd = Cmd("FLUSHDB").arg(async)
+    public func flushdb(_ flushType: FlushdbFlushtype? = nil) -> Self {
+        let cmd = Cmd("FLUSHDB").arg(flushType)
         return self.add_command(cmd)
     }
-    /// A container for function commands
+    /// A container for function commands.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -6370,7 +6389,7 @@ extension RedisPipeline {
         let cmd = Cmd("FUNCTION")
         return self.add_command(cmd)
     }
-    /// Add one or more geospatial items in the geospatial index represented using a sorted set
+    /// Adds one or more members to a geospatial index. The key is created if it doesn't exist.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -6380,46 +6399,45 @@ extension RedisPipeline {
     /// ## Documentation
     /// view the docs for [GEOADD](https://redis.io/commands/geoadd)
     public func geoadd(
-        _ key: String, _ condition: GeoaddCondition? = nil, _ longitudeLatitudeMember: GeoaddLongitudelatitudemember...,
-        options: GeoaddOptions? = nil
+        _ key: String, _ condition: GeoaddCondition? = nil, _ data: GeoaddData..., options: GeoaddOptions? = nil
     ) -> Self {
-        let cmd = Cmd("GEOADD").arg(key).arg(condition).arg(longitudeLatitudeMember).arg(options)
+        let cmd = Cmd("GEOADD").arg(key).arg(condition).arg(data).arg(options)
         return self.add_command(cmd)
     }
-    /// Returns the distance between two members of a geospatial index
+    /// Returns the distance between two members of a geospatial index.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
-    /// O(log(N))
+    /// O(1)
     /// ## Documentation
     /// view the docs for [GEODIST](https://redis.io/commands/geodist)
     public func geodist(_ key: String, _ member1: String, _ member2: String, _ unit: GeodistUnit? = nil) -> Self {
         let cmd = Cmd("GEODIST").arg(key).arg(member1).arg(member2).arg(unit)
         return self.add_command(cmd)
     }
-    /// Returns members of a geospatial index as standard geohash strings
+    /// Returns members from a geospatial index as geohash strings.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
-    /// O(log(N)) for each member requested, where N is the number of elements in the sorted set.
+    /// O(1) for each member requested.
     /// ## Documentation
     /// view the docs for [GEOHASH](https://redis.io/commands/geohash)
     public func geohash(_ key: String, _ member: String...) -> Self {
         let cmd = Cmd("GEOHASH").arg(key).arg(member)
         return self.add_command(cmd)
     }
-    /// Returns longitude and latitude of members of a geospatial index
+    /// Returns the longitude and latitude of members from a geospatial index.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
-    /// O(N) where N is the number of members requested.
+    /// O(1) for each member requested.
     /// ## Documentation
     /// view the docs for [GEOPOS](https://redis.io/commands/geopos)
     public func geopos(_ key: String, _ member: String...) -> Self {
         let cmd = Cmd("GEOPOS").arg(key).arg(member)
         return self.add_command(cmd)
     }
-    /// Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point
+    /// Queries a geospatial index for members within a distance from a coordinate, optionally stores the result.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -6431,15 +6449,15 @@ extension RedisPipeline {
     /// view the docs for [GEORADIUS](https://redis.io/commands/georadius)
     public func georadius(
         _ key: String, _ longitude: Double, _ latitude: Double, _ radius: Double, _ unit: GeoradiusUnit,
-        _ count: GeoradiusCount? = nil, _ order: GeoradiusOrder? = nil, _ STORE: String? = nil,
-        _ STOREDIST: String? = nil, _ options: GeoradiusOptions? = nil
+        _ countBlock: GeoradiusCountblock? = nil, _ order: GeoradiusOrder? = nil, _ store: GeoradiusStore? = nil,
+        _ options: GeoradiusOptions? = nil
     ) -> Self {
-        let cmd = Cmd("GEORADIUS").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(count).arg(order)
-            .arg((STORE != nil) ? "STORE" : nil).arg(STORE).arg((STOREDIST != nil) ? "STOREDIST" : nil).arg(STOREDIST)
-            .arg(options)
+        let cmd = Cmd("GEORADIUS").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(countBlock).arg(
+            order
+        ).arg(store).arg(options)
         return self.add_command(cmd)
     }
-    /// Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member
+    /// Queries a geospatial index for members within a distance from a member, optionally stores the result.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -6450,15 +6468,15 @@ extension RedisPipeline {
     /// view the docs for [GEORADIUSBYMEMBER](https://redis.io/commands/georadiusbymember)
     public func georadiusbymember(
         _ key: String, _ member: String, _ radius: Double, _ unit: GeoradiusbymemberUnit,
-        _ count: GeoradiusbymemberCount? = nil, _ order: GeoradiusbymemberOrder? = nil, _ STORE: String? = nil,
-        _ STOREDIST: String? = nil, _ options: GeoradiusbymemberOptions? = nil
+        _ countBlock: GeoradiusbymemberCountblock? = nil, _ order: GeoradiusbymemberOrder? = nil,
+        _ store: GeoradiusbymemberStore? = nil, _ options: GeoradiusbymemberOptions? = nil
     ) -> Self {
-        let cmd = Cmd("GEORADIUSBYMEMBER").arg(key).arg(member).arg(radius).arg(unit).arg(count).arg(order).arg(
-            (STORE != nil) ? "STORE" : nil
-        ).arg(STORE).arg((STOREDIST != nil) ? "STOREDIST" : nil).arg(STOREDIST).arg(options)
+        let cmd = Cmd("GEORADIUSBYMEMBER").arg(key).arg(member).arg(radius).arg(unit).arg(countBlock).arg(order).arg(
+            store
+        ).arg(options)
         return self.add_command(cmd)
     }
-    /// A read-only variant for GEORADIUSBYMEMBER
+    /// Returns members from a geospatial index that are within a distance from a member.
     /// ## Available since
     /// 3.2.10
     /// ## Time complexity
@@ -6467,14 +6485,14 @@ extension RedisPipeline {
     /// view the docs for [GEORADIUSBYMEMBER_RO](https://redis.io/commands/georadiusbymember-ro)
     public func georadiusbymember_ro(
         _ key: String, _ member: String, _ radius: Double, _ unit: GeoradiusbymemberRoUnit,
-        _ count: GeoradiusbymemberRoCount? = nil, _ order: GeoradiusbymemberRoOrder? = nil,
+        _ countBlock: GeoradiusbymemberRoCountblock? = nil, _ order: GeoradiusbymemberRoOrder? = nil,
         _ options: GeoradiusbymemberRoOptions? = nil
     ) -> Self {
-        let cmd = Cmd("GEORADIUSBYMEMBER_RO").arg(key).arg(member).arg(radius).arg(unit).arg(count).arg(order).arg(
+        let cmd = Cmd("GEORADIUSBYMEMBER_RO").arg(key).arg(member).arg(radius).arg(unit).arg(countBlock).arg(order).arg(
             options)
         return self.add_command(cmd)
     }
-    /// A read-only variant for GEORADIUS
+    /// Returns members from a geospatial index that are within a distance from a coordinate.
     /// ## Available since
     /// 3.2.10
     /// ## Time complexity
@@ -6485,13 +6503,15 @@ extension RedisPipeline {
     /// view the docs for [GEORADIUS_RO](https://redis.io/commands/georadius-ro)
     public func georadius_ro(
         _ key: String, _ longitude: Double, _ latitude: Double, _ radius: Double, _ unit: GeoradiusRoUnit,
-        _ count: GeoradiusRoCount? = nil, _ order: GeoradiusRoOrder? = nil, _ options: GeoradiusRoOptions? = nil
+        _ countBlock: GeoradiusRoCountblock? = nil, _ order: GeoradiusRoOrder? = nil,
+        _ options: GeoradiusRoOptions? = nil
     ) -> Self {
-        let cmd = Cmd("GEORADIUS_RO").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(count).arg(order)
-            .arg(options)
+        let cmd = Cmd("GEORADIUS_RO").arg(key).arg(longitude).arg(latitude).arg(radius).arg(unit).arg(countBlock).arg(
+            order
+        ).arg(options)
         return self.add_command(cmd)
     }
-    /// Query a sorted set representing a geospatial index to fetch members inside an area of a box or a circle.
+    /// Queries a geospatial index for members inside an area of a box or a circle.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -6502,12 +6522,12 @@ extension RedisPipeline {
     /// view the docs for [GEOSEARCH](https://redis.io/commands/geosearch)
     public func geosearch(
         _ key: String, _ from: GeosearchFrom, _ by: GeosearchBy, _ order: GeosearchOrder? = nil,
-        _ count: GeosearchCount? = nil, _ options: GeosearchOptions? = nil
+        _ countBlock: GeosearchCountblock? = nil, _ options: GeosearchOptions? = nil
     ) -> Self {
-        let cmd = Cmd("GEOSEARCH").arg(key).arg(from).arg(by).arg(order).arg(count).arg(options)
+        let cmd = Cmd("GEOSEARCH").arg(key).arg(from).arg(by).arg(order).arg(countBlock).arg(options)
         return self.add_command(cmd)
     }
-    /// Query a sorted set representing a geospatial index to fetch members inside an area of a box or a circle, and store the result in another key.
+    /// Queries a geospatial index for members inside an area of a box or a circle, optionally stores the result.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -6518,14 +6538,14 @@ extension RedisPipeline {
     /// view the docs for [GEOSEARCHSTORE](https://redis.io/commands/geosearchstore)
     public func geosearchstore(
         _ destination: String, _ source: String, _ from: GeosearchstoreFrom, _ by: GeosearchstoreBy,
-        _ order: GeosearchstoreOrder? = nil, _ count: GeosearchstoreCount? = nil,
+        _ order: GeosearchstoreOrder? = nil, _ countBlock: GeosearchstoreCountblock? = nil,
         _ options: GeosearchstoreOptions? = nil
     ) -> Self {
-        let cmd = Cmd("GEOSEARCHSTORE").arg(destination).arg(source).arg(from).arg(by).arg(order).arg(count).arg(
+        let cmd = Cmd("GEOSEARCHSTORE").arg(destination).arg(source).arg(from).arg(by).arg(order).arg(countBlock).arg(
             options)
         return self.add_command(cmd)
     }
-    /// Get the value of a key
+    /// Returns the string value of a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6536,7 +6556,7 @@ extension RedisPipeline {
         let cmd = Cmd("GET").arg(key)
         return self.add_command(cmd)
     }
-    /// Returns the bit value at offset in the string value stored at key
+    /// Returns a bit value by offset.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -6547,7 +6567,7 @@ extension RedisPipeline {
         let cmd = Cmd("GETBIT").arg(key).arg(offset)
         return self.add_command(cmd)
     }
-    /// Get the value of a key and delete the key
+    /// Returns the string value of a key after deleting the key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -6558,7 +6578,7 @@ extension RedisPipeline {
         let cmd = Cmd("GETDEL").arg(key)
         return self.add_command(cmd)
     }
-    /// Get the value of a key and optionally set its expiration
+    /// Returns the string value of a key after setting its expiration time.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -6569,7 +6589,7 @@ extension RedisPipeline {
         let cmd = Cmd("GETEX").arg(key).arg(expiration)
         return self.add_command(cmd)
     }
-    /// Get a substring of the string stored at a key
+    /// Returns a substring of the string stored at a key.
     /// ## Available since
     /// 2.4.0
     /// ## Time complexity
@@ -6580,7 +6600,7 @@ extension RedisPipeline {
         let cmd = Cmd("GETRANGE").arg(key).arg(start).arg(end)
         return self.add_command(cmd)
     }
-    /// Set the string value of a key and return its old value
+    /// Returns the previous string value of a key after setting it to a new value.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6591,7 +6611,7 @@ extension RedisPipeline {
         let cmd = Cmd("GETSET").arg(key).arg(value)
         return self.add_command(cmd)
     }
-    /// Delete one or more hash fields
+    /// Deletes one or more fields and their values from a hash. Deletes the hash if no fields remain.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6604,7 +6624,7 @@ extension RedisPipeline {
         let cmd = Cmd("HDEL").arg(key).arg(field)
         return self.add_command(cmd)
     }
-    /// Handshake with Redis
+    /// Handshakes with the Redis server.
     /// ## Available since
     /// 6.0.0
     /// ## Time complexity
@@ -6617,7 +6637,7 @@ extension RedisPipeline {
         let cmd = Cmd("HELLO").arg(arguments)
         return self.add_command(cmd)
     }
-    /// Determine if a hash field exists
+    /// Determines whether a field exists in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6628,7 +6648,7 @@ extension RedisPipeline {
         let cmd = Cmd("HEXISTS").arg(key).arg(field)
         return self.add_command(cmd)
     }
-    /// Get the value of a hash field
+    /// Returns the value of a field in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6639,7 +6659,7 @@ extension RedisPipeline {
         let cmd = Cmd("HGET").arg(key).arg(field)
         return self.add_command(cmd)
     }
-    /// Get all the fields and values in a hash
+    /// Returns all fields and values in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6650,7 +6670,7 @@ extension RedisPipeline {
         let cmd = Cmd("HGETALL").arg(key)
         return self.add_command(cmd)
     }
-    /// Increment the integer value of a hash field by the given number
+    /// Increments the integer value of a field in a hash by a number. Uses 0 as initial value if the field doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6661,7 +6681,7 @@ extension RedisPipeline {
         let cmd = Cmd("HINCRBY").arg(key).arg(field).arg(increment)
         return self.add_command(cmd)
     }
-    /// Increment the float value of a hash field by the given amount
+    /// Increments the floating point value of a field by a number. Uses 0 as initial value if the field doesn't exist.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -6672,7 +6692,7 @@ extension RedisPipeline {
         let cmd = Cmd("HINCRBYFLOAT").arg(key).arg(field).arg(increment)
         return self.add_command(cmd)
     }
-    /// Get all the fields in a hash
+    /// Returns all fields in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6683,7 +6703,7 @@ extension RedisPipeline {
         let cmd = Cmd("HKEYS").arg(key)
         return self.add_command(cmd)
     }
-    /// Get the number of fields in a hash
+    /// Returns the number of fields in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6694,7 +6714,7 @@ extension RedisPipeline {
         let cmd = Cmd("HLEN").arg(key)
         return self.add_command(cmd)
     }
-    /// Get the values of all the given hash fields
+    /// Returns the values of all fields in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6705,18 +6725,18 @@ extension RedisPipeline {
         let cmd = Cmd("HMGET").arg(key).arg(field)
         return self.add_command(cmd)
     }
-    /// Set multiple hash fields to multiple values
+    /// Sets the values of multiple fields.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
     /// O(N) where N is the number of fields being set.
     /// ## Documentation
     /// view the docs for [HMSET](https://redis.io/commands/hmset)
-    public func hmset(_ key: String, _ fieldValue: HmsetFieldvalue...) -> Self {
-        let cmd = Cmd("HMSET").arg(key).arg(fieldValue)
+    public func hmset(_ key: String, _ data: HmsetData...) -> Self {
+        let cmd = Cmd("HMSET").arg(key).arg(data)
         return self.add_command(cmd)
     }
-    /// Get one or multiple random fields from a hash
+    /// Returns one or more random fields from a hash.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -6727,11 +6747,11 @@ extension RedisPipeline {
         let cmd = Cmd("HRANDFIELD").arg(key).arg(options)
         return self.add_command(cmd)
     }
-    /// Incrementally iterate hash fields and associated values
+    /// Iterates over fields and values of a hash.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection..
+    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
     /// ## Documentation
     /// view the docs for [HSCAN](https://redis.io/commands/hscan)
     public func hscan(_ key: String, _ cursor: Int, _ pattern: String? = nil, _ count: Int? = nil) -> Self {
@@ -6740,7 +6760,7 @@ extension RedisPipeline {
         ).arg(count)
         return self.add_command(cmd)
     }
-    /// Set the string value of a hash field
+    /// Creates or modifies the value of a field in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6749,11 +6769,11 @@ extension RedisPipeline {
     /// - 4.0.0, Accepts multiple `field` and `value` arguments.
     /// ## Documentation
     /// view the docs for [HSET](https://redis.io/commands/hset)
-    public func hset(_ key: String, _ fieldValue: HsetFieldvalue...) -> Self {
-        let cmd = Cmd("HSET").arg(key).arg(fieldValue)
+    public func hset(_ key: String, _ data: HsetData...) -> Self {
+        let cmd = Cmd("HSET").arg(key).arg(data)
         return self.add_command(cmd)
     }
-    /// Set the value of a hash field, only if the field does not exist
+    /// Sets the value of a field in a hash only when the field doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6764,7 +6784,7 @@ extension RedisPipeline {
         let cmd = Cmd("HSETNX").arg(key).arg(field).arg(value)
         return self.add_command(cmd)
     }
-    /// Get the length of the value of a hash field
+    /// Returns the length of the value of a field.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -6775,7 +6795,7 @@ extension RedisPipeline {
         let cmd = Cmd("HSTRLEN").arg(key).arg(field)
         return self.add_command(cmd)
     }
-    /// Get all the values in a hash
+    /// Returns all values in a hash.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -6786,7 +6806,7 @@ extension RedisPipeline {
         let cmd = Cmd("HVALS").arg(key)
         return self.add_command(cmd)
     }
-    /// Increment the integer value of a key by one
+    /// Increments the integer value of a key by one. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6797,7 +6817,7 @@ extension RedisPipeline {
         let cmd = Cmd("INCR").arg(key)
         return self.add_command(cmd)
     }
-    /// Increment the integer value of a key by the given amount
+    /// Increments the integer value of a key by a number. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6808,7 +6828,7 @@ extension RedisPipeline {
         let cmd = Cmd("INCRBY").arg(key).arg(increment)
         return self.add_command(cmd)
     }
-    /// Increment the float value of a key by the given amount
+    /// Increment the floating point value of a key by a number. Uses 0 as initial value if the key doesn't exist.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -6819,7 +6839,7 @@ extension RedisPipeline {
         let cmd = Cmd("INCRBYFLOAT").arg(key).arg(increment)
         return self.add_command(cmd)
     }
-    /// Get information and statistics about the server
+    /// Returns information and statistics about the server.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6832,7 +6852,7 @@ extension RedisPipeline {
         let cmd = Cmd("INFO").arg(section)
         return self.add_command(cmd)
     }
-    /// Find all keys matching the given pattern
+    /// Returns all key names that match a pattern.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6843,7 +6863,7 @@ extension RedisPipeline {
         let cmd = Cmd("KEYS").arg(pattern)
         return self.add_command(cmd)
     }
-    /// Get the UNIX time stamp of the last successful save to disk
+    /// Returns the Unix timestamp of the last successful save to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6854,7 +6874,7 @@ extension RedisPipeline {
         let cmd = Cmd("LASTSAVE")
         return self.add_command(cmd)
     }
-    /// A container for latency diagnostics commands
+    /// A container for latency diagnostics commands.
     /// ## Available since
     /// 2.8.13
     /// ## Time complexity
@@ -6865,19 +6885,19 @@ extension RedisPipeline {
         let cmd = Cmd("LATENCY")
         return self.add_command(cmd)
     }
-    /// Find longest common substring
+    /// Finds the longest common substring.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N*M) where N and M are the lengths of s1 and s2, respectively
     /// ## Documentation
     /// view the docs for [LCS](https://redis.io/commands/lcs)
-    public func lcs(_ key1: String, _ key2: String, _ MINMATCHLEN: Int? = nil, _ options: LcsOptions? = nil) -> Self {
-        let cmd = Cmd("LCS").arg(key1).arg(key2).arg((MINMATCHLEN != nil) ? "MINMATCHLEN" : nil).arg(MINMATCHLEN).arg(
+    public func lcs(_ key1: String, _ key2: String, _ minMatchLen: Int? = nil, _ options: LcsOptions? = nil) -> Self {
+        let cmd = Cmd("LCS").arg(key1).arg(key2).arg((minMatchLen != nil) ? "MINMATCHLEN" : nil).arg(minMatchLen).arg(
             options)
         return self.add_command(cmd)
     }
-    /// Get an element from a list by its index
+    /// Returns an element from a list by its index.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6888,7 +6908,7 @@ extension RedisPipeline {
         let cmd = Cmd("LINDEX").arg(key).arg(index)
         return self.add_command(cmd)
     }
-    /// Insert an element before or after another element in a list
+    /// Inserts an element before or after another element in a list.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -6899,7 +6919,7 @@ extension RedisPipeline {
         let cmd = Cmd("LINSERT").arg(key).arg(rWhere).arg(pivot).arg(element)
         return self.add_command(cmd)
     }
-    /// Get the length of a list
+    /// Returns the length of a list.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6910,7 +6930,7 @@ extension RedisPipeline {
         let cmd = Cmd("LLEN").arg(key)
         return self.add_command(cmd)
     }
-    /// Pop an element from a list, push it to another list and return it
+    /// Returns an element after popping it from one list and pushing it to another. Deletes the list if the last element was moved.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -6923,7 +6943,7 @@ extension RedisPipeline {
         let cmd = Cmd("LMOVE").arg(source).arg(destination).arg(wherefrom).arg(whereto)
         return self.add_command(cmd)
     }
-    /// Pop elements from a list
+    /// Returns multiple elements from a list after removing them. Deletes the list if the last element was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -6934,7 +6954,7 @@ extension RedisPipeline {
         let cmd = Cmd("LMPOP").arg(numkeys).arg(key).arg(rWhere).arg((count != nil) ? "COUNT" : nil).arg(count)
         return self.add_command(cmd)
     }
-    /// Display some computer art and the Redis version
+    /// Displays computer art and the Redis version
     /// ## Available since
     /// 5.0.0
     /// ## Documentation
@@ -6943,7 +6963,7 @@ extension RedisPipeline {
         let cmd = Cmd("LOLWUT").arg((version != nil) ? "VERSION" : nil).arg(version)
         return self.add_command(cmd)
     }
-    /// Remove and get the first elements in a list
+    /// Returns the first elements in a list after removing it. Deletes the list if the last element was popped.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6956,7 +6976,7 @@ extension RedisPipeline {
         let cmd = Cmd("LPOP").arg(key).arg(count)
         return self.add_command(cmd)
     }
-    /// Return the index of matching elements on a list
+    /// Returns the index of matching elements in a list.
     /// ## Available since
     /// 6.0.6
     /// ## Time complexity
@@ -6971,7 +6991,7 @@ extension RedisPipeline {
         ).arg(numMatches).arg((len != nil) ? "MAXLEN" : nil).arg(len)
         return self.add_command(cmd)
     }
-    /// Prepend one or multiple elements to a list
+    /// Prepends one or more elements to a list. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -6984,7 +7004,7 @@ extension RedisPipeline {
         let cmd = Cmd("LPUSH").arg(key).arg(element)
         return self.add_command(cmd)
     }
-    /// Prepend an element to a list, only if the list exists
+    /// Prepends one or more elements to a list only when the list exists.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -6997,7 +7017,7 @@ extension RedisPipeline {
         let cmd = Cmd("LPUSHX").arg(key).arg(element)
         return self.add_command(cmd)
     }
-    /// Get a range of elements from a list
+    /// Returns a range of elements from a list.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7008,7 +7028,7 @@ extension RedisPipeline {
         let cmd = Cmd("LRANGE").arg(key).arg(start).arg(stop)
         return self.add_command(cmd)
     }
-    /// Remove elements from a list
+    /// Removes elements from a list. Deletes the list if the last element was removed.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7019,7 +7039,7 @@ extension RedisPipeline {
         let cmd = Cmd("LREM").arg(key).arg(count).arg(element)
         return self.add_command(cmd)
     }
-    /// Set the value of an element in a list by its index
+    /// Sets the value of an element in a list by its index.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7030,7 +7050,7 @@ extension RedisPipeline {
         let cmd = Cmd("LSET").arg(key).arg(index).arg(element)
         return self.add_command(cmd)
     }
-    /// Trim a list to the specified range
+    /// Removes elements from both ends a list. Deletes the list if all elements were trimmed.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7041,7 +7061,7 @@ extension RedisPipeline {
         let cmd = Cmd("LTRIM").arg(key).arg(start).arg(stop)
         return self.add_command(cmd)
     }
-    /// A container for memory diagnostics commands
+    /// A container for memory diagnostics commands.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -7052,7 +7072,7 @@ extension RedisPipeline {
         let cmd = Cmd("MEMORY")
         return self.add_command(cmd)
     }
-    /// Get the values of all the given keys
+    /// Atomically returns the string values of one or more keys.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7063,7 +7083,7 @@ extension RedisPipeline {
         let cmd = Cmd("MGET").arg(key)
         return self.add_command(cmd)
     }
-    /// Atomically transfer a key from a Redis instance to another one.
+    /// Atomically transfers a key from one Redis instance to another.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -7076,15 +7096,15 @@ extension RedisPipeline {
     /// ## Documentation
     /// view the docs for [MIGRATE](https://redis.io/commands/migrate)
     public func migrate(
-        _ host: String, _ port: Int, _ keyOrEmptyString: MigrateKeyoremptystring, _ destinationDb: Int, _ timeout: Int,
-        _ authentication: MigrateAuthentication? = nil, _ key: String..., options: MigrateOptions? = nil
+        _ host: String, _ port: Int, _ keySelector: MigrateKeyselector, _ destinationDb: Int, _ timeout: Int,
+        _ authentication: MigrateAuthentication? = nil, _ keys: String..., options: MigrateOptions? = nil
     ) -> Self {
-        let cmd = Cmd("MIGRATE").arg(host).arg(port).arg(keyOrEmptyString).arg(destinationDb).arg(timeout).arg(
+        let cmd = Cmd("MIGRATE").arg(host).arg(port).arg(keySelector).arg(destinationDb).arg(timeout).arg(
             authentication
-        ).arg((!key.isEmpty) ? "KEYS" : nil).arg(key).arg(options)
+        ).arg((!keys.isEmpty) ? "KEYS" : nil).arg(keys).arg(options)
         return self.add_command(cmd)
     }
-    /// A container for module commands
+    /// A container for module commands.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -7095,7 +7115,7 @@ extension RedisPipeline {
         let cmd = Cmd("MODULE")
         return self.add_command(cmd)
     }
-    /// Listen for all requests received by the server in real time
+    /// Listens for all requests received by the server in real-time.
     /// ## Available since
     /// 1.0.0
     /// ## Documentation
@@ -7104,7 +7124,7 @@ extension RedisPipeline {
         let cmd = Cmd("MONITOR")
         return self.add_command(cmd)
     }
-    /// Move a key to another database
+    /// Moves a key to another database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7115,29 +7135,29 @@ extension RedisPipeline {
         let cmd = Cmd("MOVE").arg(key).arg(db)
         return self.add_command(cmd)
     }
-    /// Set multiple keys to multiple values
+    /// Atomically creates or modifies the string values of one or more keys.
     /// ## Available since
     /// 1.0.1
     /// ## Time complexity
     /// O(N) where N is the number of keys to set.
     /// ## Documentation
     /// view the docs for [MSET](https://redis.io/commands/mset)
-    public func mset(_ keyValue: MsetKeyvalue...) -> Self {
-        let cmd = Cmd("MSET").arg(keyValue)
+    public func mset(_ data: MsetData...) -> Self {
+        let cmd = Cmd("MSET").arg(data)
         return self.add_command(cmd)
     }
-    /// Set multiple keys to multiple values, only if none of the keys exist
+    /// Atomically modifies the string values of one or more keys only when all keys don't exist.
     /// ## Available since
     /// 1.0.1
     /// ## Time complexity
     /// O(N) where N is the number of keys to set.
     /// ## Documentation
     /// view the docs for [MSETNX](https://redis.io/commands/msetnx)
-    public func msetnx(_ keyValue: MsetnxKeyvalue...) -> Self {
-        let cmd = Cmd("MSETNX").arg(keyValue)
+    public func msetnx(_ data: MsetnxData...) -> Self {
+        let cmd = Cmd("MSETNX").arg(data)
         return self.add_command(cmd)
     }
-    /// Mark the start of a transaction block
+    /// Starts a transaction.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -7148,7 +7168,7 @@ extension RedisPipeline {
         let cmd = Cmd("MULTI")
         return self.add_command(cmd)
     }
-    /// A container for object introspection commands
+    /// A container for object introspection commands.
     /// ## Available since
     /// 2.2.3
     /// ## Time complexity
@@ -7159,7 +7179,7 @@ extension RedisPipeline {
         let cmd = Cmd("OBJECT")
         return self.add_command(cmd)
     }
-    /// Remove the expiration from a key
+    /// Removes the expiration time of a key.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -7170,7 +7190,7 @@ extension RedisPipeline {
         let cmd = Cmd("PERSIST").arg(key)
         return self.add_command(cmd)
     }
-    /// Set a key's time to live in milliseconds
+    /// Sets the expiration time of a key in milliseconds.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -7183,7 +7203,7 @@ extension RedisPipeline {
         let cmd = Cmd("PEXPIRE").arg(key).arg(milliseconds).arg(condition)
         return self.add_command(cmd)
     }
-    /// Set the expiration for a key as a UNIX timestamp specified in milliseconds
+    /// Sets the expiration time of a key to a Unix milliseconds timestamp.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -7197,7 +7217,7 @@ extension RedisPipeline {
         let cmd = Cmd("PEXPIREAT").arg(key).arg(unixTimeMilliseconds).arg(condition)
         return self.add_command(cmd)
     }
-    /// Get the expiration Unix timestamp for a key in milliseconds
+    /// Returns the expiration time of a key as a Unix milliseconds timestamp.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -7208,7 +7228,7 @@ extension RedisPipeline {
         let cmd = Cmd("PEXPIRETIME").arg(key)
         return self.add_command(cmd)
     }
-    /// Adds the specified elements to the specified HyperLogLog.
+    /// Adds elements to a HyperLogLog key. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -7219,7 +7239,7 @@ extension RedisPipeline {
         let cmd = Cmd("PFADD").arg(key).arg(element)
         return self.add_command(cmd)
     }
-    /// Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
+    /// Returns the approximated cardinality of the set(s) observed by the HyperLogLog key(s).
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -7230,7 +7250,7 @@ extension RedisPipeline {
         let cmd = Cmd("PFCOUNT").arg(key)
         return self.add_command(cmd)
     }
-    /// Internal commands for debugging HyperLogLog values
+    /// Internal commands for debugging HyperLogLog values.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -7241,7 +7261,7 @@ extension RedisPipeline {
         let cmd = Cmd("PFDEBUG").arg(subcommand).arg(key)
         return self.add_command(cmd)
     }
-    /// Merge N different HyperLogLogs into a single one.
+    /// Merges one or more HyperLogLog values into a single key.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -7252,7 +7272,7 @@ extension RedisPipeline {
         let cmd = Cmd("PFMERGE").arg(destkey).arg(sourcekey)
         return self.add_command(cmd)
     }
-    /// An internal command for testing HyperLogLog values
+    /// An internal command for testing HyperLogLog values.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -7263,7 +7283,7 @@ extension RedisPipeline {
         let cmd = Cmd("PFSELFTEST")
         return self.add_command(cmd)
     }
-    /// Ping the server
+    /// Returns the server's liveliness response.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7274,7 +7294,7 @@ extension RedisPipeline {
         let cmd = Cmd("PING").arg(message)
         return self.add_command(cmd)
     }
-    /// Set the value and expiration in milliseconds of a key
+    /// Sets both string value and expiration time in milliseconds of a key. The key is created if it doesn't exist.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -7285,7 +7305,7 @@ extension RedisPipeline {
         let cmd = Cmd("PSETEX").arg(key).arg(milliseconds).arg(value)
         return self.add_command(cmd)
     }
-    /// Internal command used for replication
+    /// An internal command used in replication.
     /// ## Available since
     /// 2.8.0
     /// ## Documentation
@@ -7294,7 +7314,7 @@ extension RedisPipeline {
         let cmd = Cmd("PSYNC").arg(replicationid).arg(offset)
         return self.add_command(cmd)
     }
-    /// Get the time to live for a key in milliseconds
+    /// Returns the expiration time in milliseconds of a key.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -7307,7 +7327,7 @@ extension RedisPipeline {
         let cmd = Cmd("PTTL").arg(key)
         return self.add_command(cmd)
     }
-    /// Post a message to a channel
+    /// Posts a message to a channel.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -7318,7 +7338,7 @@ extension RedisPipeline {
         let cmd = Cmd("PUBLISH").arg(channel).arg(message)
         return self.add_command(cmd)
     }
-    /// A container for Pub/Sub commands
+    /// A container for Pub/Sub commands.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -7329,7 +7349,7 @@ extension RedisPipeline {
         let cmd = Cmd("PUBSUB")
         return self.add_command(cmd)
     }
-    /// Close the connection
+    /// Closes the connection.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7340,7 +7360,7 @@ extension RedisPipeline {
         let cmd = Cmd("QUIT")
         return self.add_command(cmd)
     }
-    /// Return a random key from the keyspace
+    /// Returns a random key name from the database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7351,7 +7371,7 @@ extension RedisPipeline {
         let cmd = Cmd("RANDOMKEY")
         return self.add_command(cmd)
     }
-    /// Enables read queries for a connection to a cluster replica node
+    /// Enables read-only queries for a connection to a Redis Cluster replica node.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -7362,7 +7382,7 @@ extension RedisPipeline {
         let cmd = Cmd("READONLY")
         return self.add_command(cmd)
     }
-    /// Disables read queries for a connection to a cluster replica node
+    /// Enables read-write queries for a connection to a Reids Cluster replica node.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -7373,7 +7393,7 @@ extension RedisPipeline {
         let cmd = Cmd("READWRITE")
         return self.add_command(cmd)
     }
-    /// Rename a key
+    /// Renames a key and overwrites the destination.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7384,7 +7404,7 @@ extension RedisPipeline {
         let cmd = Cmd("RENAME").arg(key).arg(newkey)
         return self.add_command(cmd)
     }
-    /// Rename a key, only if the new key does not exist
+    /// Renames a key only when the target key name doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7397,7 +7417,7 @@ extension RedisPipeline {
         let cmd = Cmd("RENAMENX").arg(key).arg(newkey)
         return self.add_command(cmd)
     }
-    /// An internal command for configuring the replication stream
+    /// An internal command for configuring the replication stream.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -7408,7 +7428,7 @@ extension RedisPipeline {
         let cmd = Cmd("REPLCONF")
         return self.add_command(cmd)
     }
-    /// Make the server a replica of another instance, or promote it as master.
+    /// Configures a server as replica of another, or promotes it to a master.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -7419,7 +7439,7 @@ extension RedisPipeline {
         let cmd = Cmd("REPLICAOF").arg(host).arg(port)
         return self.add_command(cmd)
     }
-    /// Reset the connection
+    /// Resets the connection.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -7430,7 +7450,7 @@ extension RedisPipeline {
         let cmd = Cmd("RESET")
         return self.add_command(cmd)
     }
-    /// Create a key using the provided serialized value, previously obtained using DUMP.
+    /// Creates a key from the serialized representation of a value.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -7450,7 +7470,7 @@ extension RedisPipeline {
         ).arg((frequency != nil) ? "FREQ" : nil).arg(frequency).arg(options)
         return self.add_command(cmd)
     }
-    /// An internal command for migrating keys in a cluster
+    /// An internal command for migrating keys in a cluster.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -7469,7 +7489,7 @@ extension RedisPipeline {
             .arg(seconds).arg((frequency != nil) ? "FREQ" : nil).arg(frequency).arg(options)
         return self.add_command(cmd)
     }
-    /// Return the role of the instance in the context of replication
+    /// Returns the replication role.
     /// ## Available since
     /// 2.8.12
     /// ## Time complexity
@@ -7480,7 +7500,7 @@ extension RedisPipeline {
         let cmd = Cmd("ROLE")
         return self.add_command(cmd)
     }
-    /// Remove and get the last elements in a list
+    /// Returns and removes the last elements of a list. Deletes the list if the last element was popped.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7493,7 +7513,7 @@ extension RedisPipeline {
         let cmd = Cmd("RPOP").arg(key).arg(count)
         return self.add_command(cmd)
     }
-    /// Remove the last element in a list, prepend it to another list and return it
+    /// Returns the last element of a list after removing and pushing it to another list. Deletes the list if the last element was popped.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -7504,7 +7524,7 @@ extension RedisPipeline {
         let cmd = Cmd("RPOPLPUSH").arg(source).arg(destination)
         return self.add_command(cmd)
     }
-    /// Append one or multiple elements to a list
+    /// Appends one or more elements to a list. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7517,7 +7537,7 @@ extension RedisPipeline {
         let cmd = Cmd("RPUSH").arg(key).arg(element)
         return self.add_command(cmd)
     }
-    /// Append an element to a list, only if the list exists
+    /// Appends an element to a list only when the list exists.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -7530,7 +7550,7 @@ extension RedisPipeline {
         let cmd = Cmd("RPUSHX").arg(key).arg(element)
         return self.add_command(cmd)
     }
-    /// Add one or more members to a set
+    /// Adds one or more members to a set. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7543,7 +7563,7 @@ extension RedisPipeline {
         let cmd = Cmd("SADD").arg(key).arg(member)
         return self.add_command(cmd)
     }
-    /// Synchronously save the dataset to disk
+    /// Synchronously saves the database(s) to disk.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7554,7 +7574,7 @@ extension RedisPipeline {
         let cmd = Cmd("SAVE")
         return self.add_command(cmd)
     }
-    /// Incrementally iterate the keys space
+    /// Iterates over the key names in the database.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
@@ -7569,7 +7589,7 @@ extension RedisPipeline {
         ).arg(count).arg((type != nil) ? "TYPE" : nil).arg(type)
         return self.add_command(cmd)
     }
-    /// Get the number of members in a set
+    /// Returns the number of members in a set.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7580,7 +7600,7 @@ extension RedisPipeline {
         let cmd = Cmd("SCARD").arg(key)
         return self.add_command(cmd)
     }
-    /// A container for Lua scripts management commands
+    /// A container for Lua scripts management commands.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -7591,7 +7611,7 @@ extension RedisPipeline {
         let cmd = Cmd("SCRIPT")
         return self.add_command(cmd)
     }
-    /// Subtract multiple sets
+    /// Returns the difference of multiple sets.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7602,7 +7622,7 @@ extension RedisPipeline {
         let cmd = Cmd("SDIFF").arg(key)
         return self.add_command(cmd)
     }
-    /// Subtract multiple sets and store the resulting set in a key
+    /// Stores the difference of multiple sets in a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7613,7 +7633,7 @@ extension RedisPipeline {
         let cmd = Cmd("SDIFFSTORE").arg(destination).arg(key)
         return self.add_command(cmd)
     }
-    /// Change the selected database for the current connection
+    /// Changes the selected database.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7624,7 +7644,7 @@ extension RedisPipeline {
         let cmd = Cmd("SELECT").arg(index)
         return self.add_command(cmd)
     }
-    /// A container for Sentinel commands
+    /// A container for Redis Sentinel commands.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -7635,7 +7655,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL")
         return self.add_command(cmd)
     }
-    /// Set the string value of a key
+    /// Sets the string value of a key, ignoring its type. The key is created if it doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7654,7 +7674,7 @@ extension RedisPipeline {
         let cmd = Cmd("SET").arg(key).arg(value).arg(condition).arg(expiration).arg(options)
         return self.add_command(cmd)
     }
-    /// Sets or clears the bit at offset in the string value stored at key
+    /// Sets or clears the bit at offset of the string value. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -7665,7 +7685,7 @@ extension RedisPipeline {
         let cmd = Cmd("SETBIT").arg(key).arg(offset).arg(value)
         return self.add_command(cmd)
     }
-    /// Set the value and expiration of a key
+    /// Sets the string value and expiration time of a key. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -7676,7 +7696,7 @@ extension RedisPipeline {
         let cmd = Cmd("SETEX").arg(key).arg(seconds).arg(value)
         return self.add_command(cmd)
     }
-    /// Set the value of a key, only if the key does not exist
+    /// Set the string value of a key only when the key doesn't exist.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7687,7 +7707,7 @@ extension RedisPipeline {
         let cmd = Cmd("SETNX").arg(key).arg(value)
         return self.add_command(cmd)
     }
-    /// Overwrite part of a string at key starting at the specified offset
+    /// Overwrites a part of a string value with another by an offset. Creates the key if it doesn't exist.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -7698,7 +7718,7 @@ extension RedisPipeline {
         let cmd = Cmd("SETRANGE").arg(key).arg(offset).arg(value)
         return self.add_command(cmd)
     }
-    /// Synchronously save the dataset to disk and then shut down the server
+    /// Synchronously saves the database(s) to disk and shuts down the Redis server.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7707,11 +7727,11 @@ extension RedisPipeline {
     /// - 7.0.0, Added the `NOW`, `FORCE` and `ABORT` modifiers.
     /// ## Documentation
     /// view the docs for [SHUTDOWN](https://redis.io/commands/shutdown)
-    public func shutdown(_ nosaveSave: ShutdownNosavesave? = nil, _ options: ShutdownOptions? = nil) -> Self {
-        let cmd = Cmd("SHUTDOWN").arg(nosaveSave).arg(options)
+    public func shutdown(_ saveSelector: ShutdownSaveselector? = nil, _ options: ShutdownOptions? = nil) -> Self {
+        let cmd = Cmd("SHUTDOWN").arg(saveSelector).arg(options)
         return self.add_command(cmd)
     }
-    /// Intersect multiple sets
+    /// Returns the intersect of multiple sets.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7722,7 +7742,7 @@ extension RedisPipeline {
         let cmd = Cmd("SINTER").arg(key)
         return self.add_command(cmd)
     }
-    /// Intersect multiple sets and return the cardinality of the result
+    /// Returns the number of members of the intersect of multiple sets.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -7733,7 +7753,7 @@ extension RedisPipeline {
         let cmd = Cmd("SINTERCARD").arg(numkeys).arg(key).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         return self.add_command(cmd)
     }
-    /// Intersect multiple sets and store the resulting set in a key
+    /// Stores the intersect of multiple sets in a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7744,7 +7764,7 @@ extension RedisPipeline {
         let cmd = Cmd("SINTERSTORE").arg(destination).arg(key)
         return self.add_command(cmd)
     }
-    /// Determine if a given value is a member of a set
+    /// Determines whether a member belongs to a set.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7755,7 +7775,7 @@ extension RedisPipeline {
         let cmd = Cmd("SISMEMBER").arg(key).arg(member)
         return self.add_command(cmd)
     }
-    /// Make the server a replica of another instance, or promote it as master.
+    /// Sets a Redis server as a replica of another, or promotes it to being a master.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7766,7 +7786,7 @@ extension RedisPipeline {
         let cmd = Cmd("SLAVEOF").arg(host).arg(port)
         return self.add_command(cmd)
     }
-    /// A container for slow log commands
+    /// A container for slow log commands.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -7777,7 +7797,7 @@ extension RedisPipeline {
         let cmd = Cmd("SLOWLOG")
         return self.add_command(cmd)
     }
-    /// Get all the members in a set
+    /// Returns all members of a set.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7788,7 +7808,7 @@ extension RedisPipeline {
         let cmd = Cmd("SMEMBERS").arg(key)
         return self.add_command(cmd)
     }
-    /// Returns the membership associated with the given elements for a set
+    /// Determines whether multiple members belong to a set.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -7799,7 +7819,7 @@ extension RedisPipeline {
         let cmd = Cmd("SMISMEMBER").arg(key).arg(member)
         return self.add_command(cmd)
     }
-    /// Move a member from one set to another
+    /// Moves a member from one set to another.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7810,7 +7830,7 @@ extension RedisPipeline {
         let cmd = Cmd("SMOVE").arg(source).arg(destination).arg(member)
         return self.add_command(cmd)
     }
-    /// Sort the elements in a list, set or sorted set
+    /// Sorts the elements in a list, a set, or a sorted set, optionally storing the result.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7818,17 +7838,17 @@ extension RedisPipeline {
     /// ## Documentation
     /// view the docs for [SORT](https://redis.io/commands/sort)
     public func sort(
-        _ key: String, _ pattern: String? = nil, _ offsetCount: SortOffsetcount? = nil, _ GET: String...,
+        _ key: String, _ byPattern: String? = nil, _ limit: SortLimit? = nil, _ getPattern: String...,
         order: SortOrder? = nil, _ destination: String? = nil, _ options: SortOptions? = nil
     ) -> Self {
-        let cmd = Cmd("SORT").arg(key).arg((pattern != nil) ? "BY" : nil).arg(pattern).arg(
-            (offsetCount != nil) ? "LIMIT" : nil
-        ).arg(offsetCount).arg((!GET.isEmpty) ? "GET" : nil).arg(GET).arg(order).arg(
+        let cmd = Cmd("SORT").arg(key).arg((byPattern != nil) ? "BY" : nil).arg(byPattern).arg(
+            (limit != nil) ? "LIMIT" : nil
+        ).arg(limit).arg((!getPattern.isEmpty) ? "GET" : nil).arg(getPattern).arg(order).arg(
             (destination != nil) ? "STORE" : nil
         ).arg(destination).arg(options)
         return self.add_command(cmd)
     }
-    /// Sort the elements in a list, set or sorted set. Read-only variant of SORT.
+    /// Returns the sorted elements of a list, a set, or a sorted set.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -7836,15 +7856,15 @@ extension RedisPipeline {
     /// ## Documentation
     /// view the docs for [SORT_RO](https://redis.io/commands/sort-ro)
     public func sort_ro(
-        _ key: String, _ pattern: String? = nil, _ offsetCount: SortRoOffsetcount? = nil, _ GET: String...,
+        _ key: String, _ byPattern: String? = nil, _ limit: SortRoLimit? = nil, _ getPattern: String...,
         order: SortRoOrder? = nil, _ options: SortRoOptions? = nil
     ) -> Self {
-        let cmd = Cmd("SORT_RO").arg(key).arg((pattern != nil) ? "BY" : nil).arg(pattern).arg(
-            (offsetCount != nil) ? "LIMIT" : nil
-        ).arg(offsetCount).arg((!GET.isEmpty) ? "GET" : nil).arg(GET).arg(order).arg(options)
+        let cmd = Cmd("SORT_RO").arg(key).arg((byPattern != nil) ? "BY" : nil).arg(byPattern).arg(
+            (limit != nil) ? "LIMIT" : nil
+        ).arg(limit).arg((!getPattern.isEmpty) ? "GET" : nil).arg(getPattern).arg(order).arg(options)
         return self.add_command(cmd)
     }
-    /// Remove and return one or multiple random members from a set
+    /// Returns one or more random members from a set after removing them. Deletes the set if the last member was popped.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7881,7 +7901,7 @@ extension RedisPipeline {
         let cmd = Cmd("SRANDMEMBER").arg(key).arg(count)
         return self.add_command(cmd)
     }
-    /// Remove one or more members from a set
+    /// Removes one or more members from a set. Deletes the set if the last member was removed.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7894,11 +7914,11 @@ extension RedisPipeline {
         let cmd = Cmd("SREM").arg(key).arg(member)
         return self.add_command(cmd)
     }
-    /// Incrementally iterate Set elements
+    /// Iterates over members of a set.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection..
+    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
     /// ## Documentation
     /// view the docs for [SSCAN](https://redis.io/commands/sscan)
     public func sscan(_ key: String, _ cursor: Int, _ pattern: String? = nil, _ count: Int? = nil) -> Self {
@@ -7907,7 +7927,7 @@ extension RedisPipeline {
         ).arg(count)
         return self.add_command(cmd)
     }
-    /// Get the length of the value stored in a key
+    /// Returns the length of a string value.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -7918,7 +7938,7 @@ extension RedisPipeline {
         let cmd = Cmd("STRLEN").arg(key)
         return self.add_command(cmd)
     }
-    /// Get a substring of the string stored at a key
+    /// Returns a substring from a string value.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7929,7 +7949,7 @@ extension RedisPipeline {
         let cmd = Cmd("SUBSTR").arg(key).arg(start).arg(end)
         return self.add_command(cmd)
     }
-    /// Add multiple sets
+    /// Returns the union of multiple sets.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7940,7 +7960,7 @@ extension RedisPipeline {
         let cmd = Cmd("SUNION").arg(key)
         return self.add_command(cmd)
     }
-    /// Add multiple sets and store the resulting set in a key
+    /// Stores the union of multiple sets in a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -7951,7 +7971,7 @@ extension RedisPipeline {
         let cmd = Cmd("SUNIONSTORE").arg(destination).arg(key)
         return self.add_command(cmd)
     }
-    /// Swaps two Redis databases
+    /// Swaps two Redis databases.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -7962,7 +7982,7 @@ extension RedisPipeline {
         let cmd = Cmd("SWAPDB").arg(index1).arg(index2)
         return self.add_command(cmd)
     }
-    /// Internal command used for replication
+    /// An internal command used in replication.
     /// ## Available since
     /// 1.0.0
     /// ## Documentation
@@ -7971,7 +7991,7 @@ extension RedisPipeline {
         let cmd = Cmd("SYNC")
         return self.add_command(cmd)
     }
-    /// Return the current server time
+    /// Returns the server time.
     /// ## Available since
     /// 2.6.0
     /// ## Time complexity
@@ -7982,7 +8002,7 @@ extension RedisPipeline {
         let cmd = Cmd("TIME")
         return self.add_command(cmd)
     }
-    /// Alters the last access time of a key(s). Returns the number of existing keys specified.
+    /// Returns the number of existing keys out of those specified after updating the time they were last accessed.
     /// ## Available since
     /// 3.2.1
     /// ## Time complexity
@@ -7993,7 +8013,7 @@ extension RedisPipeline {
         let cmd = Cmd("TOUCH").arg(key)
         return self.add_command(cmd)
     }
-    /// Get the time to live for a key in seconds
+    /// Returns the expiration time in seconds of a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -8006,7 +8026,7 @@ extension RedisPipeline {
         let cmd = Cmd("TTL").arg(key)
         return self.add_command(cmd)
     }
-    /// Determine the type stored at key
+    /// Determines the type of value stored at a key.
     /// ## Available since
     /// 1.0.0
     /// ## Time complexity
@@ -8017,7 +8037,7 @@ extension RedisPipeline {
         let cmd = Cmd("TYPE").arg(key)
         return self.add_command(cmd)
     }
-    /// Delete a key asynchronously in another thread. Otherwise it is just as DEL, but non blocking.
+    /// Asynchronously deletes one or more keys.
     /// ## Available since
     /// 4.0.0
     /// ## Time complexity
@@ -8028,7 +8048,7 @@ extension RedisPipeline {
         let cmd = Cmd("UNLINK").arg(key)
         return self.add_command(cmd)
     }
-    /// Forget about all watched keys
+    /// Forgets about watched keys of a transaction.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -8039,7 +8059,7 @@ extension RedisPipeline {
         let cmd = Cmd("UNWATCH")
         return self.add_command(cmd)
     }
-    /// Wait for the synchronous replication of all the write commands sent in the context of the current connection
+    /// Blocks until the asynchronous replication of all preceding write commands sent by the connection is completed.
     /// ## Available since
     /// 3.0.0
     /// ## Time complexity
@@ -8050,7 +8070,18 @@ extension RedisPipeline {
         let cmd = Cmd("WAIT").arg(numreplicas).arg(timeout)
         return self.add_command(cmd)
     }
-    /// Watch the given keys to determine execution of the MULTI/EXEC block
+    /// Blocks until all of the preceding write commands sent by the connection are written to the append-only file of the master and/or replicas.
+    /// ## Available since
+    /// 7.2.0
+    /// ## Time complexity
+    /// O(1)
+    /// ## Documentation
+    /// view the docs for [WAITAOF](https://redis.io/commands/waitaof)
+    public func waitaof(_ numlocal: Int, _ numreplicas: Int, _ timeout: Int) -> Self {
+        let cmd = Cmd("WAITAOF").arg(numlocal).arg(numreplicas).arg(timeout)
+        return self.add_command(cmd)
+    }
+    /// Monitors changes to keys to determine the execution of a transaction.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -8061,7 +8092,7 @@ extension RedisPipeline {
         let cmd = Cmd("WATCH").arg(key)
         return self.add_command(cmd)
     }
-    /// Marks a pending message as correctly processed, effectively removing it from the pending entries list of the consumer group. Return value of the command is the number of messages successfully acknowledged, that is, the IDs we were actually able to resolve in the PEL.
+    /// Returns the number of messages that were successfully acknowledged by the consumer group member of a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8072,7 +8103,7 @@ extension RedisPipeline {
         let cmd = Cmd("XACK").arg(key).arg(group).arg(id)
         return self.add_command(cmd)
     }
-    /// Appends a new entry to a stream
+    /// Appends a new message to a stream. Creates the key if it doesn't exist.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8083,13 +8114,13 @@ extension RedisPipeline {
     /// ## Documentation
     /// view the docs for [XADD](https://redis.io/commands/xadd)
     public func xadd(
-        _ key: String, _ trim: XaddTrim? = nil, _ idOrAuto: XaddIdorauto, _ fieldValue: XaddFieldvalue...,
+        _ key: String, _ trim: XaddTrim? = nil, _ idSelector: XaddIdselector, _ data: XaddData...,
         options: XaddOptions? = nil
     ) -> Self {
-        let cmd = Cmd("XADD").arg(key).arg(trim).arg(idOrAuto).arg(fieldValue).arg(options)
+        let cmd = Cmd("XADD").arg(key).arg(trim).arg(idSelector).arg(data).arg(options)
         return self.add_command(cmd)
     }
-    /// Changes (or acquires) ownership of messages in a consumer group, as if the messages were delivered to the specified consumer.
+    /// Changes, or acquires, ownership of messages in a consumer group, as if the messages were delivered to as consumer group member.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -8107,7 +8138,7 @@ extension RedisPipeline {
         ).arg(count).arg(options)
         return self.add_command(cmd)
     }
-    /// Changes (or acquires) ownership of a message in a consumer group, as if the message was delivered to the specified consumer.
+    /// Changes, or acquires, ownership of a message in a consumer group, as if the message was delivered a consumer group member.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8116,17 +8147,17 @@ extension RedisPipeline {
     /// view the docs for [XCLAIM](https://redis.io/commands/xclaim)
     public func xclaim(
         _ key: String, _ group: String, _ consumer: String, _ minIdleTime: String, _ id: String..., ms: Int? = nil,
-        _ unixTimeMilliseconds: Int64? = nil, _ count: Int? = nil, _ LASTID: String? = nil,
+        _ unixTimeMilliseconds: Int64? = nil, _ count: Int? = nil, _ lastid: String? = nil,
         _ options: XclaimOptions? = nil
     ) -> Self {
         let cmd = Cmd("XCLAIM").arg(key).arg(group).arg(consumer).arg(minIdleTime).arg(id).arg(
             (ms != nil) ? "IDLE" : nil
         ).arg(ms).arg((unixTimeMilliseconds != nil) ? "TIME" : nil).arg(unixTimeMilliseconds).arg(
             (count != nil) ? "RETRYCOUNT" : nil
-        ).arg(count).arg((LASTID != nil) ? "LASTID" : nil).arg(LASTID).arg(options)
+        ).arg(count).arg((lastid != nil) ? "LASTID" : nil).arg(lastid).arg(options)
         return self.add_command(cmd)
     }
-    /// Removes the specified entries from the stream. Returns the number of items actually deleted, that may be different from the number of IDs passed in case certain IDs do not exist.
+    /// Returns the number of messages after removing them from a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8137,7 +8168,7 @@ extension RedisPipeline {
         let cmd = Cmd("XDEL").arg(key).arg(id)
         return self.add_command(cmd)
     }
-    /// A container for consumer groups commands
+    /// A container for consumer groups commands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8148,7 +8179,7 @@ extension RedisPipeline {
         let cmd = Cmd("XGROUP")
         return self.add_command(cmd)
     }
-    /// A container for stream introspection commands
+    /// A container for stream introspection commands.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8159,7 +8190,7 @@ extension RedisPipeline {
         let cmd = Cmd("XINFO")
         return self.add_command(cmd)
     }
-    /// Return the number of entries in a stream
+    /// Return the number of messages in a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8170,7 +8201,7 @@ extension RedisPipeline {
         let cmd = Cmd("XLEN").arg(key)
         return self.add_command(cmd)
     }
-    /// Return information and entries from a stream consumer group pending entries list, that are messages fetched but never acknowledged.
+    /// Returns the information and entries from a stream consumer group's pending entries list.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8183,7 +8214,7 @@ extension RedisPipeline {
         let cmd = Cmd("XPENDING").arg(key).arg(group).arg(filters)
         return self.add_command(cmd)
     }
-    /// Return a range of elements in a stream, with IDs matching the specified IDs interval
+    /// Returns the messages from a stream within a range of IDs.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8196,11 +8227,9 @@ extension RedisPipeline {
         let cmd = Cmd("XRANGE").arg(key).arg(start).arg(end).arg((count != nil) ? "COUNT" : nil).arg(count)
         return self.add_command(cmd)
     }
-    /// Return never seen elements in multiple streams, with IDs greater than the ones reported by the caller for each stream. Can block.
+    /// Returns messages from multiple streams with IDs greater than the ones requested. Blocks until a message is available otherwise.
     /// ## Available since
     /// 5.0.0
-    /// ## Time complexity
-    /// For each stream mentioned: O(N) with N being the number of elements being returned, it means that XREAD-ing with a fixed COUNT is O(1). Note that when the BLOCK option is used, XADD will pay O(M) time in order to serve the M clients blocked on the stream getting new data.
     /// ## Documentation
     /// view the docs for [XREAD](https://redis.io/commands/xread)
     public func xread(_ count: Int? = nil, _ milliseconds: Int? = nil, _ streams: XreadStreams) -> Self {
@@ -8208,7 +8237,7 @@ extension RedisPipeline {
             .arg(milliseconds).arg("STREAMS").arg(streams)
         return self.add_command(cmd)
     }
-    /// Return new entries from a stream using a consumer group, or access the history of the pending entries for a given consumer. Can block.
+    /// Returns new or historical messages from a stream for a consumer in a group. Blocks until a message is available otherwise.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8216,15 +8245,15 @@ extension RedisPipeline {
     /// ## Documentation
     /// view the docs for [XREADGROUP](https://redis.io/commands/xreadgroup)
     public func xreadgroup(
-        _ groupConsumer: XreadgroupGroupconsumer, _ count: Int? = nil, _ milliseconds: Int? = nil,
+        _ groupBlock: XreadgroupGroupblock, _ count: Int? = nil, _ milliseconds: Int? = nil,
         _ streams: XreadgroupStreams, _ options: XreadgroupOptions? = nil
     ) -> Self {
-        let cmd = Cmd("XREADGROUP").arg("GROUP").arg(groupConsumer).arg((count != nil) ? "COUNT" : nil).arg(count).arg(
+        let cmd = Cmd("XREADGROUP").arg("GROUP").arg(groupBlock).arg((count != nil) ? "COUNT" : nil).arg(count).arg(
             (milliseconds != nil) ? "BLOCK" : nil
         ).arg(milliseconds).arg("STREAMS").arg(streams).arg(options)
         return self.add_command(cmd)
     }
-    /// Return a range of elements in a stream, with IDs matching the specified IDs interval, in reverse order (from greater to smaller IDs) compared to XRANGE
+    /// Returns the messages from a stream within a range of IDs in reverse order.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8237,7 +8266,7 @@ extension RedisPipeline {
         let cmd = Cmd("XREVRANGE").arg(key).arg(end).arg(start).arg((count != nil) ? "COUNT" : nil).arg(count)
         return self.add_command(cmd)
     }
-    /// An internal command for replicating stream values
+    /// An internal command for replicating stream values.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8246,14 +8275,14 @@ extension RedisPipeline {
     /// - 7.0.0, Added the `entries_added` and `max_deleted_entry_id` arguments.
     /// ## Documentation
     /// view the docs for [XSETID](https://redis.io/commands/xsetid)
-    public func xsetid(_ key: String, _ lastId: String, _ entriesAdded: Int? = nil, _ maxDeletedEntryId: String? = nil)
+    public func xsetid(_ key: String, _ lastId: String, _ entriesAdded: Int? = nil, _ maxDeletedId: String? = nil)
         -> Self
     {
         let cmd = Cmd("XSETID").arg(key).arg(lastId).arg((entriesAdded != nil) ? "ENTRIESADDED" : nil).arg(entriesAdded)
-            .arg((maxDeletedEntryId != nil) ? "MAXDELETEDID" : nil).arg(maxDeletedEntryId)
+            .arg((maxDeletedId != nil) ? "MAXDELETEDID" : nil).arg(maxDeletedId)
         return self.add_command(cmd)
     }
-    /// Trims the stream to (approximately if '~' is passed) a certain size
+    /// Deletes messages from the beginning of a stream.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8266,7 +8295,7 @@ extension RedisPipeline {
         let cmd = Cmd("XTRIM").arg(key).arg(trim)
         return self.add_command(cmd)
     }
-    /// Add one or more members to a sorted set, or update its score if it already exists
+    /// Adds one or more members to a sorted set, or updates their scores. Creates the key if it doesn't exist.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -8278,13 +8307,13 @@ extension RedisPipeline {
     /// ## Documentation
     /// view the docs for [ZADD](https://redis.io/commands/zadd)
     public func zadd(
-        _ key: String, _ condition: ZaddCondition? = nil, _ comparison: ZaddComparison? = nil,
-        _ scoreMember: ZaddScoremember..., options: ZaddOptions? = nil
+        _ key: String, _ condition: ZaddCondition? = nil, _ comparison: ZaddComparison? = nil, _ data: ZaddData...,
+        options: ZaddOptions? = nil
     ) -> Self {
-        let cmd = Cmd("ZADD").arg(key).arg(condition).arg(comparison).arg(scoreMember).arg(options)
+        let cmd = Cmd("ZADD").arg(key).arg(condition).arg(comparison).arg(data).arg(options)
         return self.add_command(cmd)
     }
-    /// Get the number of members in a sorted set
+    /// Returns the number of members in a sorted set.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -8295,7 +8324,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZCARD").arg(key)
         return self.add_command(cmd)
     }
-    /// Count the members in a sorted set with scores within the given values
+    /// Returns the count of members in a sorted set that have scores within a range.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -8306,7 +8335,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZCOUNT").arg(key).arg(min).arg(max)
         return self.add_command(cmd)
     }
-    /// Subtract multiple sorted sets
+    /// Returns the difference between multiple sorted sets.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -8317,7 +8346,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZDIFF").arg(numkeys).arg(key).arg(options)
         return self.add_command(cmd)
     }
-    /// Subtract multiple sorted sets and store the resulting sorted set in a new key
+    /// Stores the difference of multiple sorted sets in a key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -8328,7 +8357,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZDIFFSTORE").arg(destination).arg(numkeys).arg(key)
         return self.add_command(cmd)
     }
-    /// Increment the score of a member in a sorted set
+    /// Increments the score of a member in a sorted set.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -8339,7 +8368,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZINCRBY").arg(key).arg(increment).arg(member)
         return self.add_command(cmd)
     }
-    /// Intersect multiple sorted sets
+    /// Returns the intersect of multiple sorted sets.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -8355,7 +8384,7 @@ extension RedisPipeline {
         ).arg(aggregate).arg(options)
         return self.add_command(cmd)
     }
-    /// Intersect multiple sorted sets and return the cardinality of the result
+    /// Returns the number of members of the intersect of multiple sorted sets.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -8366,7 +8395,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZINTERCARD").arg(numkeys).arg(key).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         return self.add_command(cmd)
     }
-    /// Intersect multiple sorted sets and store the resulting sorted set in a new key
+    /// Stores the intersect of multiple sorted sets in a key.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -8380,7 +8409,7 @@ extension RedisPipeline {
             .arg(weight).arg((aggregate != nil) ? "AGGREGATE" : nil).arg(aggregate)
         return self.add_command(cmd)
     }
-    /// Count the number of members in a sorted set between a given lexicographical range
+    /// Returns the number of members in a sorted set within a lexicographical range.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -8391,7 +8420,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZLEXCOUNT").arg(key).arg(min).arg(max)
         return self.add_command(cmd)
     }
-    /// Remove and return members with scores in a sorted set
+    /// Returns the highest- or lowest-scoring members from one or more sorted sets after removing them. Deletes the sorted set if the last member was popped.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
@@ -8402,7 +8431,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZMPOP").arg(numkeys).arg(key).arg(rWhere).arg((count != nil) ? "COUNT" : nil).arg(count)
         return self.add_command(cmd)
     }
-    /// Get the score associated with the given members in a sorted set
+    /// Returns the score of one or more members in a sorted set.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -8413,7 +8442,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZMSCORE").arg(key).arg(member)
         return self.add_command(cmd)
     }
-    /// Remove and return members with the highest scores in a sorted set
+    /// Returns the highest-scoring members from a sorted set after removing them. Deletes the sorted set if the last member was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8424,7 +8453,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZPOPMAX").arg(key).arg(count)
         return self.add_command(cmd)
     }
-    /// Remove and return members with the lowest scores in a sorted set
+    /// Returns the lowest-scoring members from a sorted set after removing them. Deletes the sorted set if the last member was popped.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -8435,18 +8464,18 @@ extension RedisPipeline {
         let cmd = Cmd("ZPOPMIN").arg(key).arg(count)
         return self.add_command(cmd)
     }
-    /// Get one or multiple random elements from a sorted set
+    /// Returns one or more random members from a sorted set.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
-    /// O(N) where N is the number of elements returned
+    /// O(N) where N is the number of members returned
     /// ## Documentation
     /// view the docs for [ZRANDMEMBER](https://redis.io/commands/zrandmember)
     public func zrandmember(_ key: String, _ options: ZrandmemberOptions? = nil) -> Self {
         let cmd = Cmd("ZRANDMEMBER").arg(key).arg(options)
         return self.add_command(cmd)
     }
-    /// Return a range of members in a sorted set
+    /// Returns members in a sorted set within a range of indexes.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -8456,29 +8485,25 @@ extension RedisPipeline {
     /// ## Documentation
     /// view the docs for [ZRANGE](https://redis.io/commands/zrange)
     public func zrange(
-        _ key: String, _ start: String, _ stop: String, _ sortby: ZrangeSortby? = nil,
-        _ offsetCount: ZrangeOffsetcount? = nil, _ options: ZrangeOptions? = nil
+        _ key: String, _ start: String, _ stop: String, _ sortby: ZrangeSortby? = nil, _ limit: ZrangeLimit? = nil,
+        _ options: ZrangeOptions? = nil
     ) -> Self {
-        let cmd = Cmd("ZRANGE").arg(key).arg(start).arg(stop).arg(sortby).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount
-        ).arg(options)
+        let cmd = Cmd("ZRANGE").arg(key).arg(start).arg(stop).arg(sortby).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
+            .arg(options)
         return self.add_command(cmd)
     }
-    /// Return a range of members in a sorted set, by lexicographical range
+    /// Returns members in a sorted set within a lexicographical range.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
     /// O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements being returned. If M is constant (e.g. always asking for the first 10 elements with LIMIT), you can consider it O(log(N)).
     /// ## Documentation
     /// view the docs for [ZRANGEBYLEX](https://redis.io/commands/zrangebylex)
-    public func zrangebylex(_ key: String, _ min: String, _ max: String, _ offsetCount: ZrangebylexOffsetcount? = nil)
-        -> Self
-    {
-        let cmd = Cmd("ZRANGEBYLEX").arg(key).arg(min).arg(max).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount)
+    public func zrangebylex(_ key: String, _ min: String, _ max: String, _ limit: ZrangebylexLimit? = nil) -> Self {
+        let cmd = Cmd("ZRANGEBYLEX").arg(key).arg(min).arg(max).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         return self.add_command(cmd)
     }
-    /// Return a range of members in a sorted set, by score
+    /// Returns members in a sorted set within a range of scores.
     /// ## Available since
     /// 1.0.5
     /// ## Time complexity
@@ -8488,15 +8513,14 @@ extension RedisPipeline {
     /// ## Documentation
     /// view the docs for [ZRANGEBYSCORE](https://redis.io/commands/zrangebyscore)
     public func zrangebyscore(
-        _ key: String, _ min: Double, _ max: Double, _ offsetCount: ZrangebyscoreOffsetcount? = nil,
+        _ key: String, _ min: Double, _ max: Double, _ limit: ZrangebyscoreLimit? = nil,
         _ options: ZrangebyscoreOptions? = nil
     ) -> Self {
-        let cmd = Cmd("ZRANGEBYSCORE").arg(key).arg(min).arg(max).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount
-        ).arg(options)
+        let cmd = Cmd("ZRANGEBYSCORE").arg(key).arg(min).arg(max).arg((limit != nil) ? "LIMIT" : nil).arg(limit).arg(
+            options)
         return self.add_command(cmd)
     }
-    /// Store a range of members from sorted set into another key
+    /// Stores a range of members from sorted set in a key.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -8505,25 +8529,26 @@ extension RedisPipeline {
     /// view the docs for [ZRANGESTORE](https://redis.io/commands/zrangestore)
     public func zrangestore(
         _ dst: String, _ src: String, _ min: String, _ max: String, _ sortby: ZrangestoreSortby? = nil,
-        _ offsetCount: ZrangestoreOffsetcount? = nil, _ options: ZrangestoreOptions? = nil
+        _ limit: ZrangestoreLimit? = nil, _ options: ZrangestoreOptions? = nil
     ) -> Self {
-        let cmd = Cmd("ZRANGESTORE").arg(dst).arg(src).arg(min).arg(max).arg(sortby).arg(
-            (offsetCount != nil) ? "LIMIT" : nil
-        ).arg(offsetCount).arg(options)
+        let cmd = Cmd("ZRANGESTORE").arg(dst).arg(src).arg(min).arg(max).arg(sortby).arg((limit != nil) ? "LIMIT" : nil)
+            .arg(limit).arg(options)
         return self.add_command(cmd)
     }
-    /// Determine the index of a member in a sorted set
+    /// Returns the index of a member in a sorted set ordered by ascending scores.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
     /// O(log(N))
+    /// ## History
+    /// - 7.2.0, Added the optional `WITHSCORE` argument.
     /// ## Documentation
     /// view the docs for [ZRANK](https://redis.io/commands/zrank)
-    public func zrank(_ key: String, _ member: String) -> Self {
-        let cmd = Cmd("ZRANK").arg(key).arg(member)
+    public func zrank(_ key: String, _ member: String, _ options: ZrankOptions? = nil) -> Self {
+        let cmd = Cmd("ZRANK").arg(key).arg(member).arg(options)
         return self.add_command(cmd)
     }
-    /// Remove one or more members from a sorted set
+    /// Removes one or more members from a sorted set. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -8536,7 +8561,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZREM").arg(key).arg(member)
         return self.add_command(cmd)
     }
-    /// Remove all members in a sorted set between the given lexicographical range
+    /// Removes members in a sorted set within a lexicographical range. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
@@ -8547,7 +8572,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZREMRANGEBYLEX").arg(key).arg(min).arg(max)
         return self.add_command(cmd)
     }
-    /// Remove all members in a sorted set within the given indexes
+    /// Removes members in a sorted set within a range of indexes. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -8558,7 +8583,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZREMRANGEBYRANK").arg(key).arg(start).arg(stop)
         return self.add_command(cmd)
     }
-    /// Remove all members in a sorted set within the given scores
+    /// Removes members in a sorted set within a range of scores. Deletes the sorted set if all members were removed.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -8569,7 +8594,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZREMRANGEBYSCORE").arg(key).arg(min).arg(max)
         return self.add_command(cmd)
     }
-    /// Return a range of members in a sorted set, by index, with scores ordered from high to low
+    /// Returns members in a sorted set within a range of indexes in reverse order.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -8580,21 +8605,19 @@ extension RedisPipeline {
         let cmd = Cmd("ZREVRANGE").arg(key).arg(start).arg(stop).arg(options)
         return self.add_command(cmd)
     }
-    /// Return a range of members in a sorted set, by lexicographical range, ordered from higher to lower strings.
+    /// Returns members in a sorted set within a lexicographical range in reverse order.
     /// ## Available since
     /// 2.8.9
     /// ## Time complexity
     /// O(log(N)+M) with N being the number of elements in the sorted set and M the number of elements being returned. If M is constant (e.g. always asking for the first 10 elements with LIMIT), you can consider it O(log(N)).
     /// ## Documentation
     /// view the docs for [ZREVRANGEBYLEX](https://redis.io/commands/zrevrangebylex)
-    public func zrevrangebylex(
-        _ key: String, _ max: String, _ min: String, _ offsetCount: ZrevrangebylexOffsetcount? = nil
-    ) -> Self {
-        let cmd = Cmd("ZREVRANGEBYLEX").arg(key).arg(max).arg(min).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount)
+    public func zrevrangebylex(_ key: String, _ max: String, _ min: String, _ limit: ZrevrangebylexLimit? = nil) -> Self
+    {
+        let cmd = Cmd("ZREVRANGEBYLEX").arg(key).arg(max).arg(min).arg((limit != nil) ? "LIMIT" : nil).arg(limit)
         return self.add_command(cmd)
     }
-    /// Return a range of members in a sorted set, by score, with scores ordered from high to low
+    /// Returns members in a sorted set within a range of scores in reverse order.
     /// ## Available since
     /// 2.2.0
     /// ## Time complexity
@@ -8604,30 +8627,31 @@ extension RedisPipeline {
     /// ## Documentation
     /// view the docs for [ZREVRANGEBYSCORE](https://redis.io/commands/zrevrangebyscore)
     public func zrevrangebyscore(
-        _ key: String, _ max: Double, _ min: Double, _ offsetCount: ZrevrangebyscoreOffsetcount? = nil,
+        _ key: String, _ max: Double, _ min: Double, _ limit: ZrevrangebyscoreLimit? = nil,
         _ options: ZrevrangebyscoreOptions? = nil
     ) -> Self {
-        let cmd = Cmd("ZREVRANGEBYSCORE").arg(key).arg(max).arg(min).arg((offsetCount != nil) ? "LIMIT" : nil).arg(
-            offsetCount
-        ).arg(options)
+        let cmd = Cmd("ZREVRANGEBYSCORE").arg(key).arg(max).arg(min).arg((limit != nil) ? "LIMIT" : nil).arg(limit).arg(
+            options)
         return self.add_command(cmd)
     }
-    /// Determine the index of a member in a sorted set, with scores ordered from high to low
+    /// Returns the index of a member in a sorted set ordered by descending scores.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
     /// O(log(N))
+    /// ## History
+    /// - 7.2.0, Added the optional `WITHSCORE` argument.
     /// ## Documentation
     /// view the docs for [ZREVRANK](https://redis.io/commands/zrevrank)
-    public func zrevrank(_ key: String, _ member: String) -> Self {
-        let cmd = Cmd("ZREVRANK").arg(key).arg(member)
+    public func zrevrank(_ key: String, _ member: String, _ options: ZrevrankOptions? = nil) -> Self {
+        let cmd = Cmd("ZREVRANK").arg(key).arg(member).arg(options)
         return self.add_command(cmd)
     }
-    /// Incrementally iterate sorted sets elements and associated scores
+    /// Iterates over members and scores of a sorted set.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection..
+    /// O(1) for every call. O(N) for a complete iteration, including enough command calls for the cursor to return back to 0. N is the number of elements inside the collection.
     /// ## Documentation
     /// view the docs for [ZSCAN](https://redis.io/commands/zscan)
     public func zscan(_ key: String, _ cursor: Int, _ pattern: String? = nil, _ count: Int? = nil) -> Self {
@@ -8636,7 +8660,7 @@ extension RedisPipeline {
         ).arg(count)
         return self.add_command(cmd)
     }
-    /// Get the score associated with the given member in a sorted set
+    /// Returns the score of a member in a sorted set.
     /// ## Available since
     /// 1.2.0
     /// ## Time complexity
@@ -8647,7 +8671,7 @@ extension RedisPipeline {
         let cmd = Cmd("ZSCORE").arg(key).arg(member)
         return self.add_command(cmd)
     }
-    /// Add multiple sorted sets
+    /// Returns the union of multiple sorted sets.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -8663,7 +8687,7 @@ extension RedisPipeline {
         ).arg(aggregate).arg(options)
         return self.add_command(cmd)
     }
-    /// Add multiple sorted sets and store the resulting sorted set in a new key
+    /// Stores the union of multiple sorted sets in a key.
     /// ## Available since
     /// 2.0.0
     /// ## Time complexity
@@ -8686,21 +8710,21 @@ public struct BgsaveOptions: OptionSet, ToRedisArgs {
         if self.contains(.SCHEDULE) { out.append("SCHEDULE".data(using: .utf8)!) }
     }
 }
-public struct BitcountIndex: ToRedisArgs {
+public struct BitcountRange: ToRedisArgs {
     let start: Int
     let end: Int
-    let indexUnit: Indexunit?
-    public init(_ start: Int, _ end: Int, _ indexUnit: Indexunit? = nil) {
+    let unit: Unit?
+    public init(_ start: Int, _ end: Int, _ unit: Unit? = nil) {
         self.start = start
         self.end = end
-        self.indexUnit = indexUnit
+        self.unit = unit
     }
     public func write_redis_args(out: inout [Data]) {
         start.write_redis_args(out: &out)
         end.write_redis_args(out: &out)
-        indexUnit.write_redis_args(out: &out)
+        unit.write_redis_args(out: &out)
     }
-    public enum Indexunit: ToRedisArgs {
+    public enum Unit: ToRedisArgs {
         case BYTE
         case BIT
         public func write_redis_args(out: inout [Data]) {
@@ -8712,17 +8736,17 @@ public struct BitcountIndex: ToRedisArgs {
     }
 }
 public enum BitfieldOperation: ToRedisArgs {
-    case GET(Encodingoffset)
+    case GET(Getblock)
     case WRITE(Write)
     public func write_redis_args(out: inout [Data]) {
         switch self {
-        case .GET(let encodingoffset):
+        case .GET(let getblock):
             out.append("GET".data(using: .utf8)!)
-            encodingoffset.write_redis_args(out: &out)
+            getblock.write_redis_args(out: &out)
         case .WRITE(let write): write.write_redis_args(out: &out)
         }
     }
-    public struct Encodingoffset: ToRedisArgs {
+    public struct Getblock: ToRedisArgs {
         let encoding: String
         let offset: Int
         public init(_ encoding: String, _ offset: Int) {
@@ -8735,18 +8759,18 @@ public enum BitfieldOperation: ToRedisArgs {
         }
     }
     public struct Write: ToRedisArgs {
-        let wrapSatFail: Wrapsatfail?
+        let overflowBlock: Overflowblock?
         let writeOperation: Writeoperation
-        public init(_ wrapSatFail: Wrapsatfail? = nil, _ writeOperation: Writeoperation) {
-            self.wrapSatFail = wrapSatFail
+        public init(_ overflowBlock: Overflowblock? = nil, _ writeOperation: Writeoperation) {
+            self.overflowBlock = overflowBlock
             self.writeOperation = writeOperation
         }
         public func write_redis_args(out: inout [Data]) {
             out.append("OVERFLOW".data(using: .utf8)!)
-            wrapSatFail.write_redis_args(out: &out)
+            overflowBlock.write_redis_args(out: &out)
             writeOperation.write_redis_args(out: &out)
         }
-        public enum Wrapsatfail: ToRedisArgs {
+        public enum Overflowblock: ToRedisArgs {
             case WRAP
             case SAT
             case FAIL
@@ -8759,19 +8783,19 @@ public enum BitfieldOperation: ToRedisArgs {
             }
         }
         public enum Writeoperation: ToRedisArgs {
-            case SET(Encodingoffsetvalue)
-            case INCRBY(Encodingoffsetincrement)
+            case SET(Setblock)
+            case INCRBY(Incrbyblock)
             public func write_redis_args(out: inout [Data]) {
                 switch self {
-                case .SET(let encodingoffsetvalue):
+                case .SET(let setblock):
                     out.append("SET".data(using: .utf8)!)
-                    encodingoffsetvalue.write_redis_args(out: &out)
-                case .INCRBY(let encodingoffsetincrement):
+                    setblock.write_redis_args(out: &out)
+                case .INCRBY(let incrbyblock):
                     out.append("INCRBY".data(using: .utf8)!)
-                    encodingoffsetincrement.write_redis_args(out: &out)
+                    incrbyblock.write_redis_args(out: &out)
                 }
             }
-            public struct Encodingoffsetvalue: ToRedisArgs {
+            public struct Setblock: ToRedisArgs {
                 let encoding: String
                 let offset: Int
                 let value: Int
@@ -8786,7 +8810,7 @@ public enum BitfieldOperation: ToRedisArgs {
                     value.write_redis_args(out: &out)
                 }
             }
-            public struct Encodingoffsetincrement: ToRedisArgs {
+            public struct Incrbyblock: ToRedisArgs {
                 let encoding: String
                 let offset: Int
                 let increment: Int
@@ -8804,7 +8828,7 @@ public enum BitfieldOperation: ToRedisArgs {
         }
     }
 }
-public struct BitfieldRoEncodingoffset: ToRedisArgs {
+public struct BitfieldRoGetblock: ToRedisArgs {
     let encoding: String
     let offset: Int
     public init(_ encoding: String, _ offset: Int) {
@@ -8816,29 +8840,43 @@ public struct BitfieldRoEncodingoffset: ToRedisArgs {
         offset.write_redis_args(out: &out)
     }
 }
-public struct BitposIndex: ToRedisArgs {
+public enum BitopOperation: ToRedisArgs {
+    case AND
+    case OR
+    case XOR
+    case NOT
+    public func write_redis_args(out: inout [Data]) {
+        switch self {
+        case .AND: out.append("AND".data(using: .utf8)!)
+        case .OR: out.append("OR".data(using: .utf8)!)
+        case .XOR: out.append("XOR".data(using: .utf8)!)
+        case .NOT: out.append("NOT".data(using: .utf8)!)
+        }
+    }
+}
+public struct BitposRange: ToRedisArgs {
     let start: Int
-    let endIndex: Endindex?
-    public init(_ start: Int, _ endIndex: Endindex? = nil) {
+    let endUnitBlock: Endunitblock?
+    public init(_ start: Int, _ endUnitBlock: Endunitblock? = nil) {
         self.start = start
-        self.endIndex = endIndex
+        self.endUnitBlock = endUnitBlock
     }
     public func write_redis_args(out: inout [Data]) {
         start.write_redis_args(out: &out)
-        endIndex.write_redis_args(out: &out)
+        endUnitBlock.write_redis_args(out: &out)
     }
-    public struct Endindex: ToRedisArgs {
+    public struct Endunitblock: ToRedisArgs {
         let end: Int
-        let indexUnit: Indexunit?
-        public init(_ end: Int, _ indexUnit: Indexunit? = nil) {
+        let unit: Unit?
+        public init(_ end: Int, _ unit: Unit? = nil) {
             self.end = end
-            self.indexUnit = indexUnit
+            self.unit = unit
         }
         public func write_redis_args(out: inout [Data]) {
             end.write_redis_args(out: &out)
-            indexUnit.write_redis_args(out: &out)
+            unit.write_redis_args(out: &out)
         }
-        public enum Indexunit: ToRedisArgs {
+        public enum Unit: ToRedisArgs {
             case BYTE
             case BIT
             public func write_redis_args(out: inout [Data]) {
@@ -8957,7 +8995,7 @@ public struct FailoverOptions: OptionSet, ToRedisArgs {
         if self.contains(.ABORT) { out.append("ABORT".data(using: .utf8)!) }
     }
 }
-public enum FlushallAsync: ToRedisArgs {
+public enum FlushallFlushtype: ToRedisArgs {
     case ASYNC
     case SYNC
     public func write_redis_args(out: inout [Data]) {
@@ -8967,7 +9005,7 @@ public enum FlushallAsync: ToRedisArgs {
         }
     }
 }
-public enum FlushdbAsync: ToRedisArgs {
+public enum FlushdbFlushtype: ToRedisArgs {
     case ASYNC
     case SYNC
     public func write_redis_args(out: inout [Data]) {
@@ -8987,7 +9025,7 @@ public enum GeoaddCondition: ToRedisArgs {
         }
     }
 }
-public struct GeoaddLongitudelatitudemember: ToRedisArgs {
+public struct GeoaddData: ToRedisArgs {
     let longitude: Double
     let latitude: Double
     let member: String
@@ -9009,34 +9047,34 @@ public struct GeoaddOptions: OptionSet, ToRedisArgs {
     public func write_redis_args(out: inout [Data]) { if self.contains(.CH) { out.append("CH".data(using: .utf8)!) } }
 }
 public enum GeodistUnit: ToRedisArgs {
-    case m
-    case km
-    case ft
-    case mi
+    case M
+    case KM
+    case FT
+    case MI
     public func write_redis_args(out: inout [Data]) {
         switch self {
-        case .m: out.append("m".data(using: .utf8)!)
-        case .km: out.append("km".data(using: .utf8)!)
-        case .ft: out.append("ft".data(using: .utf8)!)
-        case .mi: out.append("mi".data(using: .utf8)!)
+        case .M: out.append("m".data(using: .utf8)!)
+        case .KM: out.append("km".data(using: .utf8)!)
+        case .FT: out.append("ft".data(using: .utf8)!)
+        case .MI: out.append("mi".data(using: .utf8)!)
         }
     }
 }
 public enum GeoradiusUnit: ToRedisArgs {
-    case m
-    case km
-    case ft
-    case mi
+    case M
+    case KM
+    case FT
+    case MI
     public func write_redis_args(out: inout [Data]) {
         switch self {
-        case .m: out.append("m".data(using: .utf8)!)
-        case .km: out.append("km".data(using: .utf8)!)
-        case .ft: out.append("ft".data(using: .utf8)!)
-        case .mi: out.append("mi".data(using: .utf8)!)
+        case .M: out.append("m".data(using: .utf8)!)
+        case .KM: out.append("km".data(using: .utf8)!)
+        case .FT: out.append("ft".data(using: .utf8)!)
+        case .MI: out.append("mi".data(using: .utf8)!)
         }
     }
 }
-public struct GeoradiusCount: ToRedisArgs {
+public struct GeoradiusCountblock: ToRedisArgs {
     let count: Int
     let options: Options?
     public init(_ count: Int, _ options: Options? = nil) {
@@ -9067,6 +9105,20 @@ public enum GeoradiusOrder: ToRedisArgs {
         }
     }
 }
+public enum GeoradiusStore: ToRedisArgs {
+    case STORE(String)
+    case STOREDIST(String)
+    public func write_redis_args(out: inout [Data]) {
+        switch self {
+        case .STORE(let string):
+            out.append("STORE".data(using: .utf8)!)
+            string.write_redis_args(out: &out)
+        case .STOREDIST(let string):
+            out.append("STOREDIST".data(using: .utf8)!)
+            string.write_redis_args(out: &out)
+        }
+    }
+}
 public struct GeoradiusOptions: OptionSet, ToRedisArgs {
     public let rawValue: Int
     public init(rawValue: Int) { self.rawValue = rawValue }
@@ -9080,20 +9132,20 @@ public struct GeoradiusOptions: OptionSet, ToRedisArgs {
     }
 }
 public enum GeoradiusbymemberUnit: ToRedisArgs {
-    case m
-    case km
-    case ft
-    case mi
+    case M
+    case KM
+    case FT
+    case MI
     public func write_redis_args(out: inout [Data]) {
         switch self {
-        case .m: out.append("m".data(using: .utf8)!)
-        case .km: out.append("km".data(using: .utf8)!)
-        case .ft: out.append("ft".data(using: .utf8)!)
-        case .mi: out.append("mi".data(using: .utf8)!)
+        case .M: out.append("m".data(using: .utf8)!)
+        case .KM: out.append("km".data(using: .utf8)!)
+        case .FT: out.append("ft".data(using: .utf8)!)
+        case .MI: out.append("mi".data(using: .utf8)!)
         }
     }
 }
-public struct GeoradiusbymemberCount: ToRedisArgs {
+public struct GeoradiusbymemberCountblock: ToRedisArgs {
     let count: Int
     let options: Options?
     public init(_ count: Int, _ options: Options? = nil) {
@@ -9124,6 +9176,20 @@ public enum GeoradiusbymemberOrder: ToRedisArgs {
         }
     }
 }
+public enum GeoradiusbymemberStore: ToRedisArgs {
+    case STORE(String)
+    case STOREDIST(String)
+    public func write_redis_args(out: inout [Data]) {
+        switch self {
+        case .STORE(let string):
+            out.append("STORE".data(using: .utf8)!)
+            string.write_redis_args(out: &out)
+        case .STOREDIST(let string):
+            out.append("STOREDIST".data(using: .utf8)!)
+            string.write_redis_args(out: &out)
+        }
+    }
+}
 public struct GeoradiusbymemberOptions: OptionSet, ToRedisArgs {
     public let rawValue: Int
     public init(rawValue: Int) { self.rawValue = rawValue }
@@ -9137,20 +9203,20 @@ public struct GeoradiusbymemberOptions: OptionSet, ToRedisArgs {
     }
 }
 public enum GeoradiusbymemberRoUnit: ToRedisArgs {
-    case m
-    case km
-    case ft
-    case mi
+    case M
+    case KM
+    case FT
+    case MI
     public func write_redis_args(out: inout [Data]) {
         switch self {
-        case .m: out.append("m".data(using: .utf8)!)
-        case .km: out.append("km".data(using: .utf8)!)
-        case .ft: out.append("ft".data(using: .utf8)!)
-        case .mi: out.append("mi".data(using: .utf8)!)
+        case .M: out.append("m".data(using: .utf8)!)
+        case .KM: out.append("km".data(using: .utf8)!)
+        case .FT: out.append("ft".data(using: .utf8)!)
+        case .MI: out.append("mi".data(using: .utf8)!)
         }
     }
 }
-public struct GeoradiusbymemberRoCount: ToRedisArgs {
+public struct GeoradiusbymemberRoCountblock: ToRedisArgs {
     let count: Int
     let options: Options?
     public init(_ count: Int, _ options: Options? = nil) {
@@ -9194,20 +9260,20 @@ public struct GeoradiusbymemberRoOptions: OptionSet, ToRedisArgs {
     }
 }
 public enum GeoradiusRoUnit: ToRedisArgs {
-    case m
-    case km
-    case ft
-    case mi
+    case M
+    case KM
+    case FT
+    case MI
     public func write_redis_args(out: inout [Data]) {
         switch self {
-        case .m: out.append("m".data(using: .utf8)!)
-        case .km: out.append("km".data(using: .utf8)!)
-        case .ft: out.append("ft".data(using: .utf8)!)
-        case .mi: out.append("mi".data(using: .utf8)!)
+        case .M: out.append("m".data(using: .utf8)!)
+        case .KM: out.append("km".data(using: .utf8)!)
+        case .FT: out.append("ft".data(using: .utf8)!)
+        case .MI: out.append("mi".data(using: .utf8)!)
         }
     }
 }
-public struct GeoradiusRoCount: ToRedisArgs {
+public struct GeoradiusRoCountblock: ToRedisArgs {
     let count: Int
     let options: Options?
     public init(_ count: Int, _ options: Options? = nil) {
@@ -9252,18 +9318,18 @@ public struct GeoradiusRoOptions: OptionSet, ToRedisArgs {
 }
 public enum GeosearchFrom: ToRedisArgs {
     case FROMMEMBER(String)
-    case FROMLONLAT(Longitudelatitude)
+    case FROMLONLAT(Fromlonlat)
     public func write_redis_args(out: inout [Data]) {
         switch self {
         case .FROMMEMBER(let string):
             out.append("FROMMEMBER".data(using: .utf8)!)
             string.write_redis_args(out: &out)
-        case .FROMLONLAT(let longitudelatitude):
+        case .FROMLONLAT(let fromlonlat):
             out.append("FROMLONLAT".data(using: .utf8)!)
-            longitudelatitude.write_redis_args(out: &out)
+            fromlonlat.write_redis_args(out: &out)
         }
     }
-    public struct Longitudelatitude: ToRedisArgs {
+    public struct Fromlonlat: ToRedisArgs {
         let longitude: Double
         let latitude: Double
         public init(_ longitude: Double, _ latitude: Double) {
@@ -9298,16 +9364,16 @@ public enum GeosearchBy: ToRedisArgs {
             unit.write_redis_args(out: &out)
         }
         public enum Unit: ToRedisArgs {
-            case m
-            case km
-            case ft
-            case mi
+            case M
+            case KM
+            case FT
+            case MI
             public func write_redis_args(out: inout [Data]) {
                 switch self {
-                case .m: out.append("m".data(using: .utf8)!)
-                case .km: out.append("km".data(using: .utf8)!)
-                case .ft: out.append("ft".data(using: .utf8)!)
-                case .mi: out.append("mi".data(using: .utf8)!)
+                case .M: out.append("m".data(using: .utf8)!)
+                case .KM: out.append("km".data(using: .utf8)!)
+                case .FT: out.append("ft".data(using: .utf8)!)
+                case .MI: out.append("mi".data(using: .utf8)!)
                 }
             }
         }
@@ -9328,16 +9394,16 @@ public enum GeosearchBy: ToRedisArgs {
             unit.write_redis_args(out: &out)
         }
         public enum Unit: ToRedisArgs {
-            case m
-            case km
-            case ft
-            case mi
+            case M
+            case KM
+            case FT
+            case MI
             public func write_redis_args(out: inout [Data]) {
                 switch self {
-                case .m: out.append("m".data(using: .utf8)!)
-                case .km: out.append("km".data(using: .utf8)!)
-                case .ft: out.append("ft".data(using: .utf8)!)
-                case .mi: out.append("mi".data(using: .utf8)!)
+                case .M: out.append("m".data(using: .utf8)!)
+                case .KM: out.append("km".data(using: .utf8)!)
+                case .FT: out.append("ft".data(using: .utf8)!)
+                case .MI: out.append("mi".data(using: .utf8)!)
                 }
             }
         }
@@ -9353,7 +9419,7 @@ public enum GeosearchOrder: ToRedisArgs {
         }
     }
 }
-public struct GeosearchCount: ToRedisArgs {
+public struct GeosearchCountblock: ToRedisArgs {
     let count: Int
     let options: Options?
     public init(_ count: Int, _ options: Options? = nil) {
@@ -9388,18 +9454,18 @@ public struct GeosearchOptions: OptionSet, ToRedisArgs {
 }
 public enum GeosearchstoreFrom: ToRedisArgs {
     case FROMMEMBER(String)
-    case FROMLONLAT(Longitudelatitude)
+    case FROMLONLAT(Fromlonlat)
     public func write_redis_args(out: inout [Data]) {
         switch self {
         case .FROMMEMBER(let string):
             out.append("FROMMEMBER".data(using: .utf8)!)
             string.write_redis_args(out: &out)
-        case .FROMLONLAT(let longitudelatitude):
+        case .FROMLONLAT(let fromlonlat):
             out.append("FROMLONLAT".data(using: .utf8)!)
-            longitudelatitude.write_redis_args(out: &out)
+            fromlonlat.write_redis_args(out: &out)
         }
     }
-    public struct Longitudelatitude: ToRedisArgs {
+    public struct Fromlonlat: ToRedisArgs {
         let longitude: Double
         let latitude: Double
         public init(_ longitude: Double, _ latitude: Double) {
@@ -9434,16 +9500,16 @@ public enum GeosearchstoreBy: ToRedisArgs {
             unit.write_redis_args(out: &out)
         }
         public enum Unit: ToRedisArgs {
-            case m
-            case km
-            case ft
-            case mi
+            case M
+            case KM
+            case FT
+            case MI
             public func write_redis_args(out: inout [Data]) {
                 switch self {
-                case .m: out.append("m".data(using: .utf8)!)
-                case .km: out.append("km".data(using: .utf8)!)
-                case .ft: out.append("ft".data(using: .utf8)!)
-                case .mi: out.append("mi".data(using: .utf8)!)
+                case .M: out.append("m".data(using: .utf8)!)
+                case .KM: out.append("km".data(using: .utf8)!)
+                case .FT: out.append("ft".data(using: .utf8)!)
+                case .MI: out.append("mi".data(using: .utf8)!)
                 }
             }
         }
@@ -9464,16 +9530,16 @@ public enum GeosearchstoreBy: ToRedisArgs {
             unit.write_redis_args(out: &out)
         }
         public enum Unit: ToRedisArgs {
-            case m
-            case km
-            case ft
-            case mi
+            case M
+            case KM
+            case FT
+            case MI
             public func write_redis_args(out: inout [Data]) {
                 switch self {
-                case .m: out.append("m".data(using: .utf8)!)
-                case .km: out.append("km".data(using: .utf8)!)
-                case .ft: out.append("ft".data(using: .utf8)!)
-                case .mi: out.append("mi".data(using: .utf8)!)
+                case .M: out.append("m".data(using: .utf8)!)
+                case .KM: out.append("km".data(using: .utf8)!)
+                case .FT: out.append("ft".data(using: .utf8)!)
+                case .MI: out.append("mi".data(using: .utf8)!)
                 }
             }
         }
@@ -9489,7 +9555,7 @@ public enum GeosearchstoreOrder: ToRedisArgs {
         }
     }
 }
-public struct GeosearchstoreCount: ToRedisArgs {
+public struct GeosearchstoreCountblock: ToRedisArgs {
     let count: Int
     let options: Options?
     public init(_ count: Int, _ options: Options? = nil) {
@@ -9544,21 +9610,21 @@ public enum GetexExpiration: ToRedisArgs {
 }
 public struct HelloArguments: ToRedisArgs {
     let protover: Int
-    let usernamePassword: Usernamepassword?
+    let auth: Auth?
     let clientname: String?
-    public init(_ protover: Int, _ usernamePassword: Usernamepassword? = nil, _ clientname: String? = nil) {
+    public init(_ protover: Int, _ auth: Auth? = nil, _ clientname: String? = nil) {
         self.protover = protover
-        self.usernamePassword = usernamePassword
+        self.auth = auth
         self.clientname = clientname
     }
     public func write_redis_args(out: inout [Data]) {
         protover.write_redis_args(out: &out)
         out.append("AUTH".data(using: .utf8)!)
-        usernamePassword.write_redis_args(out: &out)
+        auth.write_redis_args(out: &out)
         out.append("SETNAME".data(using: .utf8)!)
         clientname.write_redis_args(out: &out)
     }
-    public struct Usernamepassword: ToRedisArgs {
+    public struct Auth: ToRedisArgs {
         let username: String
         let password: String
         public init(_ username: String, _ password: String) {
@@ -9571,7 +9637,7 @@ public struct HelloArguments: ToRedisArgs {
         }
     }
 }
-public struct HmsetFieldvalue: ToRedisArgs {
+public struct HmsetData: ToRedisArgs {
     let field: String
     let value: String
     public init(_ field: String, _ value: String) {
@@ -9603,7 +9669,7 @@ public struct HrandfieldOptions: ToRedisArgs {
         }
     }
 }
-public struct HsetFieldvalue: ToRedisArgs {
+public struct HsetData: ToRedisArgs {
     let field: String
     let value: String
     public init(_ field: String, _ value: String) {
@@ -9667,7 +9733,7 @@ public enum LmpopRwhere: ToRedisArgs {
         }
     }
 }
-public enum MigrateKeyoremptystring: ToRedisArgs {
+public enum MigrateKeyselector: ToRedisArgs {
     case KEY(String)
     case EMPTY_STRING
     public func write_redis_args(out: inout [Data]) {
@@ -9679,18 +9745,18 @@ public enum MigrateKeyoremptystring: ToRedisArgs {
 }
 public enum MigrateAuthentication: ToRedisArgs {
     case AUTH(String)
-    case AUTH2(Usernamepassword)
+    case AUTH2(Auth2)
     public func write_redis_args(out: inout [Data]) {
         switch self {
         case .AUTH(let string):
             out.append("AUTH".data(using: .utf8)!)
             string.write_redis_args(out: &out)
-        case .AUTH2(let usernamepassword):
+        case .AUTH2(let auth2):
             out.append("AUTH2".data(using: .utf8)!)
-            usernamepassword.write_redis_args(out: &out)
+            auth2.write_redis_args(out: &out)
         }
     }
-    public struct Usernamepassword: ToRedisArgs {
+    public struct Auth2: ToRedisArgs {
         let username: String
         let password: String
         public init(_ username: String, _ password: String) {
@@ -9713,7 +9779,7 @@ public struct MigrateOptions: OptionSet, ToRedisArgs {
         if self.contains(.REPLACE) { out.append("REPLACE".data(using: .utf8)!) }
     }
 }
-public struct MsetKeyvalue: ToRedisArgs {
+public struct MsetData: ToRedisArgs {
     let key: String
     let value: String
     public init(_ key: String, _ value: String) {
@@ -9725,7 +9791,7 @@ public struct MsetKeyvalue: ToRedisArgs {
         value.write_redis_args(out: &out)
     }
 }
-public struct MsetnxKeyvalue: ToRedisArgs {
+public struct MsetnxData: ToRedisArgs {
     let key: String
     let value: String
     public init(_ key: String, _ value: String) {
@@ -9825,7 +9891,7 @@ public struct SetOptions: OptionSet, ToRedisArgs {
     public static let GET = SetOptions(rawValue: 1 << 0)
     public func write_redis_args(out: inout [Data]) { if self.contains(.GET) { out.append("GET".data(using: .utf8)!) } }
 }
-public enum ShutdownNosavesave: ToRedisArgs {
+public enum ShutdownSaveselector: ToRedisArgs {
     case NOSAVE
     case SAVE
     public func write_redis_args(out: inout [Data]) {
@@ -9847,7 +9913,7 @@ public struct ShutdownOptions: OptionSet, ToRedisArgs {
         if self.contains(.ABORT) { out.append("ABORT".data(using: .utf8)!) }
     }
 }
-public struct SortOffsetcount: ToRedisArgs {
+public struct SortLimit: ToRedisArgs {
     let offset: Int
     let count: Int
     public init(_ offset: Int, _ count: Int) {
@@ -9877,7 +9943,7 @@ public struct SortOptions: OptionSet, ToRedisArgs {
         if self.contains(.ALPHA) { out.append("ALPHA".data(using: .utf8)!) }
     }
 }
-public struct SortRoOffsetcount: ToRedisArgs {
+public struct SortRoLimit: ToRedisArgs {
     let offset: Int
     let count: Int
     public init(_ offset: Int, _ count: Int) {
@@ -9946,7 +10012,7 @@ public struct XaddTrim: ToRedisArgs {
         }
     }
 }
-public enum XaddIdorauto: ToRedisArgs {
+public enum XaddIdselector: ToRedisArgs {
     case AUTO_ID
     case ID(String)
     public func write_redis_args(out: inout [Data]) {
@@ -9956,7 +10022,7 @@ public enum XaddIdorauto: ToRedisArgs {
         }
     }
 }
-public struct XaddFieldvalue: ToRedisArgs {
+public struct XaddData: ToRedisArgs {
     let field: String
     let value: String
     public init(_ field: String, _ value: String) {
@@ -10028,7 +10094,7 @@ public struct XreadStreams: ToRedisArgs {
         id.write_redis_args(out: &out)
     }
 }
-public struct XreadgroupGroupconsumer: ToRedisArgs {
+public struct XreadgroupGroupblock: ToRedisArgs {
     let group: String
     let consumer: String
     public init(_ group: String, _ consumer: String) {
@@ -10119,7 +10185,7 @@ public enum ZaddComparison: ToRedisArgs {
         }
     }
 }
-public struct ZaddScoremember: ToRedisArgs {
+public struct ZaddData: ToRedisArgs {
     let score: Double
     let member: String
     public init(_ score: Double, _ member: String) {
@@ -10221,7 +10287,7 @@ public enum ZrangeSortby: ToRedisArgs {
         }
     }
 }
-public struct ZrangeOffsetcount: ToRedisArgs {
+public struct ZrangeLimit: ToRedisArgs {
     let offset: Int
     let count: Int
     public init(_ offset: Int, _ count: Int) {
@@ -10243,7 +10309,7 @@ public struct ZrangeOptions: OptionSet, ToRedisArgs {
         if self.contains(.WITHSCORES) { out.append("WITHSCORES".data(using: .utf8)!) }
     }
 }
-public struct ZrangebylexOffsetcount: ToRedisArgs {
+public struct ZrangebylexLimit: ToRedisArgs {
     let offset: Int
     let count: Int
     public init(_ offset: Int, _ count: Int) {
@@ -10255,7 +10321,7 @@ public struct ZrangebylexOffsetcount: ToRedisArgs {
         count.write_redis_args(out: &out)
     }
 }
-public struct ZrangebyscoreOffsetcount: ToRedisArgs {
+public struct ZrangebyscoreLimit: ToRedisArgs {
     let offset: Int
     let count: Int
     public init(_ offset: Int, _ count: Int) {
@@ -10285,7 +10351,7 @@ public enum ZrangestoreSortby: ToRedisArgs {
         }
     }
 }
-public struct ZrangestoreOffsetcount: ToRedisArgs {
+public struct ZrangestoreLimit: ToRedisArgs {
     let offset: Int
     let count: Int
     public init(_ offset: Int, _ count: Int) {
@@ -10303,6 +10369,14 @@ public struct ZrangestoreOptions: OptionSet, ToRedisArgs {
     public static let REV = ZrangestoreOptions(rawValue: 1 << 0)
     public func write_redis_args(out: inout [Data]) { if self.contains(.REV) { out.append("REV".data(using: .utf8)!) } }
 }
+public struct ZrankOptions: OptionSet, ToRedisArgs {
+    public let rawValue: Int
+    public init(rawValue: Int) { self.rawValue = rawValue }
+    public static let WITHSCORE = ZrankOptions(rawValue: 1 << 0)
+    public func write_redis_args(out: inout [Data]) {
+        if self.contains(.WITHSCORE) { out.append("WITHSCORE".data(using: .utf8)!) }
+    }
+}
 public struct ZrevrangeOptions: OptionSet, ToRedisArgs {
     public let rawValue: Int
     public init(rawValue: Int) { self.rawValue = rawValue }
@@ -10311,7 +10385,7 @@ public struct ZrevrangeOptions: OptionSet, ToRedisArgs {
         if self.contains(.WITHSCORES) { out.append("WITHSCORES".data(using: .utf8)!) }
     }
 }
-public struct ZrevrangebylexOffsetcount: ToRedisArgs {
+public struct ZrevrangebylexLimit: ToRedisArgs {
     let offset: Int
     let count: Int
     public init(_ offset: Int, _ count: Int) {
@@ -10323,7 +10397,7 @@ public struct ZrevrangebylexOffsetcount: ToRedisArgs {
         count.write_redis_args(out: &out)
     }
 }
-public struct ZrevrangebyscoreOffsetcount: ToRedisArgs {
+public struct ZrevrangebyscoreLimit: ToRedisArgs {
     let offset: Int
     let count: Int
     public init(_ offset: Int, _ count: Int) {
@@ -10341,6 +10415,14 @@ public struct ZrevrangebyscoreOptions: OptionSet, ToRedisArgs {
     public static let WITHSCORES = ZrevrangebyscoreOptions(rawValue: 1 << 0)
     public func write_redis_args(out: inout [Data]) {
         if self.contains(.WITHSCORES) { out.append("WITHSCORES".data(using: .utf8)!) }
+    }
+}
+public struct ZrevrankOptions: OptionSet, ToRedisArgs {
+    public let rawValue: Int
+    public init(rawValue: Int) { self.rawValue = rawValue }
+    public static let WITHSCORE = ZrevrankOptions(rawValue: 1 << 0)
+    public func write_redis_args(out: inout [Data]) {
+        if self.contains(.WITHSCORE) { out.append("WITHSCORE".data(using: .utf8)!) }
     }
 }
 public enum ZunionAggregate: ToRedisArgs {

@@ -2,11 +2,11 @@
 //  slowlog.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Clear all entries from the slow log
+    /// Clears all entries from the slow log.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -17,7 +17,7 @@ extension RedisConnection {
         let cmd = Cmd("SLOWLOG").arg("RESET")
         return try await cmd.query(self)
     }
-    /// Clear all entries from the slow log
+    /// Clears all entries from the slow log.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -28,7 +28,7 @@ extension RedisConnection {
         let cmd = Cmd("SLOWLOG").arg("RESET")
         try await cmd.exec(self)
     }
-    /// Get the slow log's entries
+    /// Returns the slow log's entries.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -41,7 +41,7 @@ extension RedisConnection {
         let cmd = Cmd("SLOWLOG").arg("GET").arg(count)
         return try await cmd.query(self)
     }
-    /// Get the slow log's entries
+    /// Returns the slow log's entries.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -76,7 +76,7 @@ extension RedisConnection {
         let cmd = Cmd("SLOWLOG").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Get the slow log's length
+    /// Returns the number of entries in the slow log.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -87,7 +87,7 @@ extension RedisConnection {
         let cmd = Cmd("SLOWLOG").arg("LEN")
         return try await cmd.query(self)
     }
-    /// Get the slow log's length
+    /// Returns the number of entries in the slow log.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -100,7 +100,7 @@ extension RedisConnection {
     }
 }
 extension RedisPipeline {
-    /// Clear all entries from the slow log
+    /// Clears all entries from the slow log.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -111,7 +111,7 @@ extension RedisPipeline {
         let cmd = Cmd("SLOWLOG").arg("RESET")
         return self.add_command(cmd)
     }
-    /// Get the slow log's entries
+    /// Returns the slow log's entries.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity
@@ -135,7 +135,7 @@ extension RedisPipeline {
         let cmd = Cmd("SLOWLOG").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Get the slow log's length
+    /// Returns the number of entries in the slow log.
     /// ## Available since
     /// 2.2.12
     /// ## Time complexity

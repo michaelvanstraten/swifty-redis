@@ -2,11 +2,11 @@
 //  sentinel.swift
 //
 //
-//  Created by CodeGen on 14.09.23.
+//  Created by CodeGen on 15.09.23.
 //
 import Foundation
 extension RedisConnection {
-    /// Shows the state of a master
+    /// Returns the state of a master Redis instance.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -17,7 +17,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("MASTER").arg(masterName)
         return try await cmd.query(self)
     }
-    /// Shows the state of a master
+    /// Returns the state of a master Redis instance.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -28,7 +28,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("MASTER").arg(masterName)
         try await cmd.exec(self)
     }
-    /// Simulate failover scenarios
+    /// Simulates failover scenarios.
     /// ## Available since
     /// 3.2.0
     /// ## Documentation
@@ -37,7 +37,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("SIMULATE_FAILURE").arg(mode)
         return try await cmd.query(self)
     }
-    /// Simulate failover scenarios
+    /// Simulates failover scenarios.
     /// ## Available since
     /// 3.2.0
     /// ## Documentation
@@ -46,7 +46,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("SIMULATE_FAILURE").arg(mode)
         try await cmd.exec(self)
     }
-    /// Force a failover
+    /// Forces a Redis Sentinel failover.
     /// ## Available since
     /// 2.8.4
     /// ## Documentation
@@ -55,7 +55,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("FAILOVER").arg(masterName)
         return try await cmd.query(self)
     }
-    /// Force a failover
+    /// Forces a Redis Sentinel failover.
     /// ## Available since
     /// 2.8.4
     /// ## Documentation
@@ -64,7 +64,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("FAILOVER").arg(masterName)
         try await cmd.exec(self)
     }
-    /// List the monitored replicas
+    /// Returns a list of the monitored Redis replicas.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -75,7 +75,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("REPLICAS").arg(masterName)
         return try await cmd.query(self)
     }
-    /// List the monitored replicas
+    /// Returns a list of the monitored Redis replicas.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -86,7 +86,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("REPLICAS").arg(masterName)
         try await cmd.exec(self)
     }
-    /// List the monitored masters
+    /// Returns a list of monitored Redis masters.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -97,7 +97,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("MASTERS")
         return try await cmd.query(self)
     }
-    /// List the monitored masters
+    /// Returns a list of monitored Redis masters.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -108,7 +108,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("MASTERS")
         try await cmd.exec(self)
     }
-    /// Get the Sentinel instance ID
+    /// Returns the Redis Sentinel instance ID.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -119,7 +119,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("MYID")
         return try await cmd.query(self)
     }
-    /// Get the Sentinel instance ID
+    /// Returns the Redis Sentinel instance ID.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -130,7 +130,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("MYID")
         try await cmd.exec(self)
     }
-    /// Get information about pending scripts
+    /// Returns information about pending scripts for Redis Sentinel.
     /// ## Available since
     /// 2.8.4
     /// ## Documentation
@@ -139,7 +139,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("PENDING_SCRIPTS")
         return try await cmd.query(self)
     }
-    /// Get information about pending scripts
+    /// Returns information about pending scripts for Redis Sentinel.
     /// ## Available since
     /// 2.8.4
     /// ## Documentation
@@ -148,29 +148,29 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("PENDING_SCRIPTS")
         try await cmd.exec(self)
     }
-    /// List or update the current configurable parameters
+    /// Lists or updates the current configurable parameters of Redis Sentinel.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N) where N is the number of configurable parameters
     /// ## Documentation
     /// view the docs for [SENTINEL DEBUG](https://redis.io/commands/sentinel-debug)
-    public func sentinel_debug<T: FromRedisValue>(_ parameterValue: SentinelDebugParametervalue...) async throws -> T {
-        let cmd = Cmd("SENTINEL").arg("DEBUG").arg(parameterValue)
+    public func sentinel_debug<T: FromRedisValue>(_ data: SentinelDebugData...) async throws -> T {
+        let cmd = Cmd("SENTINEL").arg("DEBUG").arg(data)
         return try await cmd.query(self)
     }
-    /// List or update the current configurable parameters
+    /// Lists or updates the current configurable parameters of Redis Sentinel.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N) where N is the number of configurable parameters
     /// ## Documentation
     /// view the docs for [SENTINEL DEBUG](https://redis.io/commands/sentinel-debug)
-    public func sentinel_debug(_ parameterValue: SentinelDebugParametervalue...) async throws {
-        let cmd = Cmd("SENTINEL").arg("DEBUG").arg(parameterValue)
+    public func sentinel_debug(_ data: SentinelDebugData...) async throws {
+        let cmd = Cmd("SENTINEL").arg("DEBUG").arg(data)
         try await cmd.exec(self)
     }
-    /// Get cached INFO from the instances in the deployment
+    /// Returns the cached `INFO` replies from the deployment's instances.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -181,7 +181,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("INFO_CACHE").arg(nodename)
         return try await cmd.query(self)
     }
-    /// Get cached INFO from the instances in the deployment
+    /// Returns the cached `INFO` replies from the deployment's instances.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -192,7 +192,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("INFO_CACHE").arg(nodename)
         try await cmd.exec(self)
     }
-    /// Stop monitoring
+    /// Stops monitoring.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -203,7 +203,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("REMOVE").arg(masterName)
         return try await cmd.query(self)
     }
-    /// Stop monitoring
+    /// Stops monitoring.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -214,7 +214,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("REMOVE").arg(masterName)
         try await cmd.exec(self)
     }
-    /// Check if a master is down
+    /// Determines whether a master Redis instance is down.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -227,7 +227,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("IS_MASTER_DOWN_BY_ADDR").arg(ip).arg(port).arg(currentEpoch).arg(runid)
         return try await cmd.query(self)
     }
-    /// Check if a master is down
+    /// Determines whether a master Redis instance is down.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -240,7 +240,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("IS_MASTER_DOWN_BY_ADDR").arg(ip).arg(port).arg(currentEpoch).arg(runid)
         try await cmd.exec(self)
     }
-    /// Rewrite configuration file
+    /// Rewrites the Redis Sentinel configuration file.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -251,7 +251,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("FLUSHCONFIG")
         return try await cmd.query(self)
     }
-    /// Rewrite configuration file
+    /// Rewrites the Redis Sentinel configuration file.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -262,7 +262,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("FLUSHCONFIG")
         try await cmd.exec(self)
     }
-    /// Get port and address of a master
+    /// Returns the port and address of a master Redis instance.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -273,7 +273,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("GET_MASTER_ADDR_BY_NAME").arg(masterName)
         return try await cmd.query(self)
     }
-    /// Get port and address of a master
+    /// Returns the port and address of a master Redis instance.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -284,29 +284,33 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("GET_MASTER_ADDR_BY_NAME").arg(masterName)
         try await cmd.exec(self)
     }
-    /// Configure Sentinel
+    /// Configures Redis Sentinel.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
-    /// O(1)
+    /// O(N) when N is the number of configuration parameters provided
+    /// ## History
+    /// - 7.2.0, Added the ability to set and get multiple parameters in one call.
     /// ## Documentation
     /// view the docs for [SENTINEL CONFIG](https://redis.io/commands/sentinel-config)
-    public func sentinel_config<T: FromRedisValue>(_ setOrGet: SentinelConfigSetorget) async throws -> T {
-        let cmd = Cmd("SENTINEL").arg("CONFIG").arg(setOrGet)
+    public func sentinel_config<T: FromRedisValue>(_ action: SentinelConfigAction) async throws -> T {
+        let cmd = Cmd("SENTINEL").arg("CONFIG").arg(action)
         return try await cmd.query(self)
     }
-    /// Configure Sentinel
+    /// Configures Redis Sentinel.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
-    /// O(1)
+    /// O(N) when N is the number of configuration parameters provided
+    /// ## History
+    /// - 7.2.0, Added the ability to set and get multiple parameters in one call.
     /// ## Documentation
     /// view the docs for [SENTINEL CONFIG](https://redis.io/commands/sentinel-config)
-    public func sentinel_config(_ setOrGet: SentinelConfigSetorget) async throws {
-        let cmd = Cmd("SENTINEL").arg("CONFIG").arg(setOrGet)
+    public func sentinel_config(_ action: SentinelConfigAction) async throws {
+        let cmd = Cmd("SENTINEL").arg("CONFIG").arg(action)
         try await cmd.exec(self)
     }
-    /// List the Sentinel instances
+    /// Returns a list of Sentinel instances.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -317,7 +321,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("SENTINELS").arg(masterName)
         return try await cmd.query(self)
     }
-    /// List the Sentinel instances
+    /// Returns a list of Sentinel instances.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -328,7 +332,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("SENTINELS").arg(masterName)
         try await cmd.exec(self)
     }
-    /// Check for a Sentinel quorum
+    /// Checks for a Redis Sentinel quorum.
     /// ## Available since
     /// 2.8.4
     /// ## Documentation
@@ -337,7 +341,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("CKQUORUM").arg(masterName)
         return try await cmd.query(self)
     }
-    /// Check for a Sentinel quorum
+    /// Checks for a Redis Sentinel quorum.
     /// ## Available since
     /// 2.8.4
     /// ## Documentation
@@ -346,7 +350,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("CKQUORUM").arg(masterName)
         try await cmd.exec(self)
     }
-    /// Start monitoring
+    /// Starts monitoring.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -359,7 +363,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("MONITOR").arg(name).arg(ip).arg(port).arg(quorum)
         return try await cmd.query(self)
     }
-    /// Start monitoring
+    /// Starts monitoring.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -370,29 +374,29 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("MONITOR").arg(name).arg(ip).arg(port).arg(quorum)
         try await cmd.exec(self)
     }
-    /// List the monitored slaves
+    /// Returns a list of the monitored replicas.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(N) where N is the number of slaves
+    /// O(N) where N is the number of replicas.
     /// ## Documentation
     /// view the docs for [SENTINEL SLAVES](https://redis.io/commands/sentinel-slaves)
     public func sentinel_slaves<T: FromRedisValue>(_ masterName: String) async throws -> T {
         let cmd = Cmd("SENTINEL").arg("SLAVES").arg(masterName)
         return try await cmd.query(self)
     }
-    /// List the monitored slaves
+    /// Returns a list of the monitored replicas.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(N) where N is the number of slaves
+    /// O(N) where N is the number of replicas.
     /// ## Documentation
     /// view the docs for [SENTINEL SLAVES](https://redis.io/commands/sentinel-slaves)
     public func sentinel_slaves(_ masterName: String) async throws {
         let cmd = Cmd("SENTINEL").arg("SLAVES").arg(masterName)
         try await cmd.exec(self)
     }
-    /// Reset masters by name pattern
+    /// Resets Redis masters by name matching a pattern.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -403,7 +407,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("RESET").arg(pattern)
         return try await cmd.query(self)
     }
-    /// Reset masters by name pattern
+    /// Resets Redis masters by name matching a pattern.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -414,7 +418,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("RESET").arg(pattern)
         try await cmd.exec(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -425,7 +429,7 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("HELP")
         return try await cmd.query(self)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -436,33 +440,31 @@ extension RedisConnection {
         let cmd = Cmd("SENTINEL").arg("HELP")
         try await cmd.exec(self)
     }
-    /// Change the configuration of a monitored master
+    /// Changes the configuration of a monitored Redis master.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
     /// O(1)
     /// ## Documentation
     /// view the docs for [SENTINEL SET](https://redis.io/commands/sentinel-set)
-    public func sentinel_set<T: FromRedisValue>(_ masterName: String, _ optionValue: SentinelSetOptionvalue...)
-        async throws -> T
-    {
-        let cmd = Cmd("SENTINEL").arg("SET").arg(masterName).arg(optionValue)
+    public func sentinel_set<T: FromRedisValue>(_ masterName: String, _ data: SentinelSetData...) async throws -> T {
+        let cmd = Cmd("SENTINEL").arg("SET").arg(masterName).arg(data)
         return try await cmd.query(self)
     }
-    /// Change the configuration of a monitored master
+    /// Changes the configuration of a monitored Redis master.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
     /// O(1)
     /// ## Documentation
     /// view the docs for [SENTINEL SET](https://redis.io/commands/sentinel-set)
-    public func sentinel_set(_ masterName: String, _ optionValue: SentinelSetOptionvalue...) async throws {
-        let cmd = Cmd("SENTINEL").arg("SET").arg(masterName).arg(optionValue)
+    public func sentinel_set(_ masterName: String, _ data: SentinelSetData...) async throws {
+        let cmd = Cmd("SENTINEL").arg("SET").arg(masterName).arg(data)
         try await cmd.exec(self)
     }
 }
 extension RedisPipeline {
-    /// Shows the state of a master
+    /// Returns the state of a master Redis instance.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -473,7 +475,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("MASTER").arg(masterName)
         return self.add_command(cmd)
     }
-    /// Simulate failover scenarios
+    /// Simulates failover scenarios.
     /// ## Available since
     /// 3.2.0
     /// ## Documentation
@@ -482,7 +484,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("SIMULATE_FAILURE").arg(mode)
         return self.add_command(cmd)
     }
-    /// Force a failover
+    /// Forces a Redis Sentinel failover.
     /// ## Available since
     /// 2.8.4
     /// ## Documentation
@@ -491,7 +493,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("FAILOVER").arg(masterName)
         return self.add_command(cmd)
     }
-    /// List the monitored replicas
+    /// Returns a list of the monitored Redis replicas.
     /// ## Available since
     /// 5.0.0
     /// ## Time complexity
@@ -502,7 +504,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("REPLICAS").arg(masterName)
         return self.add_command(cmd)
     }
-    /// List the monitored masters
+    /// Returns a list of monitored Redis masters.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -513,7 +515,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("MASTERS")
         return self.add_command(cmd)
     }
-    /// Get the Sentinel instance ID
+    /// Returns the Redis Sentinel instance ID.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -524,7 +526,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("MYID")
         return self.add_command(cmd)
     }
-    /// Get information about pending scripts
+    /// Returns information about pending scripts for Redis Sentinel.
     /// ## Available since
     /// 2.8.4
     /// ## Documentation
@@ -533,18 +535,18 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("PENDING_SCRIPTS")
         return self.add_command(cmd)
     }
-    /// List or update the current configurable parameters
+    /// Lists or updates the current configurable parameters of Redis Sentinel.
     /// ## Available since
     /// 7.0.0
     /// ## Time complexity
     /// O(N) where N is the number of configurable parameters
     /// ## Documentation
     /// view the docs for [SENTINEL DEBUG](https://redis.io/commands/sentinel-debug)
-    public func sentinel_debug(_ parameterValue: SentinelDebugParametervalue...) -> Self {
-        let cmd = Cmd("SENTINEL").arg("DEBUG").arg(parameterValue)
+    public func sentinel_debug(_ data: SentinelDebugData...) -> Self {
+        let cmd = Cmd("SENTINEL").arg("DEBUG").arg(data)
         return self.add_command(cmd)
     }
-    /// Get cached INFO from the instances in the deployment
+    /// Returns the cached `INFO` replies from the deployment's instances.
     /// ## Available since
     /// 3.2.0
     /// ## Time complexity
@@ -555,7 +557,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("INFO_CACHE").arg(nodename)
         return self.add_command(cmd)
     }
-    /// Stop monitoring
+    /// Stops monitoring.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -566,7 +568,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("REMOVE").arg(masterName)
         return self.add_command(cmd)
     }
-    /// Check if a master is down
+    /// Determines whether a master Redis instance is down.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -578,7 +580,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("IS_MASTER_DOWN_BY_ADDR").arg(ip).arg(port).arg(currentEpoch).arg(runid)
         return self.add_command(cmd)
     }
-    /// Rewrite configuration file
+    /// Rewrites the Redis Sentinel configuration file.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -589,7 +591,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("FLUSHCONFIG")
         return self.add_command(cmd)
     }
-    /// Get port and address of a master
+    /// Returns the port and address of a master Redis instance.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -600,18 +602,20 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("GET_MASTER_ADDR_BY_NAME").arg(masterName)
         return self.add_command(cmd)
     }
-    /// Configure Sentinel
+    /// Configures Redis Sentinel.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
-    /// O(1)
+    /// O(N) when N is the number of configuration parameters provided
+    /// ## History
+    /// - 7.2.0, Added the ability to set and get multiple parameters in one call.
     /// ## Documentation
     /// view the docs for [SENTINEL CONFIG](https://redis.io/commands/sentinel-config)
-    public func sentinel_config(_ setOrGet: SentinelConfigSetorget) -> Self {
-        let cmd = Cmd("SENTINEL").arg("CONFIG").arg(setOrGet)
+    public func sentinel_config(_ action: SentinelConfigAction) -> Self {
+        let cmd = Cmd("SENTINEL").arg("CONFIG").arg(action)
         return self.add_command(cmd)
     }
-    /// List the Sentinel instances
+    /// Returns a list of Sentinel instances.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -622,7 +626,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("SENTINELS").arg(masterName)
         return self.add_command(cmd)
     }
-    /// Check for a Sentinel quorum
+    /// Checks for a Redis Sentinel quorum.
     /// ## Available since
     /// 2.8.4
     /// ## Documentation
@@ -631,7 +635,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("CKQUORUM").arg(masterName)
         return self.add_command(cmd)
     }
-    /// Start monitoring
+    /// Starts monitoring.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -642,18 +646,18 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("MONITOR").arg(name).arg(ip).arg(port).arg(quorum)
         return self.add_command(cmd)
     }
-    /// List the monitored slaves
+    /// Returns a list of the monitored replicas.
     /// ## Available since
     /// 2.8.0
     /// ## Time complexity
-    /// O(N) where N is the number of slaves
+    /// O(N) where N is the number of replicas.
     /// ## Documentation
     /// view the docs for [SENTINEL SLAVES](https://redis.io/commands/sentinel-slaves)
     public func sentinel_slaves(_ masterName: String) -> Self {
         let cmd = Cmd("SENTINEL").arg("SLAVES").arg(masterName)
         return self.add_command(cmd)
     }
-    /// Reset masters by name pattern
+    /// Resets Redis masters by name matching a pattern.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
@@ -664,7 +668,7 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("RESET").arg(pattern)
         return self.add_command(cmd)
     }
-    /// Show helpful text about the different subcommands
+    /// Returns helpful text about the different subcommands.
     /// ## Available since
     /// 6.2.0
     /// ## Time complexity
@@ -675,15 +679,15 @@ extension RedisPipeline {
         let cmd = Cmd("SENTINEL").arg("HELP")
         return self.add_command(cmd)
     }
-    /// Change the configuration of a monitored master
+    /// Changes the configuration of a monitored Redis master.
     /// ## Available since
     /// 2.8.4
     /// ## Time complexity
     /// O(1)
     /// ## Documentation
     /// view the docs for [SENTINEL SET](https://redis.io/commands/sentinel-set)
-    public func sentinel_set(_ masterName: String, _ optionValue: SentinelSetOptionvalue...) -> Self {
-        let cmd = Cmd("SENTINEL").arg("SET").arg(masterName).arg(optionValue)
+    public func sentinel_set(_ masterName: String, _ data: SentinelSetData...) -> Self {
+        let cmd = Cmd("SENTINEL").arg("SET").arg(masterName).arg(data)
         return self.add_command(cmd)
     }
 }
@@ -699,7 +703,7 @@ public enum SentinelSimulateFailureMode: ToRedisArgs {
         }
     }
 }
-public struct SentinelDebugParametervalue: ToRedisArgs {
+public struct SentinelDebugData: ToRedisArgs {
     let parameter: String
     let value: String
     public init(_ parameter: String, _ value: String) {
@@ -711,20 +715,20 @@ public struct SentinelDebugParametervalue: ToRedisArgs {
         value.write_redis_args(out: &out)
     }
 }
-public enum SentinelConfigSetorget: ToRedisArgs {
-    case SET(Setparamvalue)
+public enum SentinelConfigAction: ToRedisArgs {
+    case SET(Set)
     case GET(String)
     public func write_redis_args(out: inout [Data]) {
         switch self {
-        case .SET(let setparamvalue):
+        case .SET(let set):
             out.append("SET".data(using: .utf8)!)
-            setparamvalue.write_redis_args(out: &out)
+            set.write_redis_args(out: &out)
         case .GET(let string):
             out.append("GET".data(using: .utf8)!)
             string.write_redis_args(out: &out)
         }
     }
-    public struct Setparamvalue: ToRedisArgs {
+    public struct Set: ToRedisArgs {
         let parameter: String
         let value: String
         public init(_ parameter: String, _ value: String) {
@@ -737,7 +741,7 @@ public enum SentinelConfigSetorget: ToRedisArgs {
         }
     }
 }
-public struct SentinelSetOptionvalue: ToRedisArgs {
+public struct SentinelSetData: ToRedisArgs {
     let option: String
     let value: String
     public init(_ option: String, _ value: String) {
