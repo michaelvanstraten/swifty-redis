@@ -7,10 +7,7 @@ from typing import List
 
 from parse import process_json_files
 from parsing_types.command import Command
-from utils import (
-    make_sure_remote_repo_is_downloaded,
-    THIS_DIR,
-)
+from utils import THIS_DIR
 from swift_format import format_files
 from templates import render
 
@@ -51,7 +48,7 @@ def commands():
 
     to_format_files = []
 
-    print("Creating swift files...")
+    click.echo("Creating swift files...")
 
     if len(commands) > 0:
         write_extensions_file(commands, "containerless.swift")
