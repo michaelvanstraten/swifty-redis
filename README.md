@@ -63,7 +63,7 @@ To start contributing, run the following command to clone the repository:
 git clone --recurse-submodules https://github.com/michaelvanstraten/swifty-redis.git
 ```
 
-If you are interested in the automatic code generation package we developed to stay up to date with the latest Redis versions, navigate to the `Sources/CodeGen` directory.
+If you are interested in the automatic code generation package we developed to stay up to date with the latest Redis versions, navigate to the [`Sources/CodeGen`](Sources/CodeGen) directory.
 
 We invite you to contribute to the project and enhance the library's functionality!
 
