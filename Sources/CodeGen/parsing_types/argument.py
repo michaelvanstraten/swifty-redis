@@ -3,7 +3,7 @@ from typing import List, Dict
 
 from templates import render
 from utils import camel_case, snake_case
-from config import names_to_substitute, token_to_substitute, arguments_to_ignore
+from config import names_to_substitute, tokens_to_substitute, arguments_to_ignore
 
 ARG_TYPES = {
     "string": "String",
@@ -34,7 +34,7 @@ class Argument:
         self.token = desc.get("token")
         self.backup_token = desc["name"]
         self.sanitized_token = snake_case(
-            token_to_substitute.get(self.token, self.token)
+            tokens_to_substitute.get(self.token, self.token)
             if self.token
             else self.backup_token
         ).upper()

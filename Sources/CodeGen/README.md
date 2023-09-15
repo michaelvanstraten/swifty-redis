@@ -74,7 +74,7 @@ Redis occasionally defines tokens that do not comply with Swift naming conventio
 
 ```json
 {
-  "tokenToSubstitute": {
+  "tokensToSubstitute": {
     "*": "AUTO_ID",
     "=": "EQUAL",
     "~": "APPROXIMATELY",

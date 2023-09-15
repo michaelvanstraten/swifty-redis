@@ -21,7 +21,7 @@
     "operator": "rOperator",
     "where": "rWhere"
   },
-  "tokenToSubstitute": {
+  "tokensToSubstitute": {
     "*": "AUTO_ID",
     "=": "EQUAL",
     "~": "APPROXIMATELY",
