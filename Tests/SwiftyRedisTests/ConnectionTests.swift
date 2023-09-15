@@ -51,7 +51,7 @@ final class ConnectionTests: XCTestCase {
         let connection = try await client.get_connection()
         let count: Int = try await connection.geoadd("Sincily", nil, .init(13.361389, 38.115556, "Palermo"), .init(15.087269, 37.502669, "Catania"))
         print(count)
-        let search: RedisValue = try await connection.geosearch("Sincily", .FROMLONLAT(.init(13, 38)), .BOX(.init(1000, 1000, .km)), .ASC, .init(2, []), [.WITHCOORD])
+        let search: RedisValue = try await connection.geosearch("Sincily", .FROMLONLAT(.init(13, 38)), .BOX(.init(1000, 1000, .KM)), .ASC, .init(2, []), [.WITHCOORD])
         print(search)
     }
 
