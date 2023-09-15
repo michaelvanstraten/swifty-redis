@@ -1,3 +1,4 @@
+[![Redis Version](https://img.shields.io/badge/Redis_Version-7.2.1-green?color=white&logo=redis&logoColor=white&labelColor=d82c20)](https://github.com/redis/redis/releases/tag/7.2.1)
 [![Integration Tests](https://github.com/michaelvanstraten/swifty-redis/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/michaelvanstraten/swifty-redis/actions/workflows/integration-tests.yml)
 [![Build DocC](https://github.com/michaelvanstraten/swifty-redis/actions/workflows/build-docc.yml/badge.svg)](https://github.com/michaelvanstraten/swifty-redis/actions/workflows/build-docc.yml)
 
