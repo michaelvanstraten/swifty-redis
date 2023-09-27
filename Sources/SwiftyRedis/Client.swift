@@ -1,5 +1,5 @@
 //
-//  SwiftyRedis.swift
+//  Client.swift
 //
 //
 //  Created by Michael Van straten on 11.07.22.
