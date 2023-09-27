@@ -79,7 +79,7 @@ public class RedisConnection {
 
      - Parameter cmd: The packed command data to be sent.
      - Parameter count: The number of commands to be sent.
-     - Returns: An array of parsed ``RedisValue` objects representing the responses.
+     - Returns: An array of parsed ``RedisValue`` objects representing the responses.
      - Throws: An error if the command sending or response receiving fails.
      */
     public func request_packed_cmds(_ cmd: Data, count: Int) async throws -> [RedisValue] {
