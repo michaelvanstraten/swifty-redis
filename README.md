@@ -11,7 +11,7 @@ SwiftyRedis is an asynchronous Redis library for Swift, designed to streamline y
 To integrate SwiftyRedis into your project, you can use the Swift Package Manager. Simply add the following dependency to your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/michaelvanstraten/swifty-redis.git", from: "0.1.2")
+.package(url: "https://github.com/michaelvanstraten/swifty-redis.git", from: "0.3.0")
 ```
 
 Then, in your target's dependencies array, add `"SwiftyRedis"` as a dependency:
