@@ -6,6 +6,7 @@
 //
 
 import Foundation
+@_spi(AsyncChannel) import NIOCore
 
 /**
  The ResponseValueParser class is responsible for parsing Redis server responses.
@@ -18,8 +19,8 @@ class ResponseValueParser {
 
      - Parameter toParseStream: The `AsyncDataStream` to parse.
      */
-    init(parse toParseStream: AsyncDataStream) {
-        stream = toParseStream
+    init(parse streamToParse: AsyncDataStream) {
+        stream = streamToParse
     }
 
     /**

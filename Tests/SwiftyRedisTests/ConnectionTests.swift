@@ -5,15 +5,16 @@
 //  Created by Michael Van straten on 13.07.22.
 //
 
-import Network
 @testable import SwiftyRedis
+import NIO
 import XCTest
 
 final class ConnectionTests: XCTestCase {
     let client = RedisClient.LOCAL
+    let group = MultiThreadedEventLoopGroup(numberOfThreads: 1)
 
     func test_simple() async throws {
-        let connection = try await client.get_connection()
+        let connection = try await client.get_connection(group: group )
         try await connection.acl_setuser("virginia", "on", "+GET", "allkeys", "(+SET ~app2*)")
         let user_info: RedisValue = try await connection.acl_getuser("virginia")
         print(user_info)

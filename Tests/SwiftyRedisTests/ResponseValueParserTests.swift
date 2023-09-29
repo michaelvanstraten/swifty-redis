@@ -5,8 +5,9 @@
 //  Created by Michael Van straten on 12.07.22.
 //
 
-import Network
 @testable import SwiftyRedis
+@_spi(AsyncChannel) import NIOCore
+import NIOEmbedded
 import XCTest
 
 final class ResponseValueParserTests: XCTestCase {
@@ -71,7 +72,7 @@ final class ResponseValueParserTests: XCTestCase {
 
 private extension String {
     func parseRedisValue() async throws -> RedisValue {
-        let dummyStream = AsyncDataStream(finalData: data(using: .utf8)!)
+        let dummyStream = AsyncDataStream(finalData: ByteBuffer(string: self))
 
         let parser = ResponseValueParser(parse: dummyStream)
         return try await parser.parse_value()
@@ -79,9 +80,9 @@ private extension String {
 }
 
 private extension AsyncDataStream {
-    init(finalData: Data) {
-        let dummyConnection = NWConnection(host: .name("DummyConnection", .none), port: .any, using: .tls)
-        self.init(con: dummyConnection)
+    init(finalData: ByteBuffer) {
+        
+        self.init(con: try! NIOAsyncChannel<ByteBuffer, ByteBuffer>(synchronouslyWrapping: EmbeddedChannel()).inboundStream.makeAsyncIterator())
         buffer = finalData
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Network
+@_spi(AsyncChannel) import NIOCore
 import Semaphore
 
 /**
@@ -17,18 +17,18 @@ import Semaphore
  It is bound to a single database and can only be created from the ``RedisClient` class.
  */
 public class RedisConnection {
-    var con: NWConnection
+    var channel: NIOAsyncChannel<ByteBuffer, ByteBuffer>
     let parser: ResponseValueParser
     let semaphore: AsyncSemaphore
 
     /**
      Initializes a Redis connection object.
 
-     - Parameter actual_connection: The underlying network connection.
+     - Parameter clientChannel: The underlying network channel.
      */
-    internal init(_ actual_connection: NWConnection) {
-        con = actual_connection
-        parser = ResponseValueParser(parse: con.dataStream())
+    internal init(_ clientChannel: NIOAsyncChannel<ByteBuffer, ByteBuffer>) {
+        channel = clientChannel
+        parser = ResponseValueParser(parse: AsyncDataStream(con: channel.inboundStream.makeAsyncIterator()))
         semaphore = AsyncSemaphore(value: 1)
     }
 
@@ -39,7 +39,7 @@ public class RedisConnection {
      - Throws: An error if the command sending fails.
      */
     internal func send_packed_command(_ cmd: Data) async throws {
-        try await con.send(content: cmd)
+        try await channel.outboundWriter.write(ByteBuffer(bytes: cmd))
     }
 
     /**
