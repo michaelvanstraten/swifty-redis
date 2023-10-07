@@ -39,9 +39,9 @@ extension JSONValue: FromRedisValue where T: Decodable {
      */
     public init(_ value: RedisValue) throws {
         switch value {
-        case let .BulkString(string):
+        case let .BulkString(data):
             let decoder = JSONDecoder()
-            self.value = try decoder.decode(T.self, from: string.data(using: .utf8)!)
+            self.value = try decoder.decode(T.self, from: data)
         default:
             throw RedisError.make_invalid_type_error(detail: "Response type (\(value)), is not JSON compatible")
         }

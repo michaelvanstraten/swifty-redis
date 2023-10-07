@@ -42,7 +42,7 @@ final class ConnectionTests: XCTestCase {
             try await connection2.xadd("stream1", nil, .AUTO_ID, .init("field1", "Hello, World!"))
         }
 
-        let value: RedisValue = try await connection.xread(nil, 0, .init("stream1", id: "$"))
+        let value: XreadResponse<RedisValue> = try await connection.xread(nil, 0, .init("stream1", id: "$"))
 
         print(value)
     }

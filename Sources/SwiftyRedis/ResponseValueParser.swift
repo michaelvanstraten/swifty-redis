@@ -86,12 +86,11 @@ class ResponseValueParser {
             if length < 0 {
                 return .Nil
             } else {
-                if let value = try String(data: await stream.next(n: Int(length)), encoding: .utf8) {
-                    try await disgard_crlf_token()
-                    return .BulkString(value)
-                } else {
-                    throw RedisError.InvalidUTF8
-                }
+                let value = Data(try await stream.next(n: Int(length)))
+                
+                try await disgard_crlf_token()
+                
+                return .BulkString(value)
             }
         } else {
             unreachable()

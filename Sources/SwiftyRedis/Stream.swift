@@ -17,15 +17,12 @@ public struct RedisStreamElement<T>: FromRedisValue where T: FromRedisValue {
     public init(_ value: RedisValue) throws {
         if case var .Array(array) = value {
             array = array.reversed()
-            switch array.popLast() {
-            case let .BulkString(id), let .SimpleString(id):
+            if let id = try? String(array.popLast()) {
                 self.id = id
                 if let data = array.popLast() {
                     self.data = try T(data)
                     return
                 }
-            default:
-                break
             }
         }
         throw RedisError.make_invalid_type_error(detail: "Response type not convertible to RedisStreamElement.")
@@ -39,15 +36,12 @@ public struct RedisStream<T>: FromRedisValue where T: FromRedisValue {
     public init(_ value: RedisValue) throws {
         if case var .Array(array) = value {
             array = array.reversed()
-            switch array.popLast() {
-            case let .BulkString(name), let .SimpleString(name):
+            if let name = try? String(array.popLast()) {
                 self.name = name
                 if case let .Array(elements) = array.popLast() {
                     self.elements = try elements.map { value in try RedisStreamElement(value) }
                     return
                 }
-            default:
-                break
             }
         }
         throw RedisError.make_invalid_type_error(detail: "Response type not convertible to RedisStream.")

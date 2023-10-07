@@ -39,7 +39,12 @@ extension FromRedisValue {
 extension String: FromRedisValue {
     public init(_ value: RedisValue) throws {
         switch value {
-        case let .SimpleString(string), let .BulkString(string):
+        case let .SimpleString(string):
+            self = string
+        case let .BulkString(data):
+            guard let string = String(data: data, encoding: .utf8) else {
+                throw RedisError.InvalidUTF8
+            }
             self = string
         case let .Int(int):
             self = "\(int)"
@@ -52,7 +57,13 @@ extension String: FromRedisValue {
 extension Float64: FromRedisValue {
     public init(_ value: RedisValue) throws {
         switch value {
-        case let .BulkString(string), let .SimpleString(string):
+        case let .BulkString(data):
+            if let string = String(data: data, encoding: .utf8) {
+                self = try Self.init(RedisValue.SimpleString(string))
+            } else {
+                throw RedisError.make_invalid_type_error(detail: "Could not convert non UTF-8 String to Float64")
+            }
+        case let .SimpleString(string):
             if let float = Float64(string) {
                 self = float
             } else {
@@ -69,7 +80,13 @@ extension Float64: FromRedisValue {
 extension Float32: FromRedisValue {
     public init(_ value: RedisValue) throws {
         switch value {
-        case let .BulkString(string), let .SimpleString(string):
+        case let .BulkString(data):
+            if let string = String(data: data, encoding: .utf8) {
+                self = try Self.init(RedisValue.SimpleString(string))
+            } else {
+                throw RedisError.make_invalid_type_error(detail: "Could not convert non UTF-8 String to Float32")
+            }
+        case let .SimpleString(string):
             if let float = Float(string) {
                 self = float
             } else {
@@ -98,7 +115,13 @@ extension Float32: FromRedisValue {
 extension Int64: FromRedisValue {
     public init(_ value: RedisValue) throws {
         switch value {
-        case let .BulkString(string), let .SimpleString(string):
+        case let .BulkString(data):
+            if let string = String(data: data, encoding: .utf8) {
+                self = try Self.init(RedisValue.SimpleString(string))
+            } else {
+                throw RedisError.make_invalid_type_error(detail: "Could not convert non UTF-8 String to Int64")
+            }
+        case let .SimpleString(string):
             if let int = Int64(string) {
                 self = int
             } else {
@@ -187,7 +210,13 @@ extension Bool: FromRedisValue {
         switch value {
         case let .Int(int):
             self = int != 0
-        case let .BulkString(string), let .SimpleString(string):
+        case let .BulkString(data):
+            if let string = String(data: data, encoding: .utf8) {
+                self = try Self.init(RedisValue.SimpleString(string))
+            } else {
+                throw RedisError.make_invalid_type_error(detail: "Could not convert non UTF-8 String to Bool")
+            }
+        case let .SimpleString(string):
             if string == "1" {
                 self = true
             } else if string == "0" {

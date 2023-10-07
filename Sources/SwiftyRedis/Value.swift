@@ -18,9 +18,13 @@ public indirect enum RedisValue: Equatable {
     /// Represents integer responses from the server. The returned integer is guaranteed to be within the range of a signed 64-bit integer.
     case Int(Int64)
     /// Represents a single binary-safe string up to 512 MB in length.
-    case BulkString(String)
+    case BulkString(Data)
     /// Represents the absence of a value.
     case Nil
     /// Represents an array of RedisValues, commonly used for commands that return collections of elements.
     case Array([RedisValue])
+    
+    static func BulkString(_ string: String) -> Self {
+        return .BulkString(string.data(using: .utf8)!)
+    }
 }
