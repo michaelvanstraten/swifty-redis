@@ -129,7 +129,7 @@ public struct PubSubMessage: FromRedisValue {
          The `pattern` parameter represents the pattern of the channel if it was a pattern subscription,
          otherwise it's `nil`. The payload parameter represents the actual message payload.
          */
-        case message(pattern: String?, payload: String)
+        case message(pattern: String?, payload: Data)
         /**
          Indicates that we successfully subscribed to a channel.
          The `number_of_channels` parameter represents the total number of channels we are currently subscribed to.
@@ -161,13 +161,26 @@ public struct PubSubMessage: FromRedisValue {
 
             switch message_type {
             case "message", "pmessage", "smessage":
-                let payload = try String(array.popLast())
+                let payload = array.popLast()
 
                 if let actual_payload = array.popLast() {
-                    channel = payload
-                    type = try .message(pattern: channel, payload: String(actual_payload))
+                    let actual_payload_data: Data
+                    if case .BulkString(let data) = actual_payload {
+                        actual_payload_data = data
+                    } else {
+                        throw RedisError.make_invalid_type_error(detail: "Response type (\(value)) is not convertible to PubSubMessage")
+                    }
+                    channel = try String(payload)
+                    type = .message(pattern: channel, payload: actual_payload_data)
+                    
                 } else {
-                    type = .message(pattern: nil, payload: payload)
+                    let payload_data: Data
+                    if case .BulkString(let data) = payload {
+                        payload_data = data
+                    } else {
+                        throw RedisError.make_invalid_type_error(detail: "Response type (\(value)) is not convertible to PubSubMessage")
+                    }
+                    type = .message(pattern: nil, payload: payload_data)
                 }
             case "subscribe", "psubscribe", "ssubscribe":
                 type = try .subscribe(number_of_channels: Int(array.popLast()))

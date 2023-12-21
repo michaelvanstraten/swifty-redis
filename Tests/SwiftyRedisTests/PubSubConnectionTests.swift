@@ -34,7 +34,7 @@ final class PubSubConnectionTests: XCTestCase {
             switch result {
             case let .success(message):
                 XCTAssertEqual(message.channel, "channel1")
-                XCTAssertEqual(message.type, .message(pattern: nil, payload: "Hello, World!"))
+                XCTAssertEqual(message.type, .message(pattern: nil, payload: Data("Hello, World!".utf8)))
             case let .failure(error):
                 XCTFail("Received error: \(error)")
             }
@@ -59,6 +59,6 @@ final class PubSubConnectionTests: XCTestCase {
 
         // Verify the parsed PubSubMessage properties
         XCTAssertEqual(pubSubMessage.channel, "channel1")
-        XCTAssertEqual(pubSubMessage.type, .message(pattern: nil, payload: "Hello, World!"))
+        XCTAssertEqual(pubSubMessage.type, .message(pattern: nil, payload: Data("Hello, World!".utf8)))
     }
 }
