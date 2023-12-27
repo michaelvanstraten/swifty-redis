@@ -157,34 +157,30 @@ public struct PubSubMessage: FromRedisValue {
             array = array.reversed()
             let message_type = try String(array.popLast())
 
-            channel = try String(array.popLast())
 
             switch message_type {
-            case "message", "pmessage", "smessage":
-                let payload = array.popLast()
-
-                if let actual_payload = array.popLast() {
-                    let actual_payload_data: Data
-                    if case .BulkString(let data) = actual_payload {
-                        actual_payload_data = data
-                    } else {
-                        throw RedisError.make_invalid_type_error(detail: "Response type (\(value)) is not convertible to PubSubMessage")
-                    }
-                    channel = try String(payload)
-                    type = .message(pattern: channel, payload: actual_payload_data)
-                    
+            case "message", "smessage":
+                channel = try String(array.popLast())
+                if case .BulkString(let data) = array.popLast() {
+                    type = .message(pattern: nil, payload: data)
                 } else {
-                    let payload_data: Data
-                    if case .BulkString(let data) = payload {
-                        payload_data = data
-                    } else {
-                        throw RedisError.make_invalid_type_error(detail: "Response type (\(value)) is not convertible to PubSubMessage")
-                    }
-                    type = .message(pattern: nil, payload: payload_data)
+                    throw RedisError.make_invalid_type_error(detail: "Response type (\(value)) is not convertible to PubSubMessage")
+                }
+            case "pmessage":
+                let pattern = try String(array.popLast())
+                channel = try String(array.popLast())
+                
+                let actual_payload_data: Data
+                if case .BulkString(let data) = array.popLast() {
+                    type = .message(pattern: pattern, payload: data)
+                } else {
+                    throw RedisError.make_invalid_type_error(detail: "Response type (\(value)) is not convertible to PubSubMessage")
                 }
             case "subscribe", "psubscribe", "ssubscribe":
+                channel = try String(array.popLast())
                 type = try .subscribe(number_of_channels: Int(array.popLast()))
             case "unsubscribe", "punsubscribe", "sunsubscribe":
+                channel = try String(array.popLast())
                 type = try .unsubscribe(number_of_channels: Int(array.popLast()))
             default:
                 throw RedisError.make_invalid_type_error(detail: "Unexprected PubSubMessage type (\"\(message_type)\")")
