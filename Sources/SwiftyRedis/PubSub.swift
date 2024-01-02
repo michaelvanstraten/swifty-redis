@@ -170,7 +170,6 @@ public struct PubSubMessage: FromRedisValue {
                 let pattern = try String(array.popLast())
                 channel = try String(array.popLast())
                 
-                let actual_payload_data: Data
                 if case .BulkString(let data) = array.popLast() {
                     type = .message(pattern: pattern, payload: data)
                 } else {
